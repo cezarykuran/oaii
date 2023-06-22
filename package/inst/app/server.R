@@ -102,7 +102,7 @@ server <- function(input, output, session) {
     else {
       imagesGenSets(oaii::images_merge_sets(
         imagesGenSets(),
-        images_fech_set(res_content, .imgGenPrompt, input$imgGenSize)
+        oaii::images_fech_set(res_content, .imgGenPrompt, input$imgGenSize)
       ))
       textConsoleReset(session, "imgGenPrompt")
     }
@@ -185,7 +185,7 @@ server <- function(input, output, session) {
     else {
       imgEditSets(oaii::images_merge_sets(
         imgEditSets(),
-        images_fech_set(res_content, .imgEditPrompt, input$imgEditSize)
+        oaii::images_fech_set(res_content, .imgEditPrompt, input$imgEditSize)
       ))
       textConsoleReset(session, "imgEditPrompt")
     }
@@ -203,34 +203,39 @@ server <- function(input, output, session) {
     req(input$api_key)
     files_table_update()
 
-    res <- oaii::files_list_request(input$api_key)
+    res_content <- oaii::files_list_request(input$api_key)
+    if (oaii::is_error(res_content)) {
+      showNotification(res_content$message_long, type = "error")
+    }
+    else {
+      files_df <- as.data.frame(do.call(rbind, res_content$data))
+      files_df[sapply(files_df, is.null)] <- ""
+      files_df$created_at <- lapply(
+        files_df[, "created_at"],
+        function(u) as.POSIXct(u, origin="1970-01-01")
+      )
+      manage <- vapply(
+        files_df[, "id"],
+        function(id){
+          as.character(htmltools::tags$button(
+            class = "btn btn-danger btn-xs",
+            onclick = paste0("oaii.files.rm('files_table_rm','", id, "')"),
+            fontawesome::fa("trash")
+          ))
+        },
+        character(1)
+      )
+      files_df <- cbind(files_df, manage)
 
-    files_df <- as.data.frame(do.call(rbind, res$data))
-    files_df[sapply(files_df, is.null)] <- ""
-    files_df$created_at <- lapply(
-      files_df[, "created_at"],
-      function(u) as.POSIXct(u, origin="1970-01-01")
-    )
-    manage <- vapply(
-      files_df[, "id"],
-      function(id){
-        as.character(htmltools::tags$button(
-          class = "btn btn-danger btn-xs",
-          onclick = paste0("oaii.files.rm('files_table_rm','", id, "')"),
-          fontawesome::fa("trash")
-        ))
-      },
-      character(1)
-    )
-    files_df <- cbind(files_df, manage)
-
-    output$files_table <- shiny::renderDataTable(
-      files_df,
-      options = list(
-        searching = FALSE,
-        columnDefs = list()
-      ),
-      escape = FALSE)
+      output$files_table <- shiny::renderDataTable(
+        files_df,
+        options = list(
+          searching = FALSE,
+          columnDefs = list()
+        ),
+        escape = FALSE
+      )
+    }
   })
 
   observeEvent(input$files_upload, {
@@ -241,23 +246,28 @@ server <- function(input, output, session) {
       gsub("[^a-zA-Z0-9\\.]", "_", input$files_upload$name, perl = TRUE)
     )
     file.rename(input$files_upload$datapath, file_uploaded)
-    res <- oaii::files_upload_request(
+    res_content <- oaii::files_upload_request(
       input$api_key,
       file_uploaded,
       "fine-tune"
     )
+    if (oaii::is_error(res_content)) {
+      showNotification(res_content$message_long, type = "error")
+    }
     unlink(file_uploaded)
-
     trigger_table_update()
   })
 
   observeEvent(input$files_table_rm, {
     req(input$api_key)
 
-    res <- oaii::files_delete_request(
+    res_content <- oaii::files_delete_request(
       input$api_key,
       input$files_table_rm
     )
+    if (oaii::is_error(res_content)) {
+      showNotification(res_content$message_long, type = "error")
+    }
     trigger_table_update()
   })
 }

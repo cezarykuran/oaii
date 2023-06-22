@@ -1,5 +1,5 @@
 ui <- fluidPage(
-  titlePanel("oaii - openAI interface"),
+  titlePanel("OpenAI API R implementation"),
 
   # resources ----
   shinyjs::useShinyjs(),
