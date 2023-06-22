@@ -2,16 +2,19 @@
 
 textConsoleInputId <- function(id) paste0(id, "Input")
 
-textConsole <- function(id, label = NULL, send_on_enter = TRUE) {
+textConsole <- function(id, label = NULL) {
   inputId <- textConsoleInputId(id)
   htmltools::tagList(
-    shiny::textAreaInput(inputId, label, width = "100%", resize = "none"),
-    if (send_on_enter) {
-      htmltools::tags$script(
-        type = "text/javascript",
-        paste0("oaii.textConsole.attachEvent('", id ,"', '", inputId ,"')")
-      )
-    }
+    shiny::textAreaInput(
+      inputId,
+      label,
+      width = "100%",
+      resize = "none",
+    ),
+    htmltools::tags$script(
+      type = "text/javascript",
+      paste0("oaii.textConsole.attachEvent('", id ,"', '", inputId ,"')")
+    )
   )
 }
 

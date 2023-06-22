@@ -186,12 +186,10 @@ ui <- fluidPage(
             textConsole(
               "imgEditPrompt",
               tooltipLabel(
-                "Image edit description",
+                "Edit description [Enter = send, Shift+Enter = new line]",
                 "A text description of the desired image(s). The maximum length is 1000 characters."
-              ),
-              send_on_enter = FALSE
-            ),
-            actionButton("imgEditExecute", "Execute")
+              )
+            )
           )
         )
       ),

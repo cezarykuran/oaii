@@ -162,7 +162,7 @@ server <- function(input, output, session) {
     imagesSets(imgEditSets(), "imgEditContainer")
   })
 
-  observeEvent(input$imgEditExecute, {
+  observeEvent(input$imgEditPrompt, {
     .api_key <- req(input$api_key)
     .imgEditPrompt <- req(input$imgEditPrompt)
     .imgEditFileOut <- req(input$imgEditFileOut)
