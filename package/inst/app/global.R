@@ -1,13 +1,3 @@
-# general ----
-
-useWidgets <- function() {
-  htmltools::tagList(
-    shiny::includeScript(system.file("app","www", "widgets.js", package = "oaii")),
-    shiny::includeCSS(system.file("app","www", "widgets.css", package = "oaii"))
-  )
-}
-
-
 # textConsole ----
 
 textConsoleInputId <- function(id) paste0(id, "Input")
@@ -122,5 +112,33 @@ imagesSets <- function(images, idContainer) {
         imagesSet(set)
       )
     })
+  )
+}
+
+
+# tooltips ----
+
+tooltip <- function(x, content, placement = "auto", html = FALSE) {
+  x$attribs["data-toggle"] <- "tooltip"
+  x$attribs["data-title"] <- as.character(content)
+  x$attribs["data-placement"] <- placement
+  x$attribs["data-html"] <- html
+  x
+}
+
+tooltipLabel <- function(label, tooltipContent, tooltipIcon = "question-circle") {
+  htmltools::tagList(
+    label,
+    tooltip(
+      htmltools::a(fontawesome::fa(tooltipIcon)),
+      tooltipContent
+    )
+  )
+}
+
+tooltipIgnite <- function() {
+  htmltools::tags$script(
+    type = "text/javascript",
+    "$('[data-toggle=tooltip]').tooltip()"
   )
 }

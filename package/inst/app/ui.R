@@ -1,41 +1,17 @@
-# ui helpers ----
-tooltip <- function(x, content, placement = "auto", html = FALSE) {
-  x$attribs["data-toggle"] <- "tooltip"
-  x$attribs["data-title"] <- as.character(content)
-  x$attribs["data-placement"] <- placement
-  x$attribs["data-html"] <- html
-  x
-}
-tooltipLabel <- function(label, tooltipContent, tooltipIcon = "question-circle") {
-  htmltools::tagList(
-    label,
-    tooltip(
-      htmltools::a(fontawesome::fa(tooltipIcon)),
-      tooltipContent
-    )
-  )
-}
-tooltipIgnite <- function() {
-  htmltools::tags$script(
-    type = "text/javascript",
-    "$('[data-toggle=tooltip]').tooltip()"
-  )
-}
-
-# ui ----
 ui <- fluidPage(
   titlePanel("oaii - openAI interface"),
 
-  ## resources ----
+  # resources ----
   shinyjs::useShinyjs(),
-  oaii::useWidgets(),
-  includeCSS(system.file("www", "app.css", package = "oaii")),
+  includeScript(file.path("www", "widgets.js")),
+  includeCSS(file.path("www", "widgets.css")),
+  includeCSS(file.path("www", "app.css")),
 
-  ## tab content ----
+  # tab content ----
   shiny::tabsetPanel(
     id = "menu",
 
-    ### home ----
+    ## home ----
     tabPanel(
       icon("home"),
       passwordInput(
@@ -51,7 +27,7 @@ ui <- fluidPage(
       )
     ),
 
-    ### chat ----
+    ## chat ----
     tabPanel(
       "Chat",
       wellPanel(
@@ -112,14 +88,14 @@ ui <- fluidPage(
           # user
         )
       ),
-      oaii::chatDialogContainer("chatDownload", "chatUpload", "chatDialogMessages"),
+      chatDialogContainer("chatDownload", "chatUpload", "chatDialogMessages"),
       wellPanel(
         class = "well-sm",
-        oaii::textConsole("chatQ", "Chat console [Enter = send, Shift+Enter = new line]")
+        textConsole("chatQ", "Chat console [Enter = send, Shift+Enter = new line]")
       )
     ),
 
-    ### image generator ----
+    ## image generator ----
     tabPanel(
       "Image generator",
       wellPanel(
@@ -142,7 +118,7 @@ ui <- fluidPage(
             c("256x256", "512x512", "1024x1024")
           ))
         ),
-        oaii::textConsole(
+        textConsole(
           "imgGenPrompt",
           tooltipLabel(
             "Image description [Enter = send, Shift+Enter = new line]",
@@ -150,10 +126,10 @@ ui <- fluidPage(
           )
         )
       ),
-      oaii::imagesContainer("imgGenContainer")
+      imagesContainer("imgGenContainer")
     ),
 
-    ### image edit ----
+    ## image edit ----
     tabPanel(
       "Image edit",
       value = "image_edit",
@@ -207,7 +183,7 @@ ui <- fluidPage(
               ),
               c("256x256", "512x512", "1024x1024")
             ),
-            oaii::textConsole(
+            textConsole(
               "imgEditPrompt",
               tooltipLabel(
                 "Image edit description",
@@ -219,23 +195,23 @@ ui <- fluidPage(
           )
         )
       ),
-      oaii::imagesContainer("imgEditContainer")
+      imagesContainer("imgEditContainer")
     ),
 
-    ### files ----
+    ## files ----
     tabPanel(
       "Files",
       fileInput("files_upload", "Upload"),
       shiny::dataTableOutput("files_table")
     ),
 
-    ### fine-tunes ----
+    ## fine-tunes ----
     tabPanel(
       "Fine-tunes",
       shiny::dataTableOutput("fineTunes_table")
     )
   ),
 
-  ## tooltips ignite ----
+  # tooltips ignite ----
   tooltipIgnite()
 )
