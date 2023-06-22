@@ -1,0 +1,116 @@
+.oaii-chatDialogContainer {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.oaii-chatDialogContainerToolbar > * {
+  float: right;
+  margin-left: 15px;
+}
+.oaii-chatDialogContainerToolbar .form-group,
+.oaii-chatDialogContainerToolbar .shiny-file-input-progress {
+   margin-bottom: 0;
+}
+
+.oaii-chatDialogContainerDialog {
+  width: 100%;
+  height: 75vh;
+  overflow: auto;
+}
+
+/* images */
+
+.oaii-imagesContainer {
+  overflow: auto;
+  width: 100%;
+  height: 90vh;
+  margin-bottom: 15px;
+  padding: 0 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.oaii-imagesSetContainer {
+  padding-top: 15px;
+}
+.oaii-imagesSetContainer:not(:last-of-type) {
+  border-bottom: 1px solid #ccc;
+}
+
+.oaii-imagesSetPrompt {
+  font-size: 1em;
+  font-weight: bold;
+  font-style: italic;
+  line-height: 1;
+}
+
+.oaii-imagesSetImageContainer {
+  padding: 15px 0;
+  text-align: center;
+}
+.oaii-imagesSetImageContainerFS {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0,0,0,0.9);
+}
+
+.oaii-imagesSetImage {
+  display: inline-block;
+  position: relative;
+  height: 100%;
+}
+.oaii-imagesSetImage img {
+  border: 1px solid #ccc;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.oaii-imagesSetImageContainer:not(.oaii-imagesSetImageContainerFS) .oaii-imagesSetImage img {
+  width: 252px
+}
+.oaii-imagesSetImageContainer:not(.oaii-imagesSetImageContainerFS) .oaii-imagesSetImage:hover img {
+  border: 1px solid #ccf;
+  cursor: pointer;
+}
+
+.oaii-imagesSetImage button {
+  position: absolute;
+  z-index: 10;
+  top: 1px;
+  width: 24px;
+  height: 24px;
+  margin-left: -25px;
+  padding: 0;
+  background: #fff;
+  border: 1px solid #999;
+  font-size: 16px;
+  opacity: 0.5;
+}
+.oaii-imagesSetImageContainer:not(.oaii-imagesSetImageContainerFS) .oaii-imagesSetImage:hover button {
+  opacity: 0.75;
+}
+.oaii-imagesSetImageContainer .oaii-imagesSetImage:hover button:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+
+.oaii-imgEditCanvas {
+  position: relative;
+  width: 100%;
+  max-width: 90vh;
+  margin: 0 auto;
+}
+.oaii-imgEditCanvas canvas {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}

@@ -1,0 +1,12 @@
+.tab-content {padding: 15px 0}
+.form-group:last-child:not(:first-child),
+.shiny-file-input-progress {
+  margin-bottom: 0
+}
+.shiny-input-container-fw .shiny-input-container {width: 100%}
+#shiny-notification-panel {width: 100%}
+
+table.dataTable thead > tr > th {
+	padding-left: 8px;
+	padding-right: 8px;
+}
