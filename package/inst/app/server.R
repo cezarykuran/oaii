@@ -432,7 +432,7 @@ server <- function(input, output, session) {
 
     fine_tunes_update()
 
-    res_content <- fine_tunes_list_request(.api_key)
+    res_content <- oaii::fine_tunes_list_request(.api_key)
     if (oaii::is_error(res_content)) {
       showNotification(res_content$message_long, type = "error")
       data.frame()
@@ -514,7 +514,7 @@ server <- function(input, output, session) {
 
     res_content <- oaii::files_delete_request(
       .api_key,
-      input$filesTableRm
+      input$fineTunesTableRm
     )
     if (oaii::is_error(res_content)) {
       showNotification(res_content$message_long, type = "error")
