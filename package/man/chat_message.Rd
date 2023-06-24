@@ -9,7 +9,7 @@ chat_message(content, role = "user")
 \arguments{
 \item{content}{string, message content}
 
-\item{role}{string, message "owner"}
+\item{role}{string, message role ("owner")}
 }
 \description{
 Create chat message "object"

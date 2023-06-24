@@ -31,7 +31,6 @@ log_debug <- function(...) do.call(logger$debug, list(...))
 #' Set log functions used by this package
 #'
 #' @param ... parameters in form log_level = function
-#'
 #' @export
 #'
 set_logger <- function(...) {

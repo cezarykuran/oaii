@@ -88,7 +88,7 @@ ui <- fluidPage(
           # user
         )
       ),
-      chatDialogContainer("chatDownload", "chatUpload", "chatDialogMessages"),
+      dialogContainer("chatDialogContainer", TRUE, TRUE),
       wellPanel(
         class = "well-sm",
         textConsole("chatQ", "Chat console [Enter = send, Shift+Enter = new line]")
@@ -199,14 +199,95 @@ ui <- fluidPage(
     ## files ----
     tabPanel(
       "Files",
-      fileInput("files_upload", "Upload"),
-      shiny::dataTableOutput("files_table")
+      wellPanel(
+        class = "well-sm",
+        fileInput("filesUpload", "Upload")
+      ),
+      shiny::dataTableOutput("filesTable")
     ),
 
     ## fine-tunes ----
     tabPanel(
       "Fine-tunes",
-      shiny::dataTableOutput("fineTunes_table")
+      wellPanel(
+        class = "well-sm",
+        fluidRow(
+          column(4, selectInput("fineTunesTrainingFile", "training_file", choices = c())),
+          column(4, selectInput("fineTunesModel", "model", c("ada", "babbage", "curie", "davinci"))),
+          column(4, actionButton("fineTunesCreate", "Create"))
+        )
+      ),
+      div(style = "overflow: auto; white-space: nowrap",
+        shiny::dataTableOutput("fineTunesTable")
+      )
+    ),
+
+    ## completions ----
+    tabPanel(
+      "Completions",
+      wellPanel(
+        class = "well-sm",
+        fluidRow(
+          column(4, selectInput(
+            "completionsModel",
+            tooltipLabel(
+              "model",
+              "ID of the model to use. See the model endpoint compatibility table for details on which models work with the Chat API."
+            ),
+            c("text-davinci-003", "text-davinci-002", "text-curie-001", "text-babbage-001", "text-ada-001")
+          )),
+          column(4, sliderInput(
+            "completionsN",
+            tooltipLabel(
+              "n",
+              "How many chat completion choices to generate for each input message."
+            ),
+            1, 50, 1, 1
+          )),
+          column(4, sliderInput(
+            "completionsMaxTokens",
+            tooltipLabel(
+              "max_tokens",
+              "The maximum number of tokens to generate in the chat completion."
+            ),
+            1, 1000, 200, 1
+          )),
+          column(4, sliderInput(
+            "completionsTemperature",
+            tooltipLabel(
+              "temperature",
+              "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic."
+            ),
+            0, 2, 0.7, 0.1
+          )),
+          # top_p
+          # stream
+          # stop
+          column(4, sliderInput(
+            "completionsPresencePenalty",
+            tooltipLabel(
+              "presence_penalty",
+              "Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics."
+            ),
+            -2, 2, 0, 0.1
+          )),
+          column(4, sliderInput(
+            "completionsFrequencyPenalty",
+            tooltipLabel(
+              "frequency_penalty",
+              "Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim."
+            ),
+            -2, 2, 0, 0.1
+          )),
+          # logit_bias
+          # user
+        )
+      ),
+      dialogContainer("completionsDialogContainer"),
+      wellPanel(
+        class = "well-sm",
+        textConsole("completionsPrompt", "Completions console [Enter = send, Shift+Enter = new line]")
+      )
     )
   ),
 

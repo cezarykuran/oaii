@@ -1,15 +1,22 @@
-
 #' API request
 #'
-#' @param endpoint string, API endpoint
+#' \url{https://platform.openai.com/docs/api-reference/making-requests}
+#' @inheritParams httr::POST
+#' @param endpoint string, API endpoint url
 #' @param api_key string, API key
-#' @param body NULL/list, request body
-#' @param encode request encode
-#' @param method request method
+#' @param method string, request method
+#' @return content of the httr response object or SimpleError
 #'
-request <- function(endpoint, api_key, body = NULL, encode = "json", method = "POST") {
+request <- function(
+    endpoint,
+    api_key,
+    body = NULL,
+    encode = "json",
+    method = "POST"
+) {
   tryCatch(
     expr = {
+      log_debug("request('", endpoint, "', ...)")
       res <- do.call(
         get(method, asNamespace("httr")),
         list(
@@ -44,7 +51,11 @@ request <- function(endpoint, api_key, body = NULL, encode = "json", method = "P
   )
 }
 
+#' Test if object belongs to "error" class
+#'
+#' @param x R variable
 #' @export
+#'
 is_error <- function(x) {
   inherits(x, c("error", "simpleError"))
 }

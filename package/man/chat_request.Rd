@@ -2,8 +2,7 @@
 % Please edit documentation in R/api_chat.R
 \name{chat_request}
 \alias{chat_request}
-\title{Send chat request
-See \url{https://platform.openai.com/docs/api-reference/chat}}
+\title{API chat: send completions request}
 \usage{
 chat_request(
   api_key,
@@ -17,23 +16,37 @@ chat_request(
 )
 }
 \arguments{
-\item{api_key}{API endpoint parameter}
+\item{api_key}{string, API key}
 
-\item{messages}{API endpoint parameter}
+\item{messages}{list (messages "object"), a list of messages comprising
+the conversation so far}
 
-\item{model}{API endpoint parameter}
+\item{model}{string, ID of the model to use.
+See the \href{https://platform.openai.com/docs/models/model-endpoint-compatibility}{model endpoint compatibility table}
+for details on which models work with the Chat API.}
 
-\item{temperature}{API endpoint parameter}
+\item{temperature}{double, what sampling temperature to use, between 0 and 2.
+Higher values like 0.8 will make the output more random,
+while lower values like 0.2 will make it more focused and deterministic.}
 
-\item{n}{API endpoint parameter}
+\item{n}{integer, how many chat completion choices
+to generate for each input message.}
 
-\item{max_tokens}{API endpoint parameter}
+\item{max_tokens}{integer, the maximum number of tokens to generate
+in the chat completion}
 
-\item{presence_penalty}{API endpoint parameter}
+\item{presence_penalty}{double, number between -2.0 and 2.0.
+Positive values penalize new tokens based on whether they appear in the text
+so far, increasing the model's likelihood to talk about new topics.}
 
-\item{frequency_penalty}{API endpoint parameter}
+\item{frequency_penalty}{double, number between -2.0 and 2.0.
+Positive values penalize new tokens based on their existing frequency
+in the text so far, decreasing the model's likelihood to repeat the same line
+verbatim.}
+}
+\value{
+content of the httr response object or SimpleError
 }
 \description{
-Send chat request
-See \url{https://platform.openai.com/docs/api-reference/chat}
+\url{https://platform.openai.com/docs/api-reference/completions}
 }

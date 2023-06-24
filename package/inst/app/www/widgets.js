@@ -170,10 +170,8 @@ oaii = {
     }
   },
 
-  files : {
-    rm : function(idValue, idFile) {
-      Shiny.setInputValue(idValue, idFile)
-    }
+  tableBtn : function(n, v) {
+    Shiny.setInputValue(n, v)
   }
 }
 Shiny.addCustomMessageHandler("oaii.textConsole", oaii.textConsole.messageHandler)

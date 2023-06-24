@@ -7,16 +7,43 @@
 request(endpoint, api_key, body = NULL, encode = "json", method = "POST")
 }
 \arguments{
-\item{endpoint}{string, API endpoint}
+\item{endpoint}{string, API endpoint url}
 
 \item{api_key}{string, API key}
 
-\item{body}{NULL/list, request body}
+\item{body}{One of the following:
+\itemize{
+\item \code{FALSE}: No body. This is typically not used with \code{POST},
+\code{PUT}, or \code{PATCH}, but can be useful if you need to send a
+bodyless request (like \code{GET}) with \code{VERB()}.
+\item \code{NULL}: An empty body
+\item \code{""}: A length 0 body
+\item \code{upload_file("path/")}: The contents of a file.  The mime
+type will be guessed from the extension, or can be supplied explicitly
+as the second argument to \code{upload_file()}
+\item A character or raw vector: sent as is in body. Use
+\code{\link[httr:content_type]{content_type()}} to tell the server what sort of data
+you are sending.
+\item A named list: See details for encode.
+}}
 
-\item{encode}{request encode}
+\item{encode}{If the body is a named list, how should it be encoded? Can be
+one of form (application/x-www-form-urlencoded), multipart,
+(multipart/form-data), or json (application/json).
 
-\item{method}{request method}
+For "multipart", list elements can be strings or objects created by
+\code{\link[httr:upload_file]{upload_file()}}. For "form", elements are coerced to strings
+and escaped, use \code{I()} to prevent double-escaping. For "json",
+parameters are automatically "unboxed" (i.e. length 1 vectors are
+converted to scalars). To preserve a length 1 vector as a vector,
+wrap in \code{I()}. For "raw", either a character or raw vector. You'll
+need to make sure to set the \code{\link[httr:content_type]{content_type()}} yourself.}
+
+\item{method}{string, request method}
+}
+\value{
+content of the httr response object or SimpleError
 }
 \description{
-API request
+\url{https://platform.openai.com/docs/api-reference/making-requests}
 }

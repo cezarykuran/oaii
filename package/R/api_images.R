@@ -1,15 +1,32 @@
-IMAGES_REQ_PARAMS <- list(
-  n = 1:10,
-  size = c("256x256", "512x512", "1024x1024"),
-  response_format = c("url", "b64_json")
-)
+#' API images: roxygen template
+#'
+#' @inherit request params return
+#' @param prompt string, a text description of the desired image(s).
+#' The maximum length is 1000 characters.
+#' @param n integer, the number of images to generate. Must be between 1 and 10.
+#' @param size string, the size of the generated images. Must be one of
+#' "256x256", "512x512" or "1024x1024"
+#' @param response_format string,tThe format in which the generated images
+#' are returned. Must be one of "url" or "b64_json".
+#' @param user string a unique identifier representing your end-user,
+#' which can help OpenAI to monitor and detect abuse.
+#' @keywords internal
+#'
+images_roxygen_tpl <- function(
+    api_key,
+    prompt,
+    n,
+    size,
+    response_format,
+    user
+) NULL
 
+#' API images: create request
+#'
+#' \url{https://platform.openai.com/docs/api-reference/images/create}
+#' @inherit images_roxygen_tpl params return
 #' @export
-images_req_params <- function() {
-  IMAGES_REQ_PARAMS
-}
-
-#' @export
+#'
 images_generator_request <- function(
     api_key,
     prompt,
@@ -28,7 +45,18 @@ images_generator_request <- function(
   )
 }
 
+#' API images: edit request
+#'
+#' \url{https://platform.openai.com/docs/api-reference/images/edits}
+#' @inherit images_roxygen_tpl params return
+#' @param image string, the image to edit. Must be a valid PNG file, less than
+#' 4MB, and square. If mask is not provided, image must have transparency,
+#' which will be used as the mask.
+#' @param mask string/null, an additional image whose fully transparent areas
+#' (e.g. where alpha is zero) indicate where image should be edited. Must be
+#' a valid PNG file, less than 4MB, and have the same dimensions as `image`.
 #' @export
+#'
 images_edit_request <- function(
     api_key,
     image,
@@ -77,6 +105,10 @@ images_edit_request <- function(
   )
 }
 
+#' Test if x is a image set
+#'
+#' @param x R variable to test
+#'
 is_image_set <- function(x) {
   fields <- c("data", "prompt", "size")
   is.list(x) &&
@@ -85,7 +117,12 @@ is_image_set <- function(x) {
     is.list(x$data)
 }
 
+#' Fetch image set from response content
+#'
+#' @inherit images_roxygen_tpl params
+#' @param res_content response object
 #' @export
+#'
 images_fech_set <- function(res_content, prompt = NULL, size = NULL) {
   list(
     data = res_content$data,
@@ -94,7 +131,11 @@ images_fech_set <- function(res_content, prompt = NULL, size = NULL) {
   )
 }
 
+#' Merge image set/sets
+#'
+#' @param ... images set and/or images sets
 #' @export
+#'
 images_merge_sets <- function(...) {
   image_sets <- NULL
   for (x in list(...)) {

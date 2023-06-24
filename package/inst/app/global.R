@@ -1,3 +1,31 @@
+# general ----
+
+`%>%` = magrittr::`%>%`
+
+
+# logger ----
+
+logger <- log4r::logger("DEBUG")
+log_error <- function(...) {
+  log4r::error(logger, ...)
+}
+log_warning <- function(...) {
+  log4r::warn(logger, ...)
+}
+log_info <- function(...) {
+  log4r::info(logger, ...)
+}
+log_debug <- function(...) {
+  log4r::debug(logger, ...)
+}
+oaii::set_logger(
+  error = log_error,
+  warning = log_warning,
+  info = log_info,
+  debug = log_debug
+)
+
+
 # textConsole ----
 
 textConsoleInputId <- function(id) paste0(id, "Input")
@@ -38,22 +66,22 @@ textConsoleReset <- function (session, id) {
 }
 
 
-# chat ----
+# dialog ----
 
-chatDialogContainer <- function(idDownload, idUpload, idDialog) {
+dialogContainer <- function(id, btnUpload = FALSE, btnDownload = FALSE) {
   htmltools::div(
     class = "oaii-chatDialogContainer",
-    htmltools::div(
-      class = "oaii-chatDialogContainerToolbar",
-      shiny::downloadButton(idDownload, label = NULL),
-      shiny::fileInput(idUpload, label = NULL)
-    ),
-    shiny::uiOutput(idDialog, class = "oaii-chatDialogContainerDialog"),
+    if (any(btnUpload, btnDownload))
+      htmltools::div(
+        class = "oaii-chatDialogContainerToolbar",
+        if (btnDownload) shiny::downloadButton(paste0(id, "Download"), label = NULL),
+        if (btnUpload) shiny::fileInput(paste0(id, "Upload"), label = NULL)
+      ),
+    shiny::uiOutput(id, class = "oaii-chatDialogContainerDialog"),
   )
 }
 
-#' @export
-chatDialogMessages <- function(messages, idDialog) {
+dialogMessages <- function(messages, idDialogContainer = NULL) {
   htmltools::tagList(
     htmltools::tags$table(
       class = "table",
@@ -64,7 +92,8 @@ chatDialogMessages <- function(messages, idDialog) {
         )
       })
     ),
-    htmltools::tags$script(paste0("oaii.scrollDown('", idDialog  , "')"))
+    if (!is.null(idDialogContainer))
+      htmltools::tags$script(paste0("oaii.scrollDown('", idDialogContainer  , "')"))
   )
 }
 
