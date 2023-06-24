@@ -127,3 +127,14 @@
   padding-bottom: 15px;
   white-space: nowrap
 }
+
+.oaii-apiPanelKeyError {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.tab-pane:not(.disabled) .oaii-apiPanelKeyError {display: none}
+
+.oaii-apiPanelHeader {
+  margin-bottom: 15px;
+}

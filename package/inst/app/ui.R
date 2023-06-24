@@ -12,17 +12,21 @@ ui <- fluidPage(
     ## home ----
     tabPanel(
       icon("home"),
+      value = "home",
       wellPanelSm(
         passwordInput(
           "api_key",
-          htmltools::tagList(
-            "openai API key",
-            htmltools::a(
-              href = "https://platform.openai.com/account/api-keys",
-              fontawesome::fa("arrow-up-right-from-square")
-            ),
-          ),
+          "OpenAI API key",
           value = Sys.getenv("API_KEY", unset = "")
+        ),
+        htmltools::tagList(
+          "The OpenAI API uses API keys for authentication. Visit your",
+          htmltools::a(
+            href = "https://platform.openai.com/account/api-keys",
+            target = "_blank",
+            "API keys page"
+          ),
+          "to retrieve the API key you'll use in your requests."
         )
       )
     ),
@@ -30,232 +34,19 @@ ui <- fluidPage(
     ## chat ----
     tabPanel(
       "Chat",
-      fluidRow(
-        column(4, wellPanelSm(
-          selectInput(
-            "chatModel",
-            tooltipLabel(
-              "model",
-              "ID of the model to use. See the model endpoint compatibility table for details on which models work with the Chat API."
-            ),
-            c("gpt-4", "gpt-4-0314", "gpt-4-32k", "gpt-4-32k-0314", "gpt-3.5-turbo", "gpt-3.5-turbo-0301")
-          ),
-          sliderInput(
-            "chatN",
-            tooltipLabel(
-              "n",
-              "How many chat completion choices to generate for each input message."
-            ),
-            1, 50, 1, 1
-          ),
-          sliderInput(
-            "chatMaxTokens",
-            tooltipLabel(
-              "max_tokens",
-              "The maximum number of tokens to generate in the chat completion."
-            ),
-            1, 1000, 200, 1
-          ),
-          sliderInput(
-            "chatTemperature",
-            tooltipLabel(
-              "temperature",
-              "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic."
-            ),
-            0, 2, 0.7, 0.1
-          ),
-          # top_p
-          # stream
-          # stop
-          sliderInput(
-            "chatPresencePenalty",
-            tooltipLabel(
-              "presence_penalty",
-              "Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics."
-            ),
-            -2, 2, 0, 0.1
-          ),
-          sliderInput(
-            "chatFrequencyPenalty",
-            tooltipLabel(
-              "frequency_penalty",
-              "Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim."
-            ),
-            -2, 2, 0, 0.1
-          ),
-          # logit_bias
-          # user
-        )),
-        column(8,
-          dialogContainer("chatDialogContainer", TRUE, TRUE),
-          wellPanelSm(
-            textConsole(
-              "chatQ",
-              tagList(
-                "message content",
-                tags$small("[Enter = send, Shift+Enter = new line]")
-              )
-            )
-          )
-        )
-      )
-    ),
-
-    ## image generator ----
-    tabPanel(
-      "Image generator",
-      wellPanelSm(
+      apiPanel(
         fluidRow(
-          column(4,
-            sliderInput(
-              "imgGenN",
-              tooltipLabel(
-                "n",
-                "The number of images to generate."
-              ),
-              1, 10, 1, 1
-            ),
+          column(4, wellPanelSm(
             selectInput(
-              "imgGenSize",
-              tooltipLabel(
-                "size",
-                "The size of the generated images."
-              ),
-              c("256x256", "512x512", "1024x1024")
-            )
-          ),
-          column(8,
-            textConsole(
-              "imgGenPrompt",
-              tooltipLabel(
-                tagList(
-                  "prompt",
-                  tags$small("[Enter = send, Shift+Enter = new line]")
-                ),
-                "A text description of the desired image(s). The maximum length is 1000 characters."
-              )
-            )
-          )
-        )
-      ),
-      imagesContainer("imgGenContainer")
-    ),
-
-    ## image edit ----
-    tabPanel(
-      "Image edit",
-      value = "image_edit",
-      wellPanelSm(
-        shiny::fluidRow(
-          column(8,
-            div(class = "text-center",
-              htmltools::tags$label(
-                class = "control-label",
-                tooltipLabel(
-                  "Edit uploaded image",
-                  "Select area by your mouse that you want to edit."
-                )
-              )
-            ),
-            div(
-              id = "imgEditCanvas",
-              class = "oaii-imgEditCanvas",
-              tags$canvas(),
-              tags$canvas(),
-              tags$script(
-                "oaii.images.edit.init('imgEditCanvas', 'imgEditFileOut')"
-              )
-            )
-          ),
-          column(4,
-            class = "shiny-input-container-fw",
-            shiny::fileInput(
-              "imgEditFileIn",
-              tooltipLabel(
-                "image",
-                "Uload image you want to edit."
-              )
-            ),
-            colourpicker::colourInput("imgEditColorBg", "edit backgroud color", value = "#444"),
-            colourpicker::colourInput("imgEditColorDraw", "edit draw color", value = "#777"),
-            sliderInput(
-              "imgEditN",
-              tooltipLabel(
-                "n",
-                "The number of images to generate."
-              ),
-              1, 10, 1, 1
-            ),
-            selectInput(
-              "imgEditSize",
-              tooltipLabel(
-                "size",
-                "The size of the generated images."
-              ),
-              c("256x256", "512x512", "1024x1024")
-            ),
-            textConsole(
-              "imgEditPrompt",
-              tooltipLabel(
-                tagList(
-                  "edit description",
-                  tags$small("[Enter = send, Shift+Enter = new line]")
-                ),
-                "A text description of the desired image(s). The maximum length is 1000 characters."
-              )
-            )
-          )
-        )
-      ),
-      imagesContainer("imgEditContainer")
-    ),
-
-    ## files ----
-    tabPanel(
-      "Files",
-      wellPanelSm(
-        fluidRow(
-          column(4, fileInput("filesUpload", "file")),
-          column(4, textInput("filesPurpose", "purpose", value = "fine-tune")),
-          column(4, buttonContainer(actionButton("filesUploadExecute", "Create", class = "btn-primary")))
-        )
-      ),
-      tableContainer(
-        shiny::dataTableOutput("filesTable")
-      )
-    ),
-
-    ## fine-tunes ----
-    tabPanel(
-      "Fine-tunes",
-      wellPanelSm(
-        fluidRow(
-          column(4, selectInput("fineTunesModel", "model", c("ada", "babbage", "curie", "davinci"))),
-          column(4, selectInput("fineTunesTrainingFile", "training_file", choices = c())),
-          column(4, buttonContainer(actionButton("fineTunesCreate", "Create", class = "btn-primary")))
-        )
-      ),
-      tableContainer(
-        shiny::dataTableOutput("fineTunesTable")
-      )
-    ),
-
-    ## completions ----
-    tabPanel(
-      "Completions",
-      fluidRow(
-        column(4,
-          wellPanelSm(
-            selectInput(
-              "completionsModel",
+              "chatModel",
               tooltipLabel(
                 "model",
                 "ID of the model to use. See the model endpoint compatibility table for details on which models work with the Chat API."
               ),
-              c("text-davinci-003", "text-davinci-002", "text-curie-001", "text-babbage-001", "text-ada-001")
+              c("gpt-4", "gpt-4-0314", "gpt-4-32k", "gpt-4-32k-0314", "gpt-3.5-turbo", "gpt-3.5-turbo-0301")
             ),
             sliderInput(
-              "completionsN",
+              "chatN",
               tooltipLabel(
                 "n",
                 "How many chat completion choices to generate for each input message."
@@ -263,7 +54,7 @@ ui <- fluidPage(
               1, 50, 1, 1
             ),
             sliderInput(
-              "completionsMaxTokens",
+              "chatMaxTokens",
               tooltipLabel(
                 "max_tokens",
                 "The maximum number of tokens to generate in the chat completion."
@@ -271,7 +62,7 @@ ui <- fluidPage(
               1, 1000, 200, 1
             ),
             sliderInput(
-              "completionsTemperature",
+              "chatTemperature",
               tooltipLabel(
                 "temperature",
                 "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic."
@@ -282,7 +73,7 @@ ui <- fluidPage(
             # stream
             # stop
             sliderInput(
-              "completionsPresencePenalty",
+              "chatPresencePenalty",
               tooltipLabel(
                 "presence_penalty",
                 "Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics."
@@ -290,7 +81,7 @@ ui <- fluidPage(
               -2, 2, 0, 0.1
             ),
             sliderInput(
-              "completionsFrequencyPenalty",
+              "chatFrequencyPenalty",
               tooltipLabel(
                 "frequency_penalty",
                 "Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim."
@@ -299,16 +90,241 @@ ui <- fluidPage(
             ),
             # logit_bias
             # user
+          )),
+          column(8,
+            dialogContainer("chatDialogContainer", TRUE, TRUE),
+            wellPanelSm(
+              textConsole(
+                "chatQ",
+                tagList(
+                  "message content",
+                  tags$small("[Enter = send, Shift+Enter = new line]")
+                )
+              )
+            )
+          )
+        )
+      )
+    ),
+
+    ## image generator ----
+    tabPanel(
+      "Image generator",
+      apiPanel(
+        wellPanelSm(
+          fluidRow(
+            column(4,
+              sliderInput(
+                "imgGenN",
+                tooltipLabel(
+                  "n",
+                  "The number of images to generate."
+                ),
+                1, 10, 1, 1
+              ),
+              selectInput(
+                "imgGenSize",
+                tooltipLabel(
+                  "size",
+                  "The size of the generated images."
+                ),
+                c("256x256", "512x512", "1024x1024")
+              )
+            ),
+            column(8,
+              textConsole(
+                "imgGenPrompt",
+                tooltipLabel(
+                  tagList(
+                    "prompt",
+                    tags$small("[Enter = send, Shift+Enter = new line]")
+                  ),
+                  "A text description of the desired image(s). The maximum length is 1000 characters."
+                )
+              )
+            )
           )
         ),
-        column(8,
-          dialogContainer("completionsDialogContainer"),
-          wellPanelSm(
-            textConsole(
-              "completionsPrompt",
-              tagList(
-                "completion content",
-                tags$small("[Enter = send, Shift+Enter = new line]")
+        imagesContainer("imgGenContainer")
+      )
+    ),
+
+    ## image edit ----
+    tabPanel(
+      "Image edit",
+      value = "image_edit",
+      apiPanel(
+        wellPanelSm(
+          shiny::fluidRow(
+            column(8,
+              div(class = "text-center",
+                htmltools::tags$label(
+                  class = "control-label",
+                  tooltipLabel(
+                    "Edit uploaded image",
+                    "Select area by your mouse that you want to edit."
+                  )
+                )
+              ),
+              div(
+                id = "imgEditCanvas",
+                class = "oaii-imgEditCanvas",
+                tags$canvas(),
+                tags$canvas(),
+                tags$script(
+                  "oaii.images.edit.init('imgEditCanvas', 'imgEditFileOut')"
+                )
+              )
+            ),
+            column(4,
+              class = "shiny-input-container-fw",
+              shiny::fileInput(
+                "imgEditFileIn",
+                tooltipLabel(
+                  "image",
+                  "Uload image you want to edit."
+                )
+              ),
+              colourpicker::colourInput("imgEditColorBg", "edit backgroud color", value = "#444"),
+              colourpicker::colourInput("imgEditColorDraw", "edit draw color", value = "#777"),
+              sliderInput(
+                "imgEditN",
+                tooltipLabel(
+                  "n",
+                  "The number of images to generate."
+                ),
+                1, 10, 1, 1
+              ),
+              selectInput(
+                "imgEditSize",
+                tooltipLabel(
+                  "size",
+                  "The size of the generated images."
+                ),
+                c("256x256", "512x512", "1024x1024")
+              ),
+              textConsole(
+                "imgEditPrompt",
+                tooltipLabel(
+                  tagList(
+                    "edit description",
+                    tags$small("[Enter = send, Shift+Enter = new line]")
+                  ),
+                  "A text description of the desired image(s). The maximum length is 1000 characters."
+                )
+              )
+            )
+          )
+        ),
+        imagesContainer("imgEditContainer")
+      )
+    ),
+
+    ## files ----
+    tabPanel(
+      "Files",
+      apiPanel(
+        wellPanelSm(
+          fluidRow(
+            column(4, fileInput("filesUpload", "file")),
+            column(4, textInput("filesPurpose", "purpose", value = "fine-tune")),
+            column(4, buttonContainer(actionButton("filesUploadExecute", "Create", class = "btn-primary")))
+          )
+        ),
+        tableContainer(
+          shiny::dataTableOutput("filesTable")
+        )
+      )
+    ),
+
+    ## fine-tunes ----
+    tabPanel(
+      "Fine-tunes",
+      apiPanel(
+        wellPanelSm(
+          fluidRow(
+            column(4, selectInput("fineTunesModel", "model", c("ada", "babbage", "curie", "davinci"))),
+            column(4, selectInput("fineTunesTrainingFile", "training_file", choices = c())),
+            column(4, buttonContainer(actionButton("fineTunesCreate", "Create", class = "btn-primary")))
+          )
+        ),
+        tableContainer(
+          shiny::dataTableOutput("fineTunesTable")
+        )
+      )
+    ),
+
+    ## completions ----
+    tabPanel(
+      "Completions",
+      apiPanel(
+        fluidRow(
+          column(4,
+            wellPanelSm(
+              selectInput(
+                "completionsModel",
+                tooltipLabel(
+                  "model",
+                  "ID of the model to use. See the model endpoint compatibility table for details on which models work with the Chat API."
+                ),
+                c("text-davinci-003", "text-davinci-002", "text-curie-001", "text-babbage-001", "text-ada-001")
+              ),
+              sliderInput(
+                "completionsN",
+                tooltipLabel(
+                  "n",
+                  "How many chat completion choices to generate for each input message."
+                ),
+                1, 50, 1, 1
+              ),
+              sliderInput(
+                "completionsMaxTokens",
+                tooltipLabel(
+                  "max_tokens",
+                  "The maximum number of tokens to generate in the chat completion."
+                ),
+                1, 1000, 200, 1
+              ),
+              sliderInput(
+                "completionsTemperature",
+                tooltipLabel(
+                  "temperature",
+                  "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic."
+                ),
+                0, 2, 0.7, 0.1
+              ),
+              # top_p
+              # stream
+              # stop
+              sliderInput(
+                "completionsPresencePenalty",
+                tooltipLabel(
+                  "presence_penalty",
+                  "Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics."
+                ),
+                -2, 2, 0, 0.1
+              ),
+              sliderInput(
+                "completionsFrequencyPenalty",
+                tooltipLabel(
+                  "frequency_penalty",
+                  "Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim."
+                ),
+                -2, 2, 0, 0.1
+              ),
+              # logit_bias
+              # user
+            )
+          ),
+          column(8,
+            dialogContainer("completionsDialogContainer"),
+            wellPanelSm(
+              textConsole(
+                "completionsPrompt",
+                tagList(
+                  "completion content",
+                  tags$small("[Enter = send, Shift+Enter = new line]")
+                )
               )
             )
           )

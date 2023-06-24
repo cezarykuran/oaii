@@ -36,6 +36,10 @@ request <- function(
       content
     },
     error = function(e) {
+      # append status_code
+      e$status_code <- if (exists("res")) res$status_code
+
+      # append long error message
       e$message_long <- paste0(
         e$message,
         if (exists("content")) {
@@ -45,7 +49,11 @@ request <- function(
             paste0(", api error message: '", content$error$message, "'")
         }
       )
+
+      # log error
       log_error(e$message_long)
+
+      # return error "object"
       e
     }
   )

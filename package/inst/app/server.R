@@ -67,6 +67,43 @@ server <- function(input, output, session) {
   }
 
 
+  # api_key ----
+
+  api_key <- reactiveVal()
+  observeEvent(debounce(input$api_key, 1000), {
+    log_debug("observeEvent(debounce(input$api_key, 1000), {..}")
+
+    .debounced_api_key <- input$api_key
+    if (is.character(.debounced_api_key) && nchar(.debounced_api_key)) {
+      res <- request("https://api.openai.com/v1/chat/completions", .debounced_api_key)
+      if (is.null(res$status_code) || res$status_code == 401) {
+        showNotification(res$message_long, type = "error", duration = 5)
+        inputSetState("api_key", "error")
+        api_key(NULL)
+      }
+      else {
+        inputSetState("api_key", "success")
+        api_key(.debounced_api_key)
+      }
+    }
+    else {
+      inputSetState("api_key", "error")
+      api_key(NULL)
+    }
+  })
+
+
+  # panels enable/disable ----
+
+  observe({
+    log_debug("observe({..}) [enable/disable panels]")
+
+    selector <- ".tab-pane:not([data-value=home])"
+    if (is.null(api_key())) shinyjs::disable(selector = selector)
+    else shinyjs::enable(selector = selector)
+  })
+
+
   # chat ----
 
   chatMessages <- reactiveVal()
@@ -77,7 +114,7 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$chatQ, {
-    .api_key <- req(input$api_key)
+    .api_key <- req(api_key())
     .chatQ <- req(input$chatQ)
     log_debug("observeEvent(input$chatQ, {..})")
 
@@ -165,7 +202,7 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$imgGenPrompt, {
-    .api_key <- req(input$api_key)
+    .api_key <- req(api_key())
     .imgGenPrompt <- req(input$imgGenPrompt)
     log_debug("observeEvent(input$imgGenPrompt, {..})")
 
@@ -256,7 +293,7 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$imgEditPrompt, {
-    .api_key <- req(input$api_key)
+    .api_key <- req(api_key())
     .imgEditPrompt <- req(input$imgEditPrompt)
     .imgEditFileOut <- req(input$imgEditFileOut)
     log_debug("observeEvent(input$imgEditPrompt, {..})")
@@ -295,7 +332,7 @@ server <- function(input, output, session) {
   }
 
   files_df <- reactive({
-    .api_key <- req(input$api_key)
+    .api_key <- req(api_key())
     log_debug("files_df <- reactive({..})")
 
     files_df_update()
@@ -311,7 +348,7 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$filesUploadExecute, {
-    .api_key <- req(input$api_key)
+    .api_key <- req(api_key())
     .filesUpload <- req(input$filesUpload)
     req(file.exists(.filesUpload$datapath))
     .filesPurpose <- req(input$filesPurpose)
@@ -365,11 +402,11 @@ server <- function(input, output, session) {
   )
 
   observeEvent(input$filesTableRm, {
-    .api_key <- req(input$api_key)
+    .api_key <- req(api_key())
     log_debug("observeEvent(input$filesTableRm, {..})")
 
     res_content <- oaii::files_delete_request(
-      input$api_key,
+      .api_key,
       input$filesTableRm
     )
     if (oaii::is_error(res_content)) {
@@ -387,7 +424,7 @@ server <- function(input, output, session) {
   }
 
   fine_tunes_df <- reactive({
-    .api_key <- req(input$api_key)
+    .api_key <- req(api_key())
     log_debug("fine_tunes_df <- reactive({..})")
 
     fine_tunes_update()
@@ -414,7 +451,7 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$fineTunesCreate, {
-    .api_key <- req(input$api_key)
+    .api_key <- req(api_key())
     .fineTunesTrainingFile <- req(input$fineTunesTrainingFile)
     .fineTunesModel <- req(input$fineTunesModel)
 
@@ -463,11 +500,11 @@ server <- function(input, output, session) {
   )
 
   observeEvent(input$fineTunesTableRm, {
-    .api_key <- req(input$api_key)
+    .api_key <- req(api_key())
     log_debug("observeEvent(input$fineTunesTableRm, {..})")
 
     res_content <- oaii::files_delete_request(
-      input$api_key,
+      .api_key,
       input$filesTableRm
     )
     if (oaii::is_error(res_content)) {
@@ -480,9 +517,11 @@ server <- function(input, output, session) {
   # completions ----
 
   observeEvent(input$completionsPrompt, {
-    .api_key <- req(input$api_key)
+    .api_key <- req(api_key())
     .completionsPrompt <- req(input$completionsPrompt)
     log_debug("observeEvent(input$completionsPrompt, {..})")
+
+    shinyjs::disable("completionsPrompt")
 
     res_content <- oaii::completions_create_request(
       .api_key,
@@ -515,5 +554,7 @@ server <- function(input, output, session) {
 
       textConsoleReset(session, "completionsPrompt")
     }
+
+    shinyjs::enable("completionsPrompt")
   })
 }

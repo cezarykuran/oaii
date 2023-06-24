@@ -26,7 +26,9 @@ oaii::set_logger(
 )
 
 
-# textConsole ----
+# ui/server helpers ----
+
+## textConsole ----
 
 textConsoleInputId <- function(id) paste0(id, "Input")
 
@@ -66,7 +68,7 @@ textConsoleReset <- function (session, id) {
 }
 
 
-# dialog ----
+## dialog ----
 
 dialogContainer <- function(id, btnUpload = FALSE, btnDownload = FALSE) {
   htmltools::div(
@@ -98,7 +100,7 @@ dialogMessages <- function(messages, idDialogContainer = NULL) {
 }
 
 
-# images ----
+## images ----
 
 imagesContainer <- function(id) {
   shiny::uiOutput(id, class = "oaii-imagesContainer")
@@ -147,8 +149,45 @@ imagesSets <- function(images, idContainer) {
   )
 }
 
+## other ----
 
-# tooltips ----
+apiPanel <- function(..., header = NULL) {
+  htmltools::div(
+    htmltools::div(
+      class = "oaii-apiPanelKeyError text-danger",
+      "Missing or wrong OpenAI api key!"
+    ),
+    if (!is.null(header)) htmltools::div(
+      class = "oaii-apiPanelHeader",
+      header
+    ),
+    ...
+  )
+}
+
+tableContainer <- function(...) {
+  htmltools::div(
+    class = "oaii-tableContainer",
+    div(
+      class = "oaii-tableContainerContent",
+      ...
+    )
+  )
+}
+
+buttonContainer <- function(..., label = NULL) {
+  htmltools::div(
+    class = "form-group",
+    htmltools::tags$label(htmltools::HTML(paste0(label, "&nbsp;"))),
+    div(
+      class = "oaii-tableContainerContent",
+      ...
+    )
+  )
+}
+
+
+## shinyAddons (alien) ----
 
 tooltip <- function(x, content, placement = "auto", html = FALSE) {
   x$attribs["data-toggle"] <- "tooltip"
@@ -175,33 +214,15 @@ tooltipIgnite <- function() {
   )
 }
 
-
-# addons ----
-
-# well sm
 wellPanelSm <- function(...) {
   shiny::wellPanel(class = "well-sm", ...)
 }
 
-# table container
-tableContainer <- function(...) {
-  htmltools::div(
-    class = "oaii-tableContainer",
-    div(
-      class = "oaii-tableContainerContent",
-      ...
-    )
-  )
-}
-
-# button container
-buttonContainer <- function(..., label = NULL) {
-  htmltools::div(
-    class = "form-group",
-    htmltools::tags$label(htmltools::HTML(paste0(label, "&nbsp;"))),
-    div(
-      class = "oaii-tableContainerContent",
-      ...
-    )
-  )
+inputSetState <- function(id, state = NULL) {
+  shinyjs::runjs(paste0(
+    "$('#", id, "')",
+      ".closest('.form-group')",
+      ".removeClass('has-warning has-error has-success')",
+      if (!is.null(state)) ".addClass('has-", state, "')"
+  ))
 }
