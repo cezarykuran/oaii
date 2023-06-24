@@ -1,5 +1,16 @@
-.tab-content {padding: 15px 0}
-.form-group:last-child:not(:first-child),
+.tabbable > .nav {
+  margin: 25px 0 30px 0
+}
+.tabbable > .nav > li > a {
+  padding: 10px 15px;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+.tab-content {
+  padding-bottom: 15px
+}
+
+/*.form-group:last-child:not(:first-child),*/
 .shiny-file-input-progress {
   margin-bottom: 0
 }
@@ -9,4 +20,20 @@
 table.dataTable thead > tr > th {
 	padding-left: 8px;
 	padding-right: 8px;
+}
+
+label a[data-toggle=tooltip] {
+  margin-left: 0.25em;
+  font-size: 13px;
+  line-height: 1;
+}
+
+#chatDialogContainer {
+  height: 380px;
+}
+#completionsDialogContainer {
+  height: 434px;
+}
+#imgGenPromptInput {
+  height: 134px;
 }

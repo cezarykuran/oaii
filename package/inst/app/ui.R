@@ -1,6 +1,4 @@
 ui <- fluidPage(
-  titlePanel("OpenAI API R implementation"),
-
   # resources ----
   shinyjs::useShinyjs(),
   includeScript(file.path("www", "widgets.js")),
@@ -14,115 +12,129 @@ ui <- fluidPage(
     ## home ----
     tabPanel(
       icon("home"),
-      passwordInput(
-        "api_key",
-        htmltools::tagList(
-          "openai API key",
-          htmltools::a(
-            href = "https://platform.openai.com/account/api-keys",
-            fontawesome::fa("arrow-up-right-from-square")
+      wellPanelSm(
+        passwordInput(
+          "api_key",
+          htmltools::tagList(
+            "openai API key",
+            htmltools::a(
+              href = "https://platform.openai.com/account/api-keys",
+              fontawesome::fa("arrow-up-right-from-square")
+            ),
           ),
-        ),
-        value = Sys.getenv("API_KEY", unset = "")
+          value = Sys.getenv("API_KEY", unset = "")
+        )
       )
     ),
 
     ## chat ----
     tabPanel(
       "Chat",
-      wellPanel(
-        class = "well-sm",
-        fluidRow(
-          column(4, selectInput(
+      fluidRow(
+        column(4, wellPanelSm(
+          selectInput(
             "chatModel",
             tooltipLabel(
               "model",
               "ID of the model to use. See the model endpoint compatibility table for details on which models work with the Chat API."
             ),
             c("gpt-4", "gpt-4-0314", "gpt-4-32k", "gpt-4-32k-0314", "gpt-3.5-turbo", "gpt-3.5-turbo-0301")
-          )),
-          column(4, sliderInput(
+          ),
+          sliderInput(
             "chatN",
             tooltipLabel(
               "n",
               "How many chat completion choices to generate for each input message."
             ),
             1, 50, 1, 1
-          )),
-          column(4, sliderInput(
+          ),
+          sliderInput(
             "chatMaxTokens",
             tooltipLabel(
               "max_tokens",
               "The maximum number of tokens to generate in the chat completion."
             ),
             1, 1000, 200, 1
-          )),
-          column(4, sliderInput(
+          ),
+          sliderInput(
             "chatTemperature",
             tooltipLabel(
               "temperature",
               "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic."
             ),
             0, 2, 0.7, 0.1
-          )),
+          ),
           # top_p
           # stream
           # stop
-          column(4, sliderInput(
+          sliderInput(
             "chatPresencePenalty",
             tooltipLabel(
               "presence_penalty",
               "Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics."
             ),
             -2, 2, 0, 0.1
-          )),
-          column(4, sliderInput(
+          ),
+          sliderInput(
             "chatFrequencyPenalty",
             tooltipLabel(
               "frequency_penalty",
               "Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim."
             ),
             -2, 2, 0, 0.1
-          )),
+          ),
           # logit_bias
           # user
+        )),
+        column(8,
+          dialogContainer("chatDialogContainer", TRUE, TRUE),
+          wellPanelSm(
+            textConsole(
+              "chatQ",
+              tagList(
+                "message content",
+                tags$small("[Enter = send, Shift+Enter = new line]")
+              )
+            )
+          )
         )
-      ),
-      dialogContainer("chatDialogContainer", TRUE, TRUE),
-      wellPanel(
-        class = "well-sm",
-        textConsole("chatQ", "Chat console [Enter = send, Shift+Enter = new line]")
       )
     ),
 
     ## image generator ----
     tabPanel(
       "Image generator",
-      wellPanel(
-        class = "well-sm",
+      wellPanelSm(
         fluidRow(
-          column(6, sliderInput(
-            "imgGenN",
-            tooltipLabel(
-              "n",
-              "The number of images to generate."
+          column(4,
+            sliderInput(
+              "imgGenN",
+              tooltipLabel(
+                "n",
+                "The number of images to generate."
+              ),
+              1, 10, 1, 1
             ),
-            1, 10, 1, 1
-          )),
-          column(6, selectInput(
-            "imgGenSize",
-            tooltipLabel(
-              "size",
-              "The size of the generated images."
-            ),
-            c("256x256", "512x512", "1024x1024")
-          ))
-        ),
-        textConsole(
-          "imgGenPrompt",
-          tooltipLabel(
-            "Image description [Enter = send, Shift+Enter = new line]",
-            "A text description of the desired image(s). The maximum length is 1000 characters."
+            selectInput(
+              "imgGenSize",
+              tooltipLabel(
+                "size",
+                "The size of the generated images."
+              ),
+              c("256x256", "512x512", "1024x1024")
+            )
+          ),
+          column(8,
+            textConsole(
+              "imgGenPrompt",
+              tooltipLabel(
+                tagList(
+                  "prompt",
+                  tags$small("[Enter = send, Shift+Enter = new line]")
+                ),
+                "A text description of the desired image(s). The maximum length is 1000 characters."
+              )
+            )
           )
         )
       ),
@@ -133,8 +145,7 @@ ui <- fluidPage(
     tabPanel(
       "Image edit",
       value = "image_edit",
-      wellPanel(
-        class = "well-sm",
+      wellPanelSm(
         shiny::fluidRow(
           column(8,
             div(class = "text-center",
@@ -161,12 +172,12 @@ ui <- fluidPage(
             shiny::fileInput(
               "imgEditFileIn",
               tooltipLabel(
-                "Source png",
+                "image",
                 "Uload image you want to edit."
               )
             ),
-            colourpicker::colourInput("imgEditColorBg", "Backgroud color", value = "#444"),
-            colourpicker::colourInput("imgEditColorDraw", "Draw color", value = "#777"),
+            colourpicker::colourInput("imgEditColorBg", "edit backgroud color", value = "#444"),
+            colourpicker::colourInput("imgEditColorDraw", "edit draw color", value = "#777"),
             sliderInput(
               "imgEditN",
               tooltipLabel(
@@ -186,7 +197,10 @@ ui <- fluidPage(
             textConsole(
               "imgEditPrompt",
               tooltipLabel(
-                "Edit description [Enter = send, Shift+Enter = new line]",
+                tagList(
+                  "edit description",
+                  tags$small("[Enter = send, Shift+Enter = new line]")
+                ),
                 "A text description of the desired image(s). The maximum length is 1000 characters."
               )
             )
@@ -199,25 +213,29 @@ ui <- fluidPage(
     ## files ----
     tabPanel(
       "Files",
-      wellPanel(
-        class = "well-sm",
-        fileInput("filesUpload", "Upload")
+      wellPanelSm(
+        fluidRow(
+          column(4, fileInput("filesUpload", "file")),
+          column(4, textInput("filesPurpose", "purpose", value = "fine-tune")),
+          column(4, buttonContainer(actionButton("filesUploadExecute", "Create", class = "btn-primary")))
+        )
       ),
-      shiny::dataTableOutput("filesTable")
+      tableContainer(
+        shiny::dataTableOutput("filesTable")
+      )
     ),
 
     ## fine-tunes ----
     tabPanel(
       "Fine-tunes",
-      wellPanel(
-        class = "well-sm",
+      wellPanelSm(
         fluidRow(
-          column(4, selectInput("fineTunesTrainingFile", "training_file", choices = c())),
           column(4, selectInput("fineTunesModel", "model", c("ada", "babbage", "curie", "davinci"))),
-          column(4, actionButton("fineTunesCreate", "Create"))
+          column(4, selectInput("fineTunesTrainingFile", "training_file", choices = c())),
+          column(4, buttonContainer(actionButton("fineTunesCreate", "Create", class = "btn-primary")))
         )
       ),
-      div(style = "overflow: auto; white-space: nowrap",
+      tableContainer(
         shiny::dataTableOutput("fineTunesTable")
       )
     ),
@@ -225,68 +243,76 @@ ui <- fluidPage(
     ## completions ----
     tabPanel(
       "Completions",
-      wellPanel(
-        class = "well-sm",
-        fluidRow(
-          column(4, selectInput(
-            "completionsModel",
-            tooltipLabel(
-              "model",
-              "ID of the model to use. See the model endpoint compatibility table for details on which models work with the Chat API."
+      fluidRow(
+        column(4,
+          wellPanelSm(
+            selectInput(
+              "completionsModel",
+              tooltipLabel(
+                "model",
+                "ID of the model to use. See the model endpoint compatibility table for details on which models work with the Chat API."
+              ),
+              c("text-davinci-003", "text-davinci-002", "text-curie-001", "text-babbage-001", "text-ada-001")
             ),
-            c("text-davinci-003", "text-davinci-002", "text-curie-001", "text-babbage-001", "text-ada-001")
-          )),
-          column(4, sliderInput(
-            "completionsN",
-            tooltipLabel(
-              "n",
-              "How many chat completion choices to generate for each input message."
+            sliderInput(
+              "completionsN",
+              tooltipLabel(
+                "n",
+                "How many chat completion choices to generate for each input message."
+              ),
+              1, 50, 1, 1
             ),
-            1, 50, 1, 1
-          )),
-          column(4, sliderInput(
-            "completionsMaxTokens",
-            tooltipLabel(
-              "max_tokens",
-              "The maximum number of tokens to generate in the chat completion."
+            sliderInput(
+              "completionsMaxTokens",
+              tooltipLabel(
+                "max_tokens",
+                "The maximum number of tokens to generate in the chat completion."
+              ),
+              1, 1000, 200, 1
             ),
-            1, 1000, 200, 1
-          )),
-          column(4, sliderInput(
-            "completionsTemperature",
-            tooltipLabel(
-              "temperature",
-              "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic."
+            sliderInput(
+              "completionsTemperature",
+              tooltipLabel(
+                "temperature",
+                "What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic."
+              ),
+              0, 2, 0.7, 0.1
             ),
-            0, 2, 0.7, 0.1
-          )),
-          # top_p
-          # stream
-          # stop
-          column(4, sliderInput(
-            "completionsPresencePenalty",
-            tooltipLabel(
-              "presence_penalty",
-              "Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics."
+            # top_p
+            # stream
+            # stop
+            sliderInput(
+              "completionsPresencePenalty",
+              tooltipLabel(
+                "presence_penalty",
+                "Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics."
+              ),
+              -2, 2, 0, 0.1
             ),
-            -2, 2, 0, 0.1
-          )),
-          column(4, sliderInput(
-            "completionsFrequencyPenalty",
-            tooltipLabel(
-              "frequency_penalty",
-              "Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim."
+            sliderInput(
+              "completionsFrequencyPenalty",
+              tooltipLabel(
+                "frequency_penalty",
+                "Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim."
+              ),
+              -2, 2, 0, 0.1
             ),
-            -2, 2, 0, 0.1
-          )),
-          # logit_bias
-          # user
+            # logit_bias
+            # user
+          )
+        ),
+        column(8,
+          dialogContainer("completionsDialogContainer"),
+          wellPanelSm(
+            textConsole(
+              "completionsPrompt",
+              tagList(
+                "completion content",
+                tags$small("[Enter = send, Shift+Enter = new line]")
+              )
+            )
+          )
         )
-      ),
-      dialogContainer("completionsDialogContainer"),
-      wellPanel(
-        class = "well-sm",
-        textConsole("completionsPrompt", "Completions console [Enter = send, Shift+Enter = new line]")
       )
     )
   ),

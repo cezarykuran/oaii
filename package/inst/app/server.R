@@ -129,8 +129,9 @@ server <- function(input, output, session) {
 
     tryCatch(
       expr = {
+        datapath <- input$chatDialogContainerUpload$datapath
         df <- read.table(
-          input$chatDialogContainerUpload$datapath,
+          datapath,
           sep = "\t",
           header = TRUE
         )
@@ -138,7 +139,10 @@ server <- function(input, output, session) {
         chatMessages(
           lapply(seq_len(NROW(df)), function(n) df[n, , drop = TRUE])
         )
-        showNotification("File uploaded successfully!", type = "message")
+        showNotification(
+          paste0("File '", datapath ,"' uploaded successfully!"),
+          type = "message"
+        )
       },
       error = function(e) {
         showNotification(
@@ -147,7 +151,7 @@ server <- function(input, output, session) {
         )
       }
     )
-    shinyjs::reset("chatUpload")
+    shinyjs::reset("chatDialogContainerUpload")
   })
 
 
@@ -306,24 +310,34 @@ server <- function(input, output, session) {
     }
   })
 
-  observeEvent(input$filesUpload, {
+  observeEvent(input$filesUploadExecute, {
     .api_key <- req(input$api_key)
-    log_debug("observeEvent(input$files_upload, {..})")
+    .filesUpload <- req(input$filesUpload)
+    req(file.exists(.filesUpload$datapath))
+    .filesPurpose <- req(input$filesPurpose)
+    log_debug("observeEvent(input$filesUploadExecute, {..})")
 
     file_uploaded <- file.path(
-      dirname(input$files_upload$datapath),
-      gsub("[^a-zA-Z0-9\\.]", "_", input$files_upload$name, perl = TRUE)
+      dirname(.filesUpload$datapath),
+      gsub("[^a-zA-Z0-9\\.]", "_", .filesUpload$name, perl = TRUE)
     )
-    file.rename(input$files_upload$datapath, file_uploaded)
+    file.rename(.filesUpload$datapath, file_uploaded)
     res_content <- oaii::files_upload_request(
       .api_key,
       file_uploaded,
-      "fine-tune"
+      .filesPurpose
     )
     if (oaii::is_error(res_content)) {
       showNotification(res_content$message_long, type = "error")
     }
+    else {
+      showNotification(
+        paste0("File '", .filesUpload$name ,"' uploaded successfully!"),
+        type = "message"
+      )
+    }
     unlink(file_uploaded)
+    shinyjs::reset("filesUpload")
     trigger_files_df_update()
   })
 

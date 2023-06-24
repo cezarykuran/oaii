@@ -174,3 +174,34 @@ tooltipIgnite <- function() {
     "$('[data-toggle=tooltip]').tooltip()"
   )
 }
+
+
+# addons ----
+
+# well sm
+wellPanelSm <- function(...) {
+  shiny::wellPanel(class = "well-sm", ...)
+}
+
+# table container
+tableContainer <- function(...) {
+  htmltools::div(
+    class = "oaii-tableContainer",
+    div(
+      class = "oaii-tableContainerContent",
+      ...
+    )
+  )
+}
+
+# button container
+buttonContainer <- function(..., label = NULL) {
+  htmltools::div(
+    class = "form-group",
+    htmltools::tags$label(htmltools::HTML(paste0(label, "&nbsp;"))),
+    div(
+      class = "oaii-tableContainerContent",
+      ...
+    )
+  )
+}
