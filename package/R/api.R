@@ -6,6 +6,7 @@
 #' @param api_key string, API key
 #' @param method string, request method
 #' @return content of the httr response object or SimpleError
+#' @export
 #'
 request <- function(
     endpoint,

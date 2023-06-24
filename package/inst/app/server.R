@@ -80,7 +80,7 @@ server <- function(input, output, session) {
 
     .debounced_api_key <- input$api_key
     if (is.character(.debounced_api_key) && nchar(.debounced_api_key)) {
-      res <- request("https://api.openai.com/v1/chat/completions", .debounced_api_key)
+      res <- oaii::request("https://api.openai.com/v1/chat/completions", .debounced_api_key)
       if (is.null(res$status_code) || res$status_code == 401) {
         showNotification(res$message_long, type = "error", duration = 5)
         inputSetState("api_key", "error")
