@@ -33,11 +33,16 @@ server <- function(input, output, session) {
           if (!nested) obj <- list(obj)
           paste0(
             lapply(obj, function(element) {
-              paste0(
-                lapply(props, function(prop) {
-                  paste0(prop, ": ", element[[prop]])
-                }),
-                collapse = as.character(htmltools::br())
+              as.character(
+                htmltools::tags$table(
+                  class = "tdTable",
+                  lapply(props, function(prop) {
+                    htmltools::tags$tr(
+                      htmltools::tags$td(prop),
+                      htmltools::tags$td(element[[prop]])
+                    )
+                  })
+                )
               )
             }),
             collapse = as.character(htmltools::hr())
@@ -340,7 +345,7 @@ server <- function(input, output, session) {
     res_content <- oaii::files_list_request(.api_key)
     if (oaii::is_error(res_content)) {
       showNotification(res_content$message_long, type = "error")
-      NULL
+      data.frame()
     }
     else {
       as.data.frame(do.call(rbind, res_content$data))
@@ -383,16 +388,14 @@ server <- function(input, output, session) {
       log_debug("output$filesTable <- shiny::renderDataTable({..})")
 
       .files_df <- files_df()
-      if (is.null(.files_df)) {
-        data.frame(list(files = "empty"))
-      }
-      else {
+      if (NROW(.files_df)) {
         .files_df %>%
           df_null_replace() %>%
           df_dt_cols("created_at") %>%
           df_exclude_cols("object") %>%
           df_col_manage("id", "filesTableRm")
       }
+      else data.frame()
     },
     options = list(
       searching = FALSE,
@@ -432,7 +435,7 @@ server <- function(input, output, session) {
     res_content <- fine_tunes_list_request(.api_key)
     if (oaii::is_error(res_content)) {
       showNotification(res_content$message_long, type = "error")
-      NULL
+      data.frame()
     }
     else {
       as.data.frame(do.call(rbind, res_content$data))
@@ -440,14 +443,22 @@ server <- function(input, output, session) {
   })
 
   observe({
-    .files_df <- req(files_df())
+    log_debug("observe({..}) [input$fineTunesTrainingFile update]")
 
-    choices_df <- .files_df[.files_df$purpose == "fine-tune", c("id", "filename")]
-    if (NROW(choices_df)) {
-      choices  <- unlist(choices_df$id)
-      names(choices) <- unlist(choices_df$filename)
-      updateSelectInput(session, "fineTunesTrainingFile", choices = choices)
+    # default (empty)
+    choices <- c()
+
+    # update by files data.frame
+    .files_df <- files_df()
+    df_choices_cols <- c("id", "filename")
+    if (is.data.frame(.files_df) && all(df_choices_cols %in% colnames(.files_df))) {
+      choices_df <- .files_df[.files_df$purpose == "fine-tune", df_choices_cols]
+      if (NROW(choices_df)) {
+        choices  <- unlist(choices_df$id)
+        names(choices) <- unlist(choices_df$filename)
+      }
     }
+    updateSelectInput(session, "fineTunesTrainingFile", choices = choices)
   })
 
   observeEvent(input$fineTunesCreate, {
@@ -471,10 +482,7 @@ server <- function(input, output, session) {
       log_debug("output$fineTunes_table <- shiny::renderDataTable({..})")
       .fine_tunes_df <- fine_tunes_df()
 
-      if (is.null(.fine_tunes_df)) {
-        data.frame("no data")
-      }
-      else {
+      if (NROW(.fine_tunes_df)) {
         .fine_tunes_df %>%
           df_dt_cols(
             c("created_at", "updated_at")
@@ -491,6 +499,7 @@ server <- function(input, output, session) {
           df_exclude_cols(c("object", "organization_id"))
           #df_col_manage("id", "fineTunesTableRm")
       }
+      else data.frame()
     },
     options = list(
       searching = FALSE,

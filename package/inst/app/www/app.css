@@ -22,6 +22,14 @@ table.dataTable thead > tr > th {
 	padding-left: 8px;
 	padding-right: 8px;
 }
+table.dataTable table.tdTable:not(:last-child) {
+  margin-bottom: 0.5em;
+}
+table.dataTable table.tdTable td:first-child {
+  padding-right: 8px;
+  font-weight: bold;
+  font-size: 12px;
+}
 
 label a[data-toggle=tooltip] {
   margin-left: 0.25em;
