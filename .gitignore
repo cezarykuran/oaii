@@ -5,5 +5,4 @@
 *.Rproj
 
 /dev
-shinyapps.io
-*.html
+README.html
