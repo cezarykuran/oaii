@@ -27,9 +27,10 @@ server <- function(input, output, session) {
   }
 
   df_obj_cols <- function(df, cols, props, nested = TRUE) {
+
     for (col in cols) {
       df[, col] <-
-        lapply(df[, col], function(obj) {
+        list(lapply(df[, col], function(obj) {
           if (!nested) obj <- list(obj)
           paste0(
             lapply(obj, function(element) {
@@ -47,7 +48,7 @@ server <- function(input, output, session) {
             }),
             collapse = as.character(htmltools::hr())
           )
-        })
+        }))
     }
     df
   }
@@ -451,7 +452,7 @@ server <- function(input, output, session) {
     # update by files data.frame
     .files_df <- files_df()
     df_choices_cols <- c("id", "filename")
-    if (is.data.frame(.files_df) && all(df_choices_cols %in% colnames(.files_df))) {
+    if (all(df_choices_cols %in% colnames(.files_df))) {
       choices_df <- .files_df[.files_df$purpose == "fine-tune", df_choices_cols]
       if (NROW(choices_df)) {
         choices  <- unlist(choices_df$id)
@@ -465,11 +466,15 @@ server <- function(input, output, session) {
     .api_key <- req(api_key())
     .fineTunesTrainingFile <- req(input$fineTunesTrainingFile)
     .fineTunesModel <- req(input$fineTunesModel)
+    .fineTunesNEpoch <- req(input$fineTunesNEpoch)
+    .fineTunesLearningRateMultiplier <- req(input$fineTunesLearningRateMultiplier)
 
     res_content <- oaii::fine_tunes_create_request(
       .api_key,
       training_file = .fineTunesTrainingFile,
-      model = .fineTunesModel
+      model = .fineTunesModel,
+      n_epochs = as.integer(.fineTunesNEpoch),
+      learning_rate_multiplier = as.double(.fineTunesLearningRateMultiplier)
     )
     if (oaii::is_error(res_content)) {
       showNotification(res_content$message_long, type = "error")
@@ -525,12 +530,29 @@ server <- function(input, output, session) {
 
   # completions ----
 
+  observe({
+    log_debug("observe({..}) [input$completionsModel update]")
+
+    # default
+    choices <- c("text-davinci-003", "text-davinci-002", "text-curie-001", "text-babbage-001", "text-ada-001")
+
+    # update by fine-tunes data.frame
+    .fine_tunes_df <- fine_tunes_df()
+    if (all(c("status", "fine_tuned_model") %in% colnames(.fine_tunes_df))) {
+      choices_ft <- .fine_tunes_df[.fine_tunes_df$status == "succeeded", "fine_tuned_model", drop = TRUE]
+      if (length(choices_ft)) {
+        choices  <- list(ft = choices_ft, default = choices)
+      }
+    }
+    updateSelectInput(session, "completionsModel", choices = choices)
+  })
+
   observeEvent(input$completionsPrompt, {
     .api_key <- req(api_key())
     .completionsPrompt <- req(input$completionsPrompt)
     log_debug("observeEvent(input$completionsPrompt, {..})")
 
-    shinyjs::disable("completionsPrompt")
+    textConsoleDisable(session, "completionsPrompt")
 
     res_content <- oaii::completions_create_request(
       .api_key,
@@ -564,6 +586,6 @@ server <- function(input, output, session) {
       textConsoleReset(session, "completionsPrompt")
     }
 
-    shinyjs::enable("completionsPrompt")
+    textConsoleEnable(session, "completionsPrompt")
   })
 }

@@ -84,7 +84,9 @@ fine_tunes_create_request <- function(
     api_key,
     body = list(
       training_file = training_file,
-      model = model
+      model = model,
+      n_epochs = n_epochs,
+      learning_rate_multiplier = learning_rate_multiplier
     )
   )
 }

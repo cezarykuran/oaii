@@ -151,15 +151,21 @@ imagesSets <- function(images, idContainer) {
 
 ## other ----
 
-apiPanel <- function(..., header = NULL) {
+appMd <- function(md_file) {
+  htmltools::HTML(markdown::renderMarkdown(system.file(
+    "app", "md", paste0(md_file, ".md"), package = "oaii"
+  )))
+}
+
+apiPanel <- function(..., md_file = NULL) {
   htmltools::div(
     htmltools::div(
       class = "oaii-apiPanelKeyError text-danger",
       "Missing or wrong OpenAI api key!"
     ),
-    if (!is.null(header)) htmltools::div(
+    if (!is.null(md_file)) htmltools::div(
       class = "oaii-apiPanelHeader",
-      header
+      appMd(md_file)
     ),
     ...
   )

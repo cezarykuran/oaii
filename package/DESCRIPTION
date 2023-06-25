@@ -14,5 +14,6 @@ Imports:
   httr
 Suggests:
   htmltools,
+  markdown,
   shiny,
   utils
