@@ -8,6 +8,8 @@ server <- function(input, output, session) {
   observeEvent(debounce(input$api_key, 1000), {
     log_debug("observeEvent(debounce(input$api_key, 1000), {..}")
 
+    # update the api_key() reactive value based on
+    # the debounced and verified input$api_key
     .debounced_api_key <- input$api_key
     if (is.character(.debounced_api_key) && nchar(.debounced_api_key)) {
       res <- oaii::request("https://api.openai.com/v1/chat/completions", .debounced_api_key)
@@ -43,11 +45,13 @@ server <- function(input, output, session) {
 
   chatMessages <- reactiveVal()
 
+  # render chat dialog container
   output$chatDialogContainer <- renderUI({
     log_debug("output$chatDialogContainer <- renderUI({..})")
     dialogMessages(chatMessages(), "chatDialogContainer")
   })
 
+  # send message(s)
   observeEvent(input$chatQ, {
     .api_key <- req(api_key())
     .chatQ <- req(input$chatQ)
@@ -77,6 +81,7 @@ server <- function(input, output, session) {
     textConsoleEnable(session, "chatQ")
   })
 
+  # export chat to csv
   output$chatDialogContainerDownload <- shiny::downloadHandler(
     function() {
       log_debug("observeEvent(input$chatDialogContainerDownload, {..}) [filename]")
@@ -96,6 +101,7 @@ server <- function(input, output, session) {
     }
   )
 
+  # import csv file
   observeEvent(input$chatDialogContainerUpload, {
     log_debug("observeEvent(input$chatDialogContainerUpload, {..})")
 
@@ -131,11 +137,13 @@ server <- function(input, output, session) {
 
   imagesGenSets <- reactiveVal()
 
+  # render images container
   output$imgGenContainer  <- renderUI({
     log_debug("observeEvent(output$imgGenContainer  <- renderUI({..})")
     imagesSets(imagesGenSets(), "imgGenContainer")
   })
 
+  # generate new images
   observeEvent(input$imgGenPrompt, {
     .api_key <- req(api_key())
     .imgGenPrompt <- req(input$imgGenPrompt)
@@ -167,6 +175,7 @@ server <- function(input, output, session) {
 
   # image edit ----
 
+  # self-destroy observer to set the initial image edit "input" size
   menuEvent <- observeEvent(input$menu, {
     .menu <- req(input$menu)
     log_debug("observeEvent(menuEvent <- observeEvent(input$menu, {..})")
@@ -183,6 +192,7 @@ server <- function(input, output, session) {
     }
   })
 
+  # forward loaded image (js -> R -> js)
   observeEvent(input$imgEditFileIn, {
     log_debug("observeEvent(input$imgEditFileIn, {..})")
 
@@ -195,6 +205,7 @@ server <- function(input, output, session) {
     )
   })
 
+  # forward edit bg color (js -> R -> js)
   observeEvent(input$imgEditColorBg, {
     log_debug("observeEvent(input$imgEditColorBg, {..})")
 
@@ -207,6 +218,7 @@ server <- function(input, output, session) {
     )
   })
 
+  # forward edit draw color (js -> R -> js)
   observeEvent(input$imgEditColorDraw, {
     log_debug("observeEvent(input$imgEditColorDraw, {..})")
 
@@ -221,12 +233,14 @@ server <- function(input, output, session) {
 
   imgEditSets <- reactiveVal()
 
+  # render images container
   output$imgEditContainer  <- renderUI({
     log_debug("output$imgEditContainer  <- renderUI({..})")
 
     imagesSets(imgEditSets(), "imgEditContainer")
   })
 
+  # send a request for new (edited) images
   observeEvent(input$imgEditPrompt, {
     .api_key <- req(api_key())
     .imgEditPrompt <- req(input$imgEditPrompt)
@@ -282,6 +296,7 @@ server <- function(input, output, session) {
     }
   })
 
+  # append manage column (helper function)
   files_df_col_manage <- function(df, column, id) {
     manage <- vapply(
       df[, column],
@@ -297,6 +312,7 @@ server <- function(input, output, session) {
     cbind(df, manage)
   }
 
+  # send upload file reques
   observeEvent(input$filesUploadExecute, {
     .api_key <- req(api_key())
     .filesUpload <- req(input$filesUpload)
@@ -328,6 +344,7 @@ server <- function(input, output, session) {
     trigger_files_df_update()
   })
 
+  # render files table
   output$filesTable <- shiny::renderDataTable(
     expr = {
       log_debug("output$filesTable <- shiny::renderDataTable({..})")
@@ -349,6 +366,7 @@ server <- function(input, output, session) {
     escape = FALSE
   )
 
+  # send delete file request
   observeEvent(input$filesTableRm, {
     .api_key <- req(api_key())
     log_debug("observeEvent(input$filesTableRm, {..})")
@@ -387,6 +405,7 @@ server <- function(input, output, session) {
     }
   })
 
+  # df_col_obj_implode html table version (helper)
   fine_tunes_df_impode_table <- function(df, col, obj_prop, nested = TRUE) {
     oaii::df_col_obj_implode(
       df, col, obj_prop, nested,
@@ -397,6 +416,7 @@ server <- function(input, output, session) {
     )
   }
 
+  # update files selectize input
   observe({
     log_debug("observe({..}) [input$fineTunesTrainingFile update]")
 
@@ -416,6 +436,7 @@ server <- function(input, output, session) {
     updateSelectInput(session, "fineTunesTrainingFile", choices = choices)
   })
 
+  # send new fine-tunes request
   observeEvent(input$fineTunesCreate, {
     .api_key <- req(api_key())
     .fineTunesTrainingFile <- req(input$fineTunesTrainingFile)
@@ -436,6 +457,7 @@ server <- function(input, output, session) {
     trigger_fine_tunes_update()
   })
 
+  # render fine-tunes table
   output$fineTunesTable <- shiny::renderDataTable(
     expr = {
       log_debug("output$fineTunes_table <- shiny::renderDataTable({..})")
@@ -466,23 +488,25 @@ server <- function(input, output, session) {
     escape = FALSE
   )
 
-  observeEvent(input$fineTunesTableRm, {
-    .api_key <- req(api_key())
-    log_debug("observeEvent(input$fineTunesTableRm, {..})")
-
-    res_content <- oaii::files_delete_request(
-      .api_key,
-      input$fineTunesTableRm
-    )
-    if (oaii::is_error(res_content)) {
-      showNotification(res_content$message_long, type = "error")
-    }
-    trigger_fine_tunes_update()
-  })
+  # send delete fine-tunes model request
+  # observeEvent(input$fineTunesTableRm, {
+  #   .api_key <- req(api_key())
+  #   log_debug("observeEvent(input$fineTunesTableRm, {..})")
+  #
+  #   res_content <- oaii::files_delete_request(
+  #     .api_key,
+  #     input$fineTunesTableRm
+  #   )
+  #   if (oaii::is_error(res_content)) {
+  #     showNotification(res_content$message_long, type = "error")
+  #   }
+  #   trigger_fine_tunes_update()
+  # })
 
 
   # completions ----
 
+  # update model selectize input
   observe({
     log_debug("observe({..}) [input$completionsModel update]")
 
@@ -500,6 +524,7 @@ server <- function(input, output, session) {
     updateSelectInput(session, "completionsModel", choices = choices)
   })
 
+  # send new completion request
   observeEvent(input$completionsPrompt, {
     .api_key <- req(api_key())
     .completionsPrompt <- req(input$completionsPrompt)
