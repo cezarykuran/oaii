@@ -2,77 +2,6 @@ server <- function(input, output, session) {
   log_info("starting new server session..")
 
 
-  # helpers ----
-
-  df_null_replace <- function(df, replacement = "") {
-    df[sapply(df, is.null)] <- replacement
-    df
-  }
-
-  df_dt_cols <- function(df, cols, dt_format = "%Y-%m-%d %H:%M:%S") {
-    for (col in cols) {
-      df[, col] <-
-        list(lapply(
-          df[, col],
-          function(dt) {
-            format(
-              as.POSIXct(dt, origin="1970-01-01"),
-              dt_format,
-              usetz = FALSE
-            )
-          }
-        ))
-    }
-    df
-  }
-
-  df_obj_cols <- function(df, cols, props, nested = TRUE) {
-
-    for (col in cols) {
-      df[, col] <-
-        list(lapply(df[, col], function(obj) {
-          if (!nested) obj <- list(obj)
-          paste0(
-            lapply(obj, function(element) {
-              as.character(
-                htmltools::tags$table(
-                  class = "tdTable",
-                  lapply(props, function(prop) {
-                    htmltools::tags$tr(
-                      htmltools::tags$td(prop),
-                      htmltools::tags$td(element[[prop]])
-                    )
-                  })
-                )
-              )
-            }),
-            collapse = as.character(htmltools::hr())
-          )
-        }))
-    }
-    df
-  }
-
-  df_exclude_cols <- function(df, cols) {
-    df[, -which(names(df) %in% cols)]
-  }
-
-  df_col_manage <- function(df, column, id) {
-    manage <- vapply(
-      df[, column],
-      function(value) {paste0(
-        htmltools::tags$button(
-          class = "btn btn-danger btn-xs",
-          onclick = paste0("oaii.tableBtn('", id,"','", value, "')"),
-          fontawesome::fa("trash")
-        )
-      )},
-      character(1)
-    )
-    cbind(df, manage)
-  }
-
-
   # api_key ----
 
   api_key <- reactiveVal()
@@ -353,6 +282,21 @@ server <- function(input, output, session) {
     }
   })
 
+  files_df_col_manage <- function(df, column, id) {
+    manage <- vapply(
+      df[, column],
+      function(value) {paste0(
+        htmltools::tags$button(
+          class = "btn btn-danger btn-xs",
+          onclick = paste0("oaii.tableBtn('", id,"','", value, "')"),
+          fontawesome::fa("trash")
+        )
+      )},
+      character(1)
+    )
+    cbind(df, manage)
+  }
+
   observeEvent(input$filesUploadExecute, {
     .api_key <- req(api_key())
     .filesUpload <- req(input$filesUpload)
@@ -391,10 +335,10 @@ server <- function(input, output, session) {
       .files_df <- files_df()
       if (NROW(.files_df)) {
         .files_df %>%
-          df_null_replace() %>%
-          df_dt_cols("created_at") %>%
-          df_exclude_cols("object") %>%
-          df_col_manage("id", "filesTableRm")
+          oaii::df_exclude_cols("object") %>%
+          oaii::df_null_replace() %>%
+          oaii::df_col_dt_format("created_at") %>%
+          files_df_col_manage("id", "filesTableRm")
       }
       else data.frame()
     },
@@ -443,6 +387,16 @@ server <- function(input, output, session) {
     }
   })
 
+  fine_tunes_df_impode_table <- function(df, col, obj_prop, nested = TRUE) {
+    oaii::df_col_obj_implode(
+      df, col, obj_prop, nested,
+      objs_glue = "",
+      cell_header = "<table class='tableTd'>",
+      cell_footer = "</table>",
+      prop_fmt = "<tr><td>%s</td><td>%s</td></tr>"
+    )
+  }
+
   observe({
     log_debug("observe({..}) [input$fineTunesTrainingFile update]")
 
@@ -489,20 +443,19 @@ server <- function(input, output, session) {
 
       if (NROW(.fine_tunes_df)) {
         .fine_tunes_df %>%
-          df_dt_cols(
+          oaii::df_exclude_cols(c("object", "organization_id")) %>%
+          oaii::df_col_dt_format(
             c("created_at", "updated_at")
           ) %>%
-          df_obj_cols(
+          fine_tunes_df_impode_table(
             c("training_files", "result_files"),
             c("filename", "id")
           ) %>%
-          df_obj_cols(
+          fine_tunes_df_impode_table(
             "hyperparams",
             c("n_epochs", "batch_size", "prompt_loss_weight", "learning_rate_multiplier"),
             nested = FALSE
-          ) %>%
-          df_exclude_cols(c("object", "organization_id"))
-          #df_col_manage("id", "fineTunesTableRm")
+          )
       }
       else data.frame()
     },
