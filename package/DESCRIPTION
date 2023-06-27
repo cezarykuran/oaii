@@ -1,7 +1,7 @@
 Package: oaii
 Type: Package
 Title: openAI API R interface
-Version: 0.1.1
+Version: 0.1.2
 Authors@R:
   person("Cezary", "Kuran", , "cezary.kuran@gmail.com",  role = c("aut", "cre"))
 Description: A package containing a function that allows easy communication with the API.

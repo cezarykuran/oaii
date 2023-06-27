@@ -318,7 +318,6 @@ server <- function(input, output, session) {
     .api_key <- req(api_key())
     .filesUpload <- req(input$filesUpload)
     req(file.exists(.filesUpload$datapath))
-    .filesPurpose <- req(input$filesPurpose)
     log_debug("observeEvent(input$filesUploadExecute, {..})")
 
     file_uploaded <- file.path(
@@ -329,7 +328,7 @@ server <- function(input, output, session) {
     res_content <- oaii::files_upload_request(
       .api_key,
       file_uploaded,
-      .filesPurpose
+      "fine-tune"
     )
     if (oaii::is_error(res_content)) {
       showNotification(res_content$message_long, type = "error")
