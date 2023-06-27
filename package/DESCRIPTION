@@ -17,4 +17,6 @@ Suggests:
   htmltools,
   markdown,
   shiny,
+  testthat (>= 3.0.0),
   utils
+Config/testthat/edition: 3

@@ -118,7 +118,7 @@ ui <- fluidPage(
         wellPanelSm(
           fluidRow(
             column(4, fileInput("filesUpload", "file")),
-            column(4, textInput("filesPurpose", "purpose", value = "fine-tune")),
+            column(4, selectInput("filesPurpose", "purpose", choices = c("search", "answers", "classifications", "fine-tune"))),
             column(4, buttonContainer(actionButton("filesUploadExecute", "Create", class = "btn-primary")))
           )
         ),

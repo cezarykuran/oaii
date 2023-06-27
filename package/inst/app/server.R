@@ -355,6 +355,7 @@ server <- function(input, output, session) {
         .files_df %>%
           oaii::df_exclude_col("object") %>%
           oaii::df_null_replace() %>%
+          oaii::df_order_by_col("created_at", decreasing = TRUE) %>%
           oaii::df_col_dt_format("created_at") %>%
           files_df_col_manage("id", "filesTableRm")
       }
@@ -454,6 +455,9 @@ server <- function(input, output, session) {
     )
     if (oaii::is_error(res_content)) {
       showNotification(res_content$message_long, type = "error")
+    }
+    else {
+      showNotification("Completion created successfully!", type = "message")
     }
     trigger_fine_tunes_update()
   })

@@ -23,6 +23,7 @@ oaii = {
       switch (message.command) {
         case 'enable':
           obj.disabled = false;
+          obj.focus();
           break;
         case 'disable':
           obj.disabled = true;

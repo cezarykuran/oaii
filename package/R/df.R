@@ -39,6 +39,23 @@ df_null_replace <- function(df, replacement = "") {
   df
 }
 
+#' Sort data.frame by column name
+#'
+#' @inherit df_roxygen_tpl params return
+#' @param col string, column name as sort source
+#' @param decreasing flag, should the sort order be increasing or decreasing?
+#' @export
+#'
+df_order_by_col <- function(df, col, decreasing = FALSE) {
+  # asserts
+  stopifnot(
+    "`df` must be a data.frame" = checkmate::testDataFrame(df),
+    "`col` must be a non-empty string" = checkmate::testString(col, min.chars = 1),
+    "`decreasing` must be a flag" = checkmate::testFlag(decreasing)
+  )
+  df[order(unlist(df[, col]), decreasing = decreasing), ]
+}
+
 #' Change to string nested lists in a given data.frame
 #'
 #' @inherit df_roxygen_tpl params return

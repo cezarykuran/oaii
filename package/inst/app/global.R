@@ -32,6 +32,7 @@ oaii::set_logger(
 
 textConsoleInputId <- function(id) paste0(id, "Input")
 
+# create text console UI widget
 textConsole <- function(id, label = NULL) {
   inputId <- textConsoleInputId(id)
   htmltools::tagList(
@@ -48,21 +49,22 @@ textConsole <- function(id, label = NULL) {
   )
 }
 
+# send command to console (helper)
 textConsoleCommand <- function(session, id, command) {
   session$sendCustomMessage(
     "oaii.textConsole",
     list(inputId = textConsoleInputId(id), command = command)
   )
 }
-
+# disable console
 textConsoleDisable <- function (session, id) {
   textConsoleCommand(session, id, "disable")
 }
-
+# enable console
 textConsoleEnable <- function (session, id) {
   textConsoleCommand(session, id, "enable")
 }
-
+# reset console
 textConsoleReset <- function (session, id) {
   textConsoleCommand(session, id, "reset")
 }
@@ -70,6 +72,7 @@ textConsoleReset <- function (session, id) {
 
 ## dialog ----
 
+# create dialog UI widget
 dialogContainer <- function(id, btnUpload = FALSE, btnDownload = FALSE) {
   htmltools::div(
     class = "oaii-chatDialogContainer",
@@ -83,6 +86,7 @@ dialogContainer <- function(id, btnUpload = FALSE, btnDownload = FALSE) {
   )
 }
 
+# create content for the dialog widget from the messages
 dialogMessages <- function(messages, idDialogContainer = NULL) {
   htmltools::tagList(
     htmltools::tags$table(
@@ -102,10 +106,12 @@ dialogMessages <- function(messages, idDialogContainer = NULL) {
 
 ## images ----
 
+# create image UI widget (container)
 imagesContainer <- function(id) {
   shiny::uiOutput(id, class = "oaii-imagesContainer")
 }
 
+# create image set content (helper)
 imagesSet <- function(set) {
   download_filename <- gsub("[^a-zA-Z0-9-\\.]", "_", set$prompt, perl = TRUE)
 
@@ -134,6 +140,7 @@ imagesSet <- function(set) {
   )
 }
 
+# create content for the image widget from images sets object
 imagesSets <- function(images, idContainer) {
   htmltools::tagList(
     lapply(rev(images), function(set) {
@@ -151,12 +158,14 @@ imagesSets <- function(images, idContainer) {
 
 ## other ----
 
+# application md file to html
 appMd <- function(md_file) {
   htmltools::HTML(markdown::renderMarkdown(system.file(
     "app", "md", paste0(md_file, ".md"), package = "oaii"
   )))
 }
 
+# api panel (tab content) widget
 apiPanel <- function(..., md_file = NULL) {
   htmltools::div(
     htmltools::div(
@@ -171,6 +180,7 @@ apiPanel <- function(..., md_file = NULL) {
   )
 }
 
+# container for table
 tableContainer <- function(...) {
   htmltools::div(
     class = "oaii-tableContainer",
@@ -181,6 +191,7 @@ tableContainer <- function(...) {
   )
 }
 
+# container for button
 buttonContainer <- function(..., label = NULL) {
   htmltools::div(
     class = "form-group",
@@ -195,6 +206,7 @@ buttonContainer <- function(..., label = NULL) {
 
 ## shinyAddons (alien) ----
 
+# add tooltip to the shiny x object
 tooltip <- function(x, content, placement = "auto", html = FALSE) {
   x$attribs["data-toggle"] <- "tooltip"
   x$attribs["data-title"] <- as.character(content)
@@ -203,6 +215,7 @@ tooltip <- function(x, content, placement = "auto", html = FALSE) {
   x
 }
 
+# create label with (?) icon (tooltip)
 tooltipLabel <- function(label, tooltipContent, tooltipIcon = "question-circle") {
   htmltools::tagList(
     label,
@@ -213,6 +226,7 @@ tooltipLabel <- function(label, tooltipContent, tooltipIcon = "question-circle")
   )
 }
 
+# make the tooltips start working
 tooltipIgnite <- function() {
   htmltools::tags$script(
     type = "text/javascript",
@@ -220,10 +234,12 @@ tooltipIgnite <- function() {
   )
 }
 
+# wellPanel with small inner margins
 wellPanelSm <- function(...) {
   shiny::wellPanel(class = "well-sm", ...)
 }
 
+# change state of the input
 inputSetState <- function(id, state = NULL) {
   shinyjs::runjs(paste0(
     "$('#", id, "')",
