@@ -15,6 +15,15 @@ request <- function(
     encode = "json",
     method = "POST"
 ) {
+  # asserts
+  stopifnot(
+    "`endpoint` must be a non-empty string" = checkmate::testString(endpoint, min.chars = 1),
+    "`api_key` must be a non-empty string" = checkmate::testString(api_key, min.chars = 1),
+    "`body` must be a NULL or list()" = checkmate::testList(body, null.ok = TRUE),
+    "`encode` must be a non-empty string" = checkmate::testString(encode, min.chars = 1),
+    "`method` must be a non-empty string" = checkmate::testString(method, min.chars = 1)
+  )
+
   tryCatch(
     expr = {
       log_debug("request('", endpoint, "', ...)")

@@ -6,27 +6,33 @@
 \usage{
 completions_create_request(
   api_key,
+  model,
   prompt,
-  model = "gpt-3.5-turbo",
   suffix = NULL,
-  max_tokens = 50,
-  temperature = 0.7,
-  n = 1,
-  echo = FALSE,
-  presence_penalty = 0,
-  frequency_penalty = 0
+  max_tokens = NULL,
+  temperature = NULL,
+  top_p = NULL,
+  n = NULL,
+  stream = NULL,
+  logprobs = NULL,
+  echo = NULL,
+  stop = NULL,
+  presence_penalty = NULL,
+  frequency_penalty = NULL,
+  best_of = NULL,
+  user = NULL
 )
 }
 \arguments{
 \item{api_key}{string, API key}
-
-\item{prompt}{API endpoint parameter}
 
 \item{model}{string, ID of the model to use. You can use the
 \href{https://platform.openai.com/docs/api-reference/models/list}{List models}
 API to see all of your available models, or see our
 \href{https://platform.openai.com/docs/models/overview}{Model overview}
 for descriptions of them.API endpoint parameter}
+
+\item{prompt}{API endpoint parameter}
 
 \item{suffix}{string/NULL, the suffix that comes after a completion
 of inserted text.}
@@ -40,12 +46,30 @@ exceed the model's context length.}
 Higher values like 0.8 will make the output more random,
 while lower values like 0.2 will make it more focused and deterministic.}
 
+\item{top_p}{double, an alternative to sampling with temperature,
+called nucleus sampling, where the model considers the results of the tokens
+with top_p probability mass. So 0.1 means only the tokens comprising
+the top 10\% probability mass are considered.}
+
 \item{n}{integer, How many completions to generate for each prompt.
 Note: Because this parameter generates many completions,
 it can quickly consume your token quota. Use carefully
 and ensure that you have reasonable settings for `max_tokens` and `stop`.}
 
+\item{stream}{flag, Whether to stream back partial progress. If set,
+tokens will be sent as data-only server-sent events as they become available,
+with the stream terminated by a data: `[DONE]` message.}
+
+\item{logprobs}{integer, Include the log probabilities on the logprobs most
+likely tokens, as well the chosen tokens. For example, if logprobs is 5,
+the API will return a list of the 5 most likely tokens. The API will always
+return the logprob of the sampled token, so there may be up to logprobs+1
+elements in the response.}
+
 \item{echo}{logical, echo back the prompt in addition to the completion}
+
+\item{stop}{string or array, up to 4 sequences where the API will stop
+generating further tokens. The returned text will not contain the stop sequence.}
 
 \item{presence_penalty}{double, Number between -2.0 and 2.0.
 Positive values penalize new tokens based on whether they appear in the text
@@ -55,6 +79,15 @@ so far, increasing the model's likelihood to talk about new topics.}
 Positive values penalize new tokens based on their existing frequency
 in the text so far, decreasing the model's likelihood to repeat the same line
 verbatim.}
+
+\item{best_of}{integer, Generates best_of completions server-side and returns
+the "best" (the one with the highest log probability per token). Results
+cannot be streamed.
+When used with n, best_of controls the number of candidate completions
+and n specifies how many to return – best_of must be greater than n.}
+
+\item{user}{string, A unique identifier representing your end-user,
+which can help OpenAI to monitor and detect abuse}
 }
 \value{
 content of the httr response object or SimpleError

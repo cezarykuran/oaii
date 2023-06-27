@@ -33,6 +33,17 @@ chat_request <- function(
     presence_penalty = 0,
     frequency_penalty = 0
 ) {
+  # asserts
+  stopifnot(
+    "`messages` must be a list"= checkmate::testList(messages),
+    "`model` must be a non-empty string" = checkmate::testString(model, min.chars = 1),
+    "`temperature` must be a double" = checkmate::testDouble(temperature),
+    "`n` must be a integer" = checkmate::testInt(n),
+    "`max_tokens` must be a integer" = checkmate::testInt(max_tokens),
+    "`presence_penalty` must be a double" = checkmate::testDouble(presence_penalty),
+    "`frequency_penalty` must be a double" = checkmate::testDouble(frequency_penalty)
+  )
+
   request(
     "https://api.openai.com/v1/chat/completions",
     api_key,
@@ -63,9 +74,16 @@ is_chat_message <- function(x) {
 #'
 #' @param content string, message content
 #' @param role string, message role ("owner")
+#' @return message "object"
 #' @export
 #'
 chat_message <- function(content, role = "user") {
+  # asserts
+  stopifnot(
+    "`content` must be a non-empty string" = checkmate::testString(content, min.chars = 1),
+    "`role` must be a non-empty string" = checkmate::testString(role, min.chars = 1)
+  )
+
   list(
     role = role,
     content = content

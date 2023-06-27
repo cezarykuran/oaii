@@ -41,7 +41,7 @@ fine_tunes_roxygen_tpl <- function(
 #' and can add a stabilizing effect to training when completions are short.
 #' If prompts are extremely long (relative to completions), it may make sense
 #' to reduce this weight so as to avoid over-prioritizing learning the prompt.
-#' @param compute_classification_metrics logocal, if set, we calculate
+#' @param compute_classification_metrics flag, if set, we calculate
 #' classification-specific metrics such as accuracy and F-1 score using
 #' the validation set at the end of every epoch. These metrics can be viewed
 #' in the results file. In order to compute classification metrics, you must
@@ -69,24 +69,48 @@ fine_tunes_create_request <- function(
     api_key,
     training_file,
     validation_file = NULL,
-    model =  "ada", #"babbage", "curie", "davinci"
-    n_epochs = 4,
+    model =  NULL,
+    n_epochs = NULL,
     batch_size = NULL,
     learning_rate_multiplier = NULL,
-    prompt_loss_weight = 0.01,
-    compute_classification_metrics = FALSE,
+    prompt_loss_weight = NULL,
+    compute_classification_metrics = NULL,
     classification_n_classes = NULL,
     classification_positive_class = NULL,
     classification_betas = NULL,
     suffix = NULL
 ) {
+  # asserts
+  stopifnot(
+    "`training_file` must be a non-empty string" = checkmate::testString(training_file, min.chars = 1),
+    "`validation_file` must be a NULL or non-empty string" = checkmate::testString(validation_file, min.chars = 1, null.ok = TRUE),
+    "`model` must be a NULL or non-empty string" = checkmate::testString(model, min.chars = 1, null.ok = TRUE),
+    "`n_epochs` must be a integer" = checkmate::testInt(n_epochs, null.ok = TRUE),
+    "`batch_size` must be a NULL or double" = checkmate::testDouble(batch_size, null.ok = TRUE),
+    "`learning_rate_multiplier` must be a NULL or double" = checkmate::testDouble(learning_rate_multiplier, null.ok = TRUE),
+    "`prompt_loss_weight` must be a NULL or double" = checkmate::testDouble(prompt_loss_weight, null.ok = TRUE),
+    "`compute_classification_metrics` must be a NULL or flag" = checkmate::testFlag(compute_classification_metrics, null.ok = TRUE),
+    "`classification_n_classes` must be a NULL or integer" = checkmate::testInt(classification_n_classes, null.ok = TRUE),
+    "`classification_positive_class` must be a NULL or non-empty string" = checkmate::testString(classification_positive_class, min.chars = 1, null.ok = TRUE),
+    "`classification_betas` must be a NULL or array" = checkmate::testArray(classification_betas, null.ok = TRUE),
+    "`suffix` must be a NULL or non-empty string" = checkmate::testString(suffix, min.chars = 1, null.ok = TRUE)
+  )
+
   request("https://api.openai.com/v1/fine-tunes",
     api_key,
     body = list(
       training_file = training_file,
+      validation_file = validation_file,
       model = model,
       n_epochs = n_epochs,
-      learning_rate_multiplier = learning_rate_multiplier
+      batch_size = batch_size,
+      learning_rate_multiplier = learning_rate_multiplier,
+      prompt_loss_weight = prompt_loss_weight,
+      compute_classification_metrics = compute_classification_metrics,
+      classification_n_classes = classification_n_classes,
+      classification_positive_class = classification_positive_class,
+      classification_betas = classification_betas,
+      suffix = suffix
     )
   )
 }

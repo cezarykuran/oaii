@@ -256,6 +256,7 @@ server <- function(input, output, session) {
       ),
       prompt = .imgEditPrompt,
       size = input$imgEditSize,
+      response_format = "b64_json",
       n = as.integer(input$imgEditN)
     )
 
@@ -352,7 +353,7 @@ server <- function(input, output, session) {
       .files_df <- files_df()
       if (NROW(.files_df)) {
         .files_df %>%
-          oaii::df_exclude_cols("object") %>%
+          oaii::df_exclude_col("object") %>%
           oaii::df_null_replace() %>%
           oaii::df_col_dt_format("created_at") %>%
           files_df_col_manage("id", "filesTableRm")
@@ -410,7 +411,7 @@ server <- function(input, output, session) {
     oaii::df_col_obj_implode(
       df, col, obj_prop, nested,
       objs_glue = "",
-      cell_header = "<table class='tableTd'>",
+      cell_header = "<table class='tdTable'>",
       cell_footer = "</table>",
       prop_fmt = "<tr><td>%s</td><td>%s</td></tr>"
     )
@@ -465,7 +466,7 @@ server <- function(input, output, session) {
 
       if (NROW(.fine_tunes_df)) {
         .fine_tunes_df %>%
-          oaii::df_exclude_cols(c("object", "organization_id")) %>%
+          oaii::df_exclude_col(c("object", "organization_id")) %>%
           oaii::df_col_dt_format(
             c("created_at", "updated_at")
           ) %>%
@@ -534,8 +535,8 @@ server <- function(input, output, session) {
 
     res_content <- oaii::completions_create_request(
       .api_key,
-      prompt = .completionsPrompt,
       model = input$completionsModel,
+      prompt = .completionsPrompt,
       max_tokens = as.integer(input$completionsMaxTokens),
       n = as.integer(input$completionsN),
       temperature = as.double(input$completionsTemperature),

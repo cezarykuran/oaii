@@ -15,7 +15,8 @@ df_col_obj_implode(
   obj_header = "",
   props_glue = "\\n",
   obj_footer = "",
-  prop_fmt = "\%s: \%s"
+  prop_fmt = "\%s: \%s",
+  null_prop_str = "[null]"
 )
 }
 \arguments{
@@ -39,7 +40,9 @@ df_col_obj_implode(
 
 \item{obj_footer}{string/NULL, object footer}
 
-\item{prop_fmt}{string, sprintf fmt parameter with two `%s` fields (property
+\item{prop_fmt}{string, sprintf fmt parameter with two `\%s` fields (property}
+
+\item{null_prop_str}{string, value for NULL object property
 name, value)}
 }
 \value{

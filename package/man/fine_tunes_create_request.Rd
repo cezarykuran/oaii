@@ -8,12 +8,12 @@ fine_tunes_create_request(
   api_key,
   training_file,
   validation_file = NULL,
-  model = "ada",
-  n_epochs = 4,
+  model = NULL,
+  n_epochs = NULL,
   batch_size = NULL,
   learning_rate_multiplier = NULL,
-  prompt_loss_weight = 0.01,
-  compute_classification_metrics = FALSE,
+  prompt_loss_weight = NULL,
+  compute_classification_metrics = NULL,
   classification_n_classes = NULL,
   classification_positive_class = NULL,
   classification_betas = NULL,
@@ -59,7 +59,7 @@ and can add a stabilizing effect to training when completions are short.
 If prompts are extremely long (relative to completions), it may make sense
 to reduce this weight so as to avoid over-prioritizing learning the prompt.}
 
-\item{compute_classification_metrics}{logocal, if set, we calculate
+\item{compute_classification_metrics}{flag, if set, we calculate
 classification-specific metrics such as accuracy and F-1 score using
 the validation set at the end of every epoch. These metrics can be viewed
 in the results file. In order to compute classification metrics, you must

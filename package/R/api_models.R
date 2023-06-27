@@ -30,6 +30,11 @@ models_list_request <- function(api_key) {
 #' @export
 #'
 models_delete_request <- function(api_key, model) {
+  # asserts
+  stopifnot(
+    "`model` must be a non-empty string" = checkmate::testString(model, min.chars = 1),
+  )
+
   request(
     endpoint = paste0("https://api.openai.com/v1/models/", model),
     api_key = api_key,

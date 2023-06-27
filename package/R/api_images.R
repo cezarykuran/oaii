@@ -30,17 +30,28 @@ images_roxygen_tpl <- function(
 images_generator_request <- function(
     api_key,
     prompt,
-    response_format = "b64_json",
-    size = "256x256",
-    n = 1
+    response_format = NULL,
+    size = NULL,
+    n = NULL,
+    user = NULL
 ) {
+  # asserts
+  stopifnot(
+    "`prompt` must be a non-empty string"= checkmate::testString(prompt, min.chars = 1),
+    "`response_format` must be a NULL or non-empty string"= checkmate::testString(response_format, min.chars = 1, null.ok = TRUE),
+    "`size` must be a NULL or non-empty string"= checkmate::testString(size, min.chars = 1, null.ok = TRUE),
+    "`n` must be a NULL or integer" = checkmate::testInt(n, null.ok = TRUE),
+    "`user` must be a NULL or non-empty string"= checkmate::testString(user, min.chars = 1, null.ok = TRUE)
+  )
+
   request("https://api.openai.com/v1/images/generations",
     api_key,
     body = list(
       prompt = prompt,
       response_format = response_format,
       size = size,
-      n = n
+      n = n,
+      user = user
     )
   )
 }
@@ -49,10 +60,10 @@ images_generator_request <- function(
 #'
 #' \url{https://platform.openai.com/docs/api-reference/images/edits}
 #' @inherit images_roxygen_tpl params return
-#' @param image string, the image to edit. Must be a valid PNG file, less than
+#' @param image string/raw, the image to edit. Must be a valid PNG file, less than
 #' 4MB, and square. If mask is not provided, image must have transparency,
 #' which will be used as the mask.
-#' @param mask string/null, an additional image whose fully transparent areas
+#' @param mask string/raw/null, an additional image whose fully transparent areas
 #' (e.g. where alpha is zero) indicate where image should be edited. Must be
 #' a valid PNG file, less than 4MB, and have the same dimensions as `image`.
 #' @export
@@ -62,10 +73,23 @@ images_edit_request <- function(
     image,
     prompt,
     mask = NULL,
-    response_format = "b64_json",
-    size = "256x256",
-    n = 1
+    response_format = NULL,
+    size = NULL,
+    n = NULL,
+    user = NULL
 ) {
+  # asserts
+  stopifnot(
+    "`image` must be a fle path or raw content" =
+      checkmate::testFileExists(image) || checkmate::testRaw(image),
+    "`prompt` must be a non-empty string"= checkmate::testString(prompt, min.chars = 1),
+    "`mask` must be a fle path or raw content" =
+      checkmate::testNull(mask) || checkmate::testFileExists(mask) || checkmate::testRaw(mask),
+    "`response_format` must be a NULL or non-empty string"= checkmate::testString(response_format, min.chars = 1, null.ok = TRUE),
+    "`size` must be a NULL or non-empty string"= checkmate::testString(size, min.chars = 1, null.ok = TRUE),
+    "`n` must be a NULL or integer" = checkmate::testInt(n, null.ok = TRUE),
+    "`user` must be a NULL or non-empty string"= checkmate::testString(user, min.chars = 1, null.ok = TRUE)
+  )
 
   files <- c()
   on.exit({
@@ -76,7 +100,8 @@ images_edit_request <- function(
     prompt = prompt,
     response_format = response_format,
     size = size,
-    n = n
+    n = n,
+    user = user
   )
 
   if (is.raw(image)) {

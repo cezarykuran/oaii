@@ -33,6 +33,13 @@ files_list_request <- function(api_key) {
 #' @export
 #'
 files_upload_request <- function(api_key, file, purpose) {
+  # asserts
+  stopifnot(
+    "`file` must be a fle path or raw content" =
+      checkmate::testFileExists(file) || checkmate::testRaw(file),
+    "`purpose` must be a non-empty string" = checkmate::testString(purpose, min.chars = 1)
+  )
+
   files <- c()
   on.exit(unlink(files))
 
@@ -60,6 +67,11 @@ files_upload_request <- function(api_key, file, purpose) {
 #' @export
 #'
 files_delete_request <- function(api_key, file_id) {
+  # asserts
+  stopifnot(
+    "`file_id` must be a non-empty string" = checkmate::testString(file_id, min.chars = 1)
+  )
+
   request(
     endpoint = paste0("https://api.openai.com/v1/files/", file_id),
     api_key = api_key,
@@ -74,6 +86,11 @@ files_delete_request <- function(api_key, file_id) {
 #' @export
 #'
 files_retrieve_request <- function(api_key, file_id) {
+  # asserts
+  stopifnot(
+    "`file_id` must be a non-empty string" = checkmate::testString(file_id, min.chars = 1)
+  )
+
   request(
     endpoint = paste0("https://api.openai.com/v1/files/", file_id),
     api_key = api_key,
@@ -88,6 +105,11 @@ files_retrieve_request <- function(api_key, file_id) {
 #' @export
 #'
 files_retrieve_content_request <- function(api_key, file_id) {
+  # asserts
+  stopifnot(
+    "`file_id` must be a non-empty string" = checkmate::testString(file_id, min.chars = 1)
+  )
+
   request(
     endpoint = paste0("https://api.openai.com/v1/files/", file_id, "/content"),
     api_key = api_key,

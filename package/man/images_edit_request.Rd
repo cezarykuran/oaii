@@ -9,22 +9,23 @@ images_edit_request(
   image,
   prompt,
   mask = NULL,
-  response_format = "b64_json",
-  size = "256x256",
-  n = 1
+  response_format = NULL,
+  size = NULL,
+  n = NULL,
+  user = NULL
 )
 }
 \arguments{
 \item{api_key}{string, API key}
 
-\item{image}{string, the image to edit. Must be a valid PNG file, less than
+\item{image}{string/raw, the image to edit. Must be a valid PNG file, less than
 4MB, and square. If mask is not provided, image must have transparency,
 which will be used as the mask.}
 
 \item{prompt}{string, a text description of the desired image(s).
 The maximum length is 1000 characters.}
 
-\item{mask}{string/null, an additional image whose fully transparent areas
+\item{mask}{string/raw/null, an additional image whose fully transparent areas
 (e.g. where alpha is zero) indicate where image should be edited. Must be
 a valid PNG file, less than 4MB, and have the same dimensions as `image`.}
 
@@ -35,6 +36,9 @@ are returned. Must be one of "url" or "b64_json".}
 "256x256", "512x512" or "1024x1024"}
 
 \item{n}{integer, the number of images to generate. Must be between 1 and 10.}
+
+\item{user}{string a unique identifier representing your end-user,
+which can help OpenAI to monitor and detect abuse.}
 }
 \value{
 content of the httr response object or SimpleError
