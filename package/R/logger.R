@@ -1,24 +1,25 @@
 logger <- new.env()
 
 # internal log functions
-msg_log <- function(type, ...) {
+log_msg <- function(type, ...) {
   message(paste0(
     type,
     " [", format(Sys.time(), "%Y-%m-%d %H:%M:%S", usetz = FALSE), "] oaii :: ",
-    ...
-  , collapse = ""))
+    ...,
+    collapse = ""
+  ))
 }
-msg_log_error <- function(...) msg_log("ERROR", ...)
-msg_log_warning <- function(...) msg_log("WARNING", ...)
-msg_log_info <- function(...) msg_log("INFO", ...)
-msg_log_debug <- function(...) msg_log("DEBUG", ...)
+log_msg_error <- function(...) log_msg("ERROR", ...)
+log_msg_warning <- function(...) log_msg("WARNING", ...)
+log_msg_info <- function(...) log_msg("INFO", ...)
+log_msg_debug <- function(...) log_msg("DEBUG", ...)
 
 # attach internal log functions
 set_default_logger <- function() {
-  logger$error <- msg_log_error
-  logger$warning <- msg_log_warning
-  logger$info <- msg_log_info
-  logger$debug <- msg_log_debug
+  logger$error <- log_msg_error
+  logger$warning <- log_msg_warning
+  logger$info <- log_msg_info
+  logger$debug <- log_msg_debug
 }
 
 # log functions
