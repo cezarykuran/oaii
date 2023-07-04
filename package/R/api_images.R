@@ -130,9 +130,10 @@ images_edit_request <- function(
   )
 }
 
-#' Test if x is a image set
+#' Test if x is a image set (a list consisting of three elements: data, prompt and size)
 #'
 #' @param x R variable to test
+#' @return TRUE/FALSE
 #'
 is_image_set <- function(x) {
   fields <- c("data", "prompt", "size")
@@ -146,6 +147,7 @@ is_image_set <- function(x) {
 #'
 #' @inherit images_roxygen_tpl params
 #' @param res_content response object
+#' @return image set - a list consisting of three elements: data, prompt and size
 #' @export
 #'
 images_fech_set <- function(res_content, prompt = NULL, size = NULL) {
@@ -156,9 +158,10 @@ images_fech_set <- function(res_content, prompt = NULL, size = NULL) {
   )
 }
 
-#' Merge image set/sets
+#' Merge image set/sets (see \link{images_fech_set})
 #'
 #' @param ... images set and/or images sets
+#' @return list of image set(s)
 #' @export
 #'
 images_merge_sets <- function(...) {

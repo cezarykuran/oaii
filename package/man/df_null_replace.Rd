@@ -12,7 +12,7 @@ df_null_replace(df, replacement = "")
 \item{replacement}{string, replacement for NULL}
 }
 \value{
-modified data.frame
+modified input data.frame
 }
 \description{
 Replace all NULL values in given data.frame

@@ -2,13 +2,16 @@
 % Please edit documentation in R/api_chat.R
 \name{is_chat_message}
 \alias{is_chat_message}
-\title{Test if x is a chat message object}
+\title{Test if x is a chat message object. See\link{chat_message}}
 \usage{
 is_chat_message(x)
 }
 \arguments{
 \item{x}{R object to test}
 }
+\value{
+TRUE/FALSE
+}
 \description{
-Test if x is a chat message object
+Test if x is a chat message object. See\link{chat_message}
 }

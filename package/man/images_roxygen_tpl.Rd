@@ -24,7 +24,9 @@ are returned. Must be one of "url" or "b64_json".}
 which can help OpenAI to monitor and detect abuse.}
 }
 \value{
-content of the httr response object or SimpleError
+content of the httr response object or SimpleError enhanced with
+two additional fields: status_code (response$status_code) and message_long
+(built on response content)
 }
 \description{
 API images: roxygen template

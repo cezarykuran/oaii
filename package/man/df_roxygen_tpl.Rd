@@ -10,7 +10,7 @@ df_roxygen_tpl(df)
 \item{df}{data.frame, input data.frame}
 }
 \value{
-modified data.frame
+modified input data.frame
 }
 \description{
 df roxygen template

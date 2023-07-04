@@ -17,7 +17,9 @@ files_roxygen_tpl(api_key)
 \item{file_id}{string, id of the uploaded file}
 }
 \value{
-content of the httr response object or SimpleError
+content of the httr response object or SimpleError enhanced with
+two additional fields: status_code (response$status_code) and message_long
+(built on response content)
 }
 \description{
 API completions: roxygen template

@@ -23,6 +23,20 @@
 #' verbatim.
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#'   question <- chat_message("hi")
+#'   res_content <- chat_request(
+#'     api_key = "my-secret-api-key-string",
+#'     messages = chat_merge_messages(question)
+#'   )
+#'   if (!is_error(res_content)) {
+#'     answer <- chat_fetch_messages(res_content)
+#'     conversation <- chat_merge_messages(question, answer)
+#'     print(conversation)
+#'   }
+#' }
+#'
 chat_request <- function(
     api_key,
     messages,
@@ -59,9 +73,10 @@ chat_request <- function(
   )
 }
 
-#' Test if x is a chat message object
+#' Test if x is a chat message object. See\link{chat_message}
 #'
 #' @param x R object to test
+#' @return TRUE/FALSE
 #'
 is_chat_message <- function(x) {
   req <- c("content", "role")
@@ -74,8 +89,12 @@ is_chat_message <- function(x) {
 #'
 #' @param content string, message content
 #' @param role string, message role ("owner")
-#' @return message "object"
+#' @return chat "message object" - a list consisting of two elements: content and role
 #' @export
+#'
+#' @examples
+#' chat_message("some text message")
+#' chat_message("some another text message", role = "assistant")
 #'
 chat_message <- function(content, role = "user") {
   # asserts
@@ -90,9 +109,10 @@ chat_message <- function(content, role = "user") {
   )
 }
 
-#' Fetch messages from response content
+#' Fetch messages (list of chat message "objects") from response content
 #'
-#' @param res_content response object
+#' @param res_content response object returned by \link{chat_request}
+#' @return list of chat message "objects" (see \link{chat_message})
 #' @export
 #'
 chat_fetch_messages <- function(res_content) {
@@ -102,7 +122,18 @@ chat_fetch_messages <- function(res_content) {
 #' Merge chat messages
 #'
 #' @param ... chat message and/or messages objects
+#' @return list of chat "message objects" (see \link{chat_message})
 #' @export
+#'
+#' @examples
+#' msg1 <- chat_message("message 1")
+#' msg2 <- chat_message("message 2")
+#' chat_merge_messages(
+#'   msg1,
+#'   chat_merge_messages(msg1, msg2),
+#'   NULL,
+#'   msg2
+#' )
 #'
 chat_merge_messages <- function(...) {
   messages <- NULL

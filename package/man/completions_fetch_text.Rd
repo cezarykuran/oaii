@@ -2,13 +2,19 @@
 % Please edit documentation in R/api_completions.R
 \name{completions_fetch_text}
 \alias{completions_fetch_text}
-\title{Fetch messages from response content}
+\title{Fetch list of answer(s) from response content}
 \usage{
 completions_fetch_text(res_content)
 }
 \arguments{
-\item{res_content}{response object}
+\item{res_content}{response object returned by \link{completions_create_request}}
+}
+\value{
+list of text answers
 }
 \description{
-Fetch messages from response content
+Fetch list of answer(s) from response content
+}
+\seealso{
+[completions_create_request()]
 }

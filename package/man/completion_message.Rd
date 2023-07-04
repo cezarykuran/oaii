@@ -2,7 +2,7 @@
 % Please edit documentation in R/api_completions.R
 \name{completion_message}
 \alias{completion_message}
-\title{Create completion message "object"}
+\title{Create completion "message object"}
 \usage{
 completion_message(content, role = "user")
 }
@@ -11,6 +11,9 @@ completion_message(content, role = "user")
 
 \item{role}{string, message "owner"}
 }
+\value{
+completion "message object" - a list consisting of two elements: content and role
+}
 \description{
-Create completion message "object"
+Create completion "message object"
 }

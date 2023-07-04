@@ -12,7 +12,9 @@ files_retrieve_content_request(api_key, file_id)
 \item{file_id}{string, id of the uploaded file}
 }
 \value{
-content of the httr response object or SimpleError
+content of the httr response object or SimpleError enhanced with
+two additional fields: status_code (response$status_code) and message_long
+(built on response content)
 }
 \description{
 \url{https://platform.openai.com/docs/api-reference/files/retrieve-content}

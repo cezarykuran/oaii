@@ -5,7 +5,9 @@
 #' @param endpoint string, API endpoint url
 #' @param api_key string, API key
 #' @param method string, request method
-#' @return content of the httr response object or SimpleError
+#' @return content of the httr response object or SimpleError enhanced with
+#' two additional fields: status_code (response$status_code) and message_long
+#' (built on response content)
 #' @export
 #'
 request <- function(
@@ -63,7 +65,7 @@ request <- function(
       # log error
       log_error(e$message_long)
 
-      # return error "object"
+      # return modified SimpleError "object"
       e
     }
   )
@@ -72,7 +74,12 @@ request <- function(
 #' Test if object belongs to "error" class
 #'
 #' @param x R variable
+#' @return TRUE/FALSE
 #' @export
+#'
+#' @examples
+#' is_error(FALSE)
+#' is_error(simpleError("test"))
 #'
 is_error <- function(x) {
   inherits(x, c("error", "simpleError"))

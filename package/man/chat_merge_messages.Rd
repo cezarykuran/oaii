@@ -9,6 +9,20 @@ chat_merge_messages(...)
 \arguments{
 \item{...}{chat message and/or messages objects}
 }
+\value{
+list of chat "message objects" (see \link{chat_message})
+}
 \description{
 Merge chat messages
+}
+\examples{
+msg1 <- chat_message("message 1")
+msg2 <- chat_message("message 2")
+chat_merge_messages(
+  msg1,
+  chat_merge_messages(msg1, msg2),
+  NULL,
+  msg2
+)
+
 }

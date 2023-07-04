@@ -32,7 +32,23 @@ log_debug <- function(...) do.call(logger$debug, list(...))
 #' Set log functions used by this package
 #'
 #' @param ... parameters in form log_level = function
+#' @return NULL
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' logger <- log4r::logger("DEBUG")
+#' log_error <- function(...) log4r::error(logger, ...)
+#' log_warning <- function(...) log4r::warn(logger, ...)
+#' log_info <- function(...) log4r::info(logger, ...)
+#' log_debug <- function(...) log4r::debug(logger, ...)
+#' oaii::set_logger(
+#'   error = log_error,
+#'   warning = log_warning,
+#'   info = log_info,
+#'   debug = log_debug
+#' )
+#' }
 #'
 set_logger <- function(...) {
   f <- list(...)
@@ -41,4 +57,5 @@ set_logger <- function(...) {
     "all parameters must be nammed (error/warning/info/debug)" = all(names(f) %in% c("error", "warning", "info", "debug"))
   )
   for(type in names(f)) logger[[type]] <- f[[type]]
+  invisible()
 }

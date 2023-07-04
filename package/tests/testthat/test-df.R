@@ -10,7 +10,7 @@ test_that("df_exclude_col", {
   )
 })
 
-test_that("df_null_replace", {
+test_that("df_order_by_col", {
   expect_equal(
     df_order_by_col(
       data.frame(

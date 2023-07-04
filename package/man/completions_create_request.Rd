@@ -90,8 +90,25 @@ and n specifies how many to return – best_of must be greater than n.}
 which can help OpenAI to monitor and detect abuse}
 }
 \value{
-content of the httr response object or SimpleError
+content of the httr response object or SimpleError enhanced with
+two additional fields: status_code (response$status_code) and message_long
+(built on response content)
 }
 \description{
 \url{https://platform.openai.com/docs/api-reference/completions/create}
+}
+\examples{
+\dontrun{
+  prompt <- "x=1, y=2, z = x*y\nz = ?"
+  res_content <- completions_create_request(
+    api_key = "my-secret-api-key-string",
+    model = "text-davinci-003",
+    prompt = prompt
+  )
+  if (!is_error(res_content)) {
+    answer <- chat_fetch_messages(completions_fetch_text)
+    print(answer)
+  }
+}
+
 }

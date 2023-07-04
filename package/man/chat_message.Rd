@@ -12,8 +12,13 @@ chat_message(content, role = "user")
 \item{role}{string, message role ("owner")}
 }
 \value{
-message "object"
+chat "message object" - a list consisting of two elements: content and role
 }
 \description{
 Create chat message "object"
+}
+\examples{
+chat_message("some text message")
+chat_message("some another text message", role = "assistant")
+
 }

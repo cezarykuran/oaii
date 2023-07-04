@@ -14,8 +14,18 @@ df_order_by_col(df, col, decreasing = FALSE)
 \item{decreasing}{flag, should the sort order be increasing or decreasing?}
 }
 \value{
-modified data.frame
+modified input data.frame
 }
 \description{
 Sort data.frame by column name
+}
+\examples{
+df <- data.frame(
+  a = c("a", "b", "c"),
+  b = c(1, 3, 2),
+  c = c(3, 2, 1)
+)
+df_order_by_col(df, "b", decreasing = TRUE)
+df_order_by_col(df, "c")
+
 }

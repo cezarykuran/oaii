@@ -87,7 +87,9 @@ to your fine-tuned model name. For example, a suffix of "my-model"
 would produce a model name like ada:ft-your-org:my-model-2022-02-15-04-21-04.}
 }
 \value{
-content of the httr response object or SimpleError
+content of the httr response object or SimpleError enhanced with
+two additional fields: status_code (response$status_code) and message_long
+(built on response content)
 }
 \description{
 \url{https://platform.openai.com/docs/api-reference/fine-tunes/create}

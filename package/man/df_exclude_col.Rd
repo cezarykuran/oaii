@@ -12,8 +12,14 @@ df_exclude_col(df, col)
 \item{col}{character vector, column name(s) to be deleted}
 }
 \value{
-modified data.frame
+modified input data.frame
 }
 \description{
 Remove columns from data.frame
+}
+\examples{
+df <- data.frame(a = 1:3, b = 1:3, c = 1:3)
+df_exclude_col(df, "b")
+df_exclude_col(df, c("a", "c"))
+
 }

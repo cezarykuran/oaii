@@ -46,8 +46,16 @@ df_col_obj_implode(
 name, value)}
 }
 \value{
-modified data.frame
+modified input data.frame
 }
 \description{
 Change to string nested lists in a given data.frame
+}
+\examples{
+df <- as.data.frame(do.call(cbind, list(
+  a = list(list(x = 1, y = 2), list(x = 3, y = 4)),
+  b = list("z", "z")
+)))
+df_col_obj_implode(df, "a", c("x", "y"), nested = FALSE, props_glue = ", ")
+
 }

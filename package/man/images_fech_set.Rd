@@ -15,6 +15,9 @@ The maximum length is 1000 characters.}
 \item{size}{string, the size of the generated images. Must be one of
 "256x256", "512x512" or "1024x1024"}
 }
+\value{
+image set - a list consisting of three elements: data, prompt and size
+}
 \description{
 Fetch image set from response content
 }

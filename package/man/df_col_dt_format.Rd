@@ -14,8 +14,17 @@ df_col_dt_format(df, col, dt_format = "\%Y-\%m-\%d \%H:\%M:\%S")
 \item{dt_format}{string, date time format}
 }
 \value{
-modified data.frame
+modified input data.frame
 }
 \description{
 Replace unix timestamp column(s) to formated dt string
+}
+\examples{
+df <- data.frame(
+  x = c("a", "b"),
+  dt = c(1687868601, 1688417643)
+)
+df_col_dt_format(df, "dt")
+df_col_dt_format(df, "dt", "\%H:\%M")
+
 }

@@ -4,7 +4,7 @@
 \alias{demoApp}
 \title{Run demo shiny app}
 \usage{
-demoApp(host = "0.0.0.0", port = 38383)
+demoApp(host = "0.0.0.0", port = 3838)
 }
 \arguments{
 \item{host}{The IPv4 address that the application should listen on. Defaults
@@ -20,5 +20,13 @@ by Google Chrome for being considered unsafe: 3659, 4045, 5060,
 ports will be tried.}
 }
 \description{
-Run demo shiny app
+Runs a Shiny application. This function normally does not return; interrupt R
+to stop the application (usually by pressing Ctrl+C or Esc).
+}
+\examples{
+\dontrun{
+  demoApp()
+  demoApp("127.0.0.1", 80)
+}
+
 }

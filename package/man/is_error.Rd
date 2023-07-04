@@ -9,6 +9,14 @@ is_error(x)
 \arguments{
 \item{x}{R variable}
 }
+\value{
+TRUE/FALSE
+}
 \description{
 Test if object belongs to "error" class
+}
+\examples{
+is_error(FALSE)
+is_error(simpleError("test"))
+
 }

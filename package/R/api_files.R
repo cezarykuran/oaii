@@ -27,7 +27,7 @@ files_list_request <- function(api_key) {
 #'
 #' \url{https://platform.openai.com/docs/api-reference/files/upload}
 #' @inherit files_roxygen_tpl params return
-#' @param file string, path or contnetent of the JSON Lines file to be uploaded
+#' @param file string, path or content of the JSON Lines file to be uploaded
 #' @param purpose string, the intended purpose of the uploaded documents.
 #' Use "fine-tune" for Fine-tuning.
 #' @export

@@ -45,8 +45,25 @@ in the text so far, decreasing the model's likelihood to repeat the same line
 verbatim.}
 }
 \value{
-content of the httr response object or SimpleError
+content of the httr response object or SimpleError enhanced with
+two additional fields: status_code (response$status_code) and message_long
+(built on response content)
 }
 \description{
 \url{https://platform.openai.com/docs/api-reference/completions}
+}
+\examples{
+\dontrun{
+  question <- chat_message("hi")
+  res_content <- chat_request(
+    api_key = "my-secret-api-key-string",
+    messages = chat_merge_messages(question)
+  )
+  if (!is_error(res_content)) {
+    answer <- chat_fetch_messages(res_content)
+    conversation <- chat_merge_messages(question, answer)
+    print(conversation)
+  }
+}
+
 }

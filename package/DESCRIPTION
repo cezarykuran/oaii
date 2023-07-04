@@ -1,13 +1,13 @@
 Package: oaii
 Type: Package
-Title: OpenAI API R Interface
-Version: 0.1.3
+Title: 'OpenAI' API R Interface
+Version: 0.1.4
 Authors@R:
   person("Cezary", "Kuran", , "cezary.kuran@gmail.com",  role = c("aut", "cre"))
 Description: A comprehensive set of helpers that streamline data transmission
   and processing, making it effortless to interact with the 'OpenAI' API.
 License: MIT + file LICENSE
-Url: https://github.com/cezarykuran/oaii
+URL: https://github.com/cezarykuran/oaii
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3

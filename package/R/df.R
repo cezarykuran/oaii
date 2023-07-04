@@ -1,7 +1,7 @@
 #' df roxygen template
 #'
 #' @param df data.frame, input data.frame
-#' @return modified data.frame
+#' @return modified input data.frame
 #' @keywords internal
 #'
 df_roxygen_tpl <- function(df) NULL
@@ -11,6 +11,11 @@ df_roxygen_tpl <- function(df) NULL
 #' @inherit df_roxygen_tpl params return
 #' @param col character vector, column name(s) to be deleted
 #' @export
+#'
+#' @examples
+#' df <- data.frame(a = 1:3, b = 1:3, c = 1:3)
+#' df_exclude_col(df, "b")
+#' df_exclude_col(df, c("a", "c"))
 #'
 df_exclude_col <- function(df, col) {
   # asserts
@@ -46,6 +51,15 @@ df_null_replace <- function(df, replacement = "") {
 #' @param decreasing flag, should the sort order be increasing or decreasing?
 #' @export
 #'
+#' @examples
+#' df <- data.frame(
+#'   a = c("a", "b", "c"),
+#'   b = c(1, 3, 2),
+#'   c = c(3, 2, 1)
+#' )
+#' df_order_by_col(df, "b", decreasing = TRUE)
+#' df_order_by_col(df, "c")
+#'
 df_order_by_col <- function(df, col, decreasing = FALSE) {
   # asserts
   stopifnot(
@@ -72,6 +86,13 @@ df_order_by_col <- function(df, col, decreasing = FALSE) {
 #' @param null_prop_str string, value for NULL object property
 #' name, value)
 #' @export
+#'
+#' @examples
+#' df <- as.data.frame(do.call(cbind, list(
+#'   a = list(list(x = 1, y = 2), list(x = 3, y = 4)),
+#'   b = list("z", "z")
+#' )))
+#' df_col_obj_implode(df, "a", c("x", "y"), nested = FALSE, props_glue = ", ")
 #'
 df_col_obj_implode <- function(
     df,
@@ -148,6 +169,14 @@ df_col_obj_implode <- function(
 #' @param col character vector, column names of the df that will be modified
 #' @param dt_format string, date time format
 #' @export
+#'
+#' @examples
+#' df <- data.frame(
+#'   x = c("a", "b"),
+#'   dt = c(1687868601, 1688417643)
+#' )
+#' df_col_dt_format(df, "dt")
+#' df_col_dt_format(df, "dt", "%H:%M")
 #'
 df_col_dt_format <- function(df, col, dt_format = "%Y-%m-%d %H:%M:%S") {
   # asserts

@@ -9,13 +9,15 @@ files_upload_request(api_key, file, purpose)
 \arguments{
 \item{api_key}{string, API key}
 
-\item{file}{string, path or contnetent of the JSON Lines file to be uploaded}
+\item{file}{string, path or content of the JSON Lines file to be uploaded}
 
 \item{purpose}{string, the intended purpose of the uploaded documents.
 Use "fine-tune" for Fine-tuning.}
 }
 \value{
-content of the httr response object or SimpleError
+content of the httr response object or SimpleError enhanced with
+two additional fields: status_code (response$status_code) and message_long
+(built on response content)
 }
 \description{
 \url{https://platform.openai.com/docs/api-reference/files/upload}

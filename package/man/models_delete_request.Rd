@@ -12,7 +12,9 @@ models_delete_request(api_key, model)
 \item{model}{string, the model to delete}
 }
 \value{
-content of the httr response object or SimpleError
+content of the httr response object or SimpleError enhanced with
+two additional fields: status_code (response$status_code) and message_long
+(built on response content)
 }
 \description{
 \url{https://platform.openai.com/docs/api-reference/fine-tunes/delete-model}

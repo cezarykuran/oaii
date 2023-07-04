@@ -10,7 +10,9 @@ fine_tunes_roxygen_tpl(api_key)
 \item{api_key}{string, API key}
 }
 \value{
-content of the httr response object or SimpleError
+content of the httr response object or SimpleError enhanced with
+two additional fields: status_code (response$status_code) and message_long
+(built on response content)
 }
 \description{
 API fine tunes: roxygen template

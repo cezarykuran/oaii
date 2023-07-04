@@ -2,13 +2,16 @@
 % Please edit documentation in R/api_chat.R
 \name{chat_fetch_messages}
 \alias{chat_fetch_messages}
-\title{Fetch messages from response content}
+\title{Fetch messages (list of chat message "objects") from response content}
 \usage{
 chat_fetch_messages(res_content)
 }
 \arguments{
-\item{res_content}{response object}
+\item{res_content}{response object returned by \link{chat_request}}
+}
+\value{
+list of chat message "objects" (see \link{chat_message})
 }
 \description{
-Fetch messages from response content
+Fetch messages (list of chat message "objects") from response content
 }

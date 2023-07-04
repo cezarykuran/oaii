@@ -61,6 +61,20 @@ files_roxygen_tpl <- function(
 #' which can help OpenAI to monitor and detect abuse
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#'   prompt <- "x=1, y=2, z = x*y\nz = ?"
+#'   res_content <- completions_create_request(
+#'     api_key = "my-secret-api-key-string",
+#'     model = "text-davinci-003",
+#'     prompt = prompt
+#'   )
+#'   if (!is_error(res_content)) {
+#'     answer <- chat_fetch_messages(completions_fetch_text)
+#'     print(answer)
+#'   }
+#' }
+#'
 completions_create_request <- function(
     api_key,
     model,
@@ -125,19 +139,22 @@ completions_create_request <- function(
   )
 }
 
-#' Fetch messages from response content
+#' Fetch list of answer(s) from response content
 #'
-#' @param res_content response object
+#' @seealso [completions_create_request()]
+#' @param res_content response object returned by \link{completions_create_request}
+#' @return list of text answers
 #' @export
 #'
 completions_fetch_text <- function(res_content) {
   lapply(res_content$choices, function(l) l$text)
 }
 
-#' Create completion message "object"
+#' Create completion "message object"
 #'
 #' @param content string, message content
 #' @param role string, message "owner"
+#' @return completion "message object" - a list consisting of two elements: content and role
 #' @export
 #'
 completion_message <- function(content, role = "user") {
