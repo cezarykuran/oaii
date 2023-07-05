@@ -7,7 +7,8 @@
 images_roxygen_tpl(api_key, prompt, n, size, response_format, user)
 }
 \arguments{
-\item{api_key}{string, API key}
+\item{api_key}{string, OpenAI API key
+(see \url{https://platform.openai.com/account/api-keys})}
 
 \item{prompt}{string, a text description of the desired image(s).
 The maximum length is 1000 characters.}
@@ -17,16 +18,17 @@ The maximum length is 1000 characters.}
 \item{size}{string, the size of the generated images. Must be one of
 "256x256", "512x512" or "1024x1024"}
 
-\item{response_format}{string,tThe format in which the generated images
+\item{response_format}{string, the format in which the generated images
 are returned. Must be one of "url" or "b64_json".}
 
 \item{user}{string a unique identifier representing your end-user,
 which can help OpenAI to monitor and detect abuse.}
 }
 \value{
-content of the httr response object or SimpleError enhanced with
-two additional fields: status_code (response$status_code) and message_long
-(built on response content)
+\link[httr]{content} of the httr \link[httr]{response} object
+or SimpleError (\link[base]{conditions}) enhanced with
+two additional fields: `status_code` (response$status_code)
+and `message_long` (built on response content)
 }
 \description{
 API images: roxygen template

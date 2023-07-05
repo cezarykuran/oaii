@@ -2,7 +2,7 @@
 % Please edit documentation in R/logger.R
 \name{set_logger}
 \alias{set_logger}
-\title{Set log functions used by this package}
+\title{Set log functions used by `oaii` package}
 \usage{
 set_logger(...)
 }
@@ -10,7 +10,7 @@ set_logger(...)
 \item{...}{parameters in form log_level = function}
 }
 \description{
-Set log functions used by this package
+Set log functions used by `oaii` package
 }
 \examples{
 \dontrun{
@@ -19,6 +19,7 @@ log_error <- function(...) log4r::error(logger, ...)
 log_warning <- function(...) log4r::warn(logger, ...)
 log_info <- function(...) log4r::info(logger, ...)
 log_debug <- function(...) log4r::debug(logger, ...)
+
 oaii::set_logger(
   error = log_error,
   warning = log_warning,

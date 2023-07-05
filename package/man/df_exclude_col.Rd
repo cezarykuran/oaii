@@ -15,7 +15,7 @@ df_exclude_col(df, col, on_missing_col = "warn")
 "warn" - log warning, "skip" - skip missing column(s), "stop" - throw error}
 }
 \value{
-modified input data.frame
+Modified input data.frame
 }
 \description{
 Remove columns from data.frame

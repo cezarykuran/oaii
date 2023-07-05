@@ -2,7 +2,7 @@
 % Please edit documentation in R/api_chat.R
 \name{chat_request}
 \alias{chat_request}
-\title{API chat: send completions request}
+\title{API chat: send create (chat) request}
 \usage{
 chat_request(
   api_key,
@@ -16,7 +16,8 @@ chat_request(
 )
 }
 \arguments{
-\item{api_key}{string, API key}
+\item{api_key}{string, OpenAI API key
+(see \url{https://platform.openai.com/account/api-keys})}
 
 \item{messages}{data.frame, data.frame with messages comprising the conversation so far}
 
@@ -44,22 +45,24 @@ in the text so far, decreasing the model's likelihood to repeat the same line
 verbatim.}
 }
 \value{
-content of the httr response object or SimpleError enhanced with
-two additional fields: status_code (response$status_code) and message_long
-(built on response content)
+\link[httr]{content} of the httr \link[httr]{response} object
+or SimpleError (\link[base]{conditions}) enhanced with
+two additional fields: `status_code` (response$status_code)
+and `message_long` (built on response content)
 }
 \description{
-\url{https://platform.openai.com/docs/api-reference/completions}
+\url{https://platform.openai.com/docs/api-reference/chat/create}
 }
 \examples{
 \dontrun{
+  question <- dialog_df("hi")
   res_content <- chat_request(
     api_key = "my-secret-api-key-string",
-    messages = chat_messages("hi")
+    messages = question
   )
   if (!is_error(res_content)) {
     answer <- chat_fetch_messages(res_content)
-    conversation <- chat_merge_messages(question, answer)
+    conversation <- merge_dialog_df(question, answer)
     print(conversation)
   }
 }

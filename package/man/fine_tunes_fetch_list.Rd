@@ -2,7 +2,7 @@
 % Please edit documentation in R/api_fine-tunes.R
 \name{fine_tunes_fetch_list}
 \alias{fine_tunes_fetch_list}
-\title{Extract fine-tunes models list as data.frame from response object}
+\title{Extract fine-tunes models list from response object}
 \usage{
 fine_tunes_fetch_list(res_content)
 }
@@ -10,8 +10,18 @@ fine_tunes_fetch_list(res_content)
 \item{res_content}{response object returned by \link{fine_tunes_list_request}}
 }
 \value{
-fine-tunes models as data.frame
+fine-tunes list models as data.frame
 }
 \description{
 Extract fine-tunes models list as data.frame from response object
+}
+\examples{
+\dontrun{
+res_content <- fine_tunes_list_request("my-secret-api-key-string")
+if (!is_error(res_content)) {
+  fine_tunes_list_df <- fine_tunes_fetch_list(res_content)
+  print(fine_tunes_list_df)
+}
+}
+
 }

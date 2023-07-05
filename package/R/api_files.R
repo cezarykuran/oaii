@@ -15,6 +15,15 @@ files_roxygen_tpl <- function(
 #' @inherit files_roxygen_tpl params return
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' res_content <- files_list_request("my-secret-api-key-string")
+#' if (!is_error(res_content)) {
+#'   files_list_df <- files_fetch_list(res_content)
+#'   print(files_list_df)
+#' }
+#' }
+#'
 files_list_request <- function(api_key) {
   request(
     endpoint = "https://api.openai.com/v1/files",
@@ -25,8 +34,9 @@ files_list_request <- function(api_key) {
 
 #' Extract files list as data.frame from response object
 #'
+#' @inherit files_list_request examples
 #' @param res_content response object returned by \link{files_list_request}
-#' @return files as data.frame
+#' @return Files list as data.frame
 #' @export
 #'
 files_fetch_list <- function(res_content) {
@@ -58,8 +68,9 @@ files_upload_request <- function(api_key, file, purpose) {
   # asserts
   stopifnot(
     "`file` must be a fle path or raw content" =
-      checkmate::testFileExists(file) || checkmate::testRaw(file),
-    "`purpose` must be a non-empty string" = checkmate::testString(purpose, min.chars = 1)
+        checkmate::testFileExists(file) || checkmate::testRaw(file),
+    "`purpose` must be a non-empty string" =
+        checkmate::testString(purpose, min.chars = 1)
   )
 
   files <- c()
@@ -110,7 +121,8 @@ files_delete_request <- function(api_key, file_id) {
 files_retrieve_request <- function(api_key, file_id) {
   # asserts
   stopifnot(
-    "`file_id` must be a non-empty string" = checkmate::testString(file_id, min.chars = 1)
+    "`file_id` must be a non-empty string" =
+        checkmate::testString(file_id, min.chars = 1)
   )
 
   request(
@@ -129,7 +141,8 @@ files_retrieve_request <- function(api_key, file_id) {
 files_retrieve_content_request <- function(api_key, file_id) {
   # asserts
   stopifnot(
-    "`file_id` must be a non-empty string" = checkmate::testString(file_id, min.chars = 1)
+    "`file_id` must be a non-empty string" =
+        checkmate::testString(file_id, min.chars = 1)
   )
 
   request(

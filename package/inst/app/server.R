@@ -84,20 +84,19 @@ server <- function(input, output, session) {
   # export chat to csv
   output$chatDialogContainerDownload <- shiny::downloadHandler(
     function() {
-      log_debug("observeEvent(input$chatDialogContainerDownload, {..}) [filename]")
+      log_debug("output$chatDialogContainerDownload <- shiny::downloadHandler(..) [filename]")
       paste0("chat ", format(Sys.time(), "%Y.%m.%d %H.%M"), ".csv")
     },
     function(file) {
-      log_debug("observeEvent(input$chatDialogContainerDownload, {..}) [content]")
-      df <- chatMessages()
-      df[, "content"] <- utils::URLencode(df[, "content"])
-      write.table(
-        df,
-        file = file,
-        quote = TRUE,
-        sep = "\t",
-        row.names = FALSE
-      )
+      log_debug("output$chatDialogContainerDownload <- shiny::downloadHandler(..) [content]")
+
+      res <- oaii::dialog_df_to_csv(chatMessages(), file)
+      if (oaii::is_error(res)) {
+        showNotification(
+          paste0("An error occurred while preparing csv file, error message '", res$message, "'"),
+          type = "error"
+        )
+      }
     }
   )
 
@@ -105,28 +104,21 @@ server <- function(input, output, session) {
   observeEvent(input$chatDialogContainerUpload, {
     log_debug("observeEvent(input$chatDialogContainerUpload, {..})")
 
-    tryCatch(
-      expr = {
-        datapath <- input$chatDialogContainerUpload$datapath
-        df <- read.table(
-          datapath,
-          sep = "\t",
-          header = TRUE
-        )
-        df[, "content"] <- utils::URLdecode(df[, "content"])
-        chatMessages(df)
-        showNotification(
-          paste0("File '", datapath ,"' uploaded successfully!"),
-          type = "message"
-        )
-      },
-      error = function(e) {
-        showNotification(
-          paste0("An error occurred while loading the file, error message '", e$message, "'"),
-          type = "error"
-        )
-      }
-    )
+    datapath <- input$chatDialogContainerUpload$datapath
+    dialog_df <- oaii::csv_to_dialog_df(datapath)
+    if (oaii::is_error(dialog_df)) {
+      showNotification(
+        paste0("An error occurred while loading the file, error message '", dialog_df$message, "'"),
+        type = "error"
+      )
+    }
+    else {
+      chatMessages(dialog_df)
+      showNotification(
+        paste0("File '", datapath ,"' uploaded successfully!"),
+        type = "message"
+      )
+    }
     shinyjs::reset("chatDialogContainerUpload")
   })
 
@@ -297,21 +289,26 @@ server <- function(input, output, session) {
 
   # append manage column (helper function)
   files_df_col_manage <- function(df, column, id) {
-    manage <- vapply(
-      df[, column],
-      function(value) {paste0(
+    col_manage <- lapply(seq_len(NROW(df)), function(row) {
+      value <- df[row, "id"]
+      as.list(paste0(
+        htmltools::tags$button(
+          class = "btn btn-default btn-xs",
+          onclick = paste0("oaii.tableBtn('filesTableDownload','", value, "')"),
+          fontawesome::fa("download")
+        ),
         htmltools::tags$button(
           class = "btn btn-danger btn-xs",
-          onclick = paste0("oaii.tableBtn('", id,"','", value, "')"),
+          onclick = paste0("oaii.tableBtn('filesTableRm','", value, "')"),
           fontawesome::fa("trash")
         )
-      )},
-      character(1)
-    )
-    cbind(df, manage)
+      ))
+    })
+    df$manage <- col_manage
+    df
   }
 
-  # send upload file reques
+  # send upload file request
   observeEvent(input$filesUploadExecute, {
     .api_key <- req(api_key())
     .filesUpload <- req(input$filesUpload)
@@ -380,6 +377,30 @@ server <- function(input, output, session) {
     trigger_files_df_update()
   })
 
+  # download file
+  observeEvent(input$filesTableDownload, {
+    .api_key <- req(api_key())
+    .filesTableDownload <- req(input$filesTableDownload)
+    .files_df <- req(files_df())
+    log_debug("observeEvent(input$filesTableDownload, {..})")
+
+    res_content <-
+      oaii::files_retrieve_content_request(.api_key, .filesTableDownload)
+
+    if (oaii::is_error(res_content)) {
+      showNotification(res_content$message_long, type = "error")
+    }
+    else {
+      filename <- .files_df[.files_df$id == .filesTableDownload, "filename"]
+      session$sendCustomMessage(
+        "oaii.rDownload",
+        list(
+          filename = paste0(.filesTableDownload, "_", filename),
+          content = res_content
+        )
+      )
+    }
+  })
 
   # fine-tunes ----
 
@@ -468,6 +489,7 @@ server <- function(input, output, session) {
       if (NROW(.fine_tunes_df)) {
         .fine_tunes_df %>%
           oaii::df_exclude_col(c("object", "organization_id")) %>%
+          oaii::df_order_by_col("created_at", decreasing = TRUE) %>%
           oaii::df_col_dt_format(
             c("created_at", "updated_at")
           ) %>%
@@ -484,25 +506,11 @@ server <- function(input, output, session) {
     },
     options = list(
       searching = FALSE,
-      columnDefs = list()
+      columnDefs = list(),
+      pageLength = 5
     ),
     escape = FALSE
   )
-
-  # send delete fine-tunes model request
-  # observeEvent(input$fineTunesTableRm, {
-  #   .api_key <- req(api_key())
-  #   log_debug("observeEvent(input$fineTunesTableRm, {..})")
-  #
-  #   res_content <- oaii::files_delete_request(
-  #     .api_key,
-  #     input$fineTunesTableRm
-  #   )
-  #   if (oaii::is_error(res_content)) {
-  #     showNotification(res_content$message_long, type = "error")
-  #   }
-  #   trigger_fine_tunes_update()
-  # })
 
 
   # completions ----

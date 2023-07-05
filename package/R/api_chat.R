@@ -1,6 +1,6 @@
-#' API chat: send completions request
+#' API chat: send create (chat) request
 #'
-#' \url{https://platform.openai.com/docs/api-reference/completions}
+#' \url{https://platform.openai.com/docs/api-reference/chat/create}
 #' @inherit request params return
 #' @param messages data.frame, data.frame with messages comprising the conversation so far
 #' @param model string, ID of the model to use.
@@ -24,13 +24,14 @@
 #'
 #' @examples
 #' \dontrun{
+#'   question <- dialog_df("hi")
 #'   res_content <- chat_request(
 #'     api_key = "my-secret-api-key-string",
-#'     messages = chat_messages("hi")
+#'     messages = question
 #'   )
 #'   if (!is_error(res_content)) {
 #'     answer <- chat_fetch_messages(res_content)
-#'     conversation <- chat_merge_messages(question, answer)
+#'     conversation <- merge_dialog_df(question, answer)
 #'     print(conversation)
 #'   }
 #' }
@@ -71,11 +72,12 @@ chat_request <- function(
   )
 }
 
-#' Fetch messages (dialog data.frame with chat messages) from response content
+#' Fetch messages from response content
 #'
-#' @seealso [dialog_df()]
+#' Fetch messages (dialog data.frame with chat messages) from response content
+#' @inherit chat_request examples
 #' @param res_content response object returned by \link{chat_request}
-#' @return dialog data.frame (see \link{dialog_df})
+#' @return Messages from response as dialog data.frame (see \link{dialog_df})
 #' @export
 #'
 chat_fetch_messages <- function(res_content) {

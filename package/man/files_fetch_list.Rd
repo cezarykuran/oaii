@@ -10,8 +10,18 @@ files_fetch_list(res_content)
 \item{res_content}{response object returned by \link{files_list_request}}
 }
 \value{
-files as data.frame
+Files list as data.frame
 }
 \description{
 Extract files list as data.frame from response object
+}
+\examples{
+\dontrun{
+res_content <- files_list_request("my-secret-api-key-string")
+if (!is_error(res_content)) {
+  files_list_df <- files_fetch_list(res_content)
+  print(files_list_df)
+}
+}
+
 }

@@ -14,7 +14,7 @@ dialog_df(content, role = "user", finish_reason = "stop")
 \item{finish_reason}{see \url{https://platform.openai.com/docs/guides/gpt/chat-completions-response-format}}
 }
 \value{
-a one-row data.frame with columns: content, role and finish_reason
+A one-row data.frame with columns: `content`, `role` and `finish_reason`
 }
 \description{
 Create dialog data.frame

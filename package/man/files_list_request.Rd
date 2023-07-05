@@ -7,13 +7,25 @@
 files_list_request(api_key)
 }
 \arguments{
-\item{api_key}{string, API key}
+\item{api_key}{string, OpenAI API key
+(see \url{https://platform.openai.com/account/api-keys})}
 }
 \value{
-content of the httr response object or SimpleError enhanced with
-two additional fields: status_code (response$status_code) and message_long
-(built on response content)
+\link[httr]{content} of the httr \link[httr]{response} object
+or SimpleError (\link[base]{conditions}) enhanced with
+two additional fields: `status_code` (response$status_code)
+and `message_long` (built on response content)
 }
 \description{
 \url{https://platform.openai.com/docs/api-reference/files/list}
+}
+\examples{
+\dontrun{
+res_content <- files_list_request("my-secret-api-key-string")
+if (!is_error(res_content)) {
+  files_list_df <- files_fetch_list(res_content)
+  print(files_list_df)
+}
+}
+
 }

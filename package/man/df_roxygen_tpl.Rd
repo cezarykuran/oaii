@@ -13,7 +13,7 @@ df_roxygen_tpl(df, on_missing_col)
 "warn" - log warning, "skip" - skip missing column(s), "stop" - throw error}
 }
 \value{
-modified input data.frame
+Modified input data.frame
 }
 \description{
 df roxygen template

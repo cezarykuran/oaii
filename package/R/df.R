@@ -3,7 +3,7 @@
 #' @param df data.frame, input data.frame
 #' @param on_missing_col string, behavior for missing column(s):
 #' "warn" - log warning, "skip" - skip missing column(s), "stop" - throw error
-#' @return modified input data.frame
+#' @return Modified input data.frame
 #' @keywords internal
 #'
 df_roxygen_tpl <- function(df, on_missing_col) NULL

@@ -2,7 +2,7 @@
 % Please edit documentation in R/api_chat.R
 \name{chat_fetch_messages}
 \alias{chat_fetch_messages}
-\title{Fetch messages (dialog data.frame with chat messages) from response content}
+\title{Fetch messages from response content}
 \usage{
 chat_fetch_messages(res_content)
 }
@@ -10,11 +10,23 @@ chat_fetch_messages(res_content)
 \item{res_content}{response object returned by \link{chat_request}}
 }
 \value{
-dialog data.frame (see \link{dialog_df})
+Messages from response as dialog data.frame (see \link{dialog_df})
 }
 \description{
 Fetch messages (dialog data.frame with chat messages) from response content
 }
-\seealso{
-[dialog_df()]
+\examples{
+\dontrun{
+  question <- dialog_df("hi")
+  res_content <- chat_request(
+    api_key = "my-secret-api-key-string",
+    messages = question
+  )
+  if (!is_error(res_content)) {
+    answer <- chat_fetch_messages(res_content)
+    conversation <- merge_dialog_df(question, answer)
+    print(conversation)
+  }
+}
+
 }

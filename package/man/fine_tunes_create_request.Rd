@@ -2,7 +2,7 @@
 % Please edit documentation in R/api_fine-tunes.R
 \name{fine_tunes_create_request}
 \alias{fine_tunes_create_request}
-\title{API fine tunes: create request}
+\title{API fine tunes: create (model) request}
 \usage{
 fine_tunes_create_request(
   api_key,
@@ -21,7 +21,8 @@ fine_tunes_create_request(
 )
 }
 \arguments{
-\item{api_key}{string, API key}
+\item{api_key}{string, OpenAI API key
+(see \url{https://platform.openai.com/account/api-keys})}
 
 \item{training_file}{string, the ID of an uploaded file that contains
 training data. See files_upload_request().}
@@ -87,9 +88,10 @@ to your fine-tuned model name. For example, a suffix of "my-model"
 would produce a model name like ada:ft-your-org:my-model-2022-02-15-04-21-04.}
 }
 \value{
-content of the httr response object or SimpleError enhanced with
-two additional fields: status_code (response$status_code) and message_long
-(built on response content)
+\link[httr]{content} of the httr \link[httr]{response} object
+or SimpleError (\link[base]{conditions}) enhanced with
+two additional fields: `status_code` (response$status_code)
+and `message_long` (built on response content)
 }
 \description{
 \url{https://platform.openai.com/docs/api-reference/fine-tunes/create}

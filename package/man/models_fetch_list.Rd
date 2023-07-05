@@ -2,7 +2,7 @@
 % Please edit documentation in R/api_models.R
 \name{models_fetch_list}
 \alias{models_fetch_list}
-\title{Extract models list as data.frame from response object}
+\title{Extract models from response object}
 \usage{
 models_fetch_list(res_content)
 }
@@ -10,8 +10,18 @@ models_fetch_list(res_content)
 \item{res_content}{response object returned by \link{models_list_request}}
 }
 \value{
-models as data.frame
+List of available models as data.frame
 }
 \description{
 Extract models list as data.frame from response object
+}
+\examples{
+\dontrun{
+res_content <- models_list_request("my-secret-api-key-string")
+if (!is_error(res_content)) {
+  models_list_df <- models_fetch_list(res_content)
+  print(models_list_df)
+}
+}
+
 }

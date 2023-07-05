@@ -2,7 +2,7 @@
 % Please edit documentation in R/api_images.R
 \name{images_generator_request}
 \alias{images_generator_request}
-\title{API images: create request}
+\title{API images: create (generator) request}
 \usage{
 images_generator_request(
   api_key,
@@ -14,12 +14,13 @@ images_generator_request(
 )
 }
 \arguments{
-\item{api_key}{string, API key}
+\item{api_key}{string, OpenAI API key
+(see \url{https://platform.openai.com/account/api-keys})}
 
 \item{prompt}{string, a text description of the desired image(s).
 The maximum length is 1000 characters.}
 
-\item{response_format}{string,tThe format in which the generated images
+\item{response_format}{string, the format in which the generated images
 are returned. Must be one of "url" or "b64_json".}
 
 \item{size}{string, the size of the generated images. Must be one of
@@ -31,9 +32,10 @@ are returned. Must be one of "url" or "b64_json".}
 which can help OpenAI to monitor and detect abuse.}
 }
 \value{
-content of the httr response object or SimpleError enhanced with
-two additional fields: status_code (response$status_code) and message_long
-(built on response content)
+\link[httr]{content} of the httr \link[httr]{response} object
+or SimpleError (\link[base]{conditions}) enhanced with
+two additional fields: `status_code` (response$status_code)
+and `message_long` (built on response content)
 }
 \description{
 \url{https://platform.openai.com/docs/api-reference/images/create}

@@ -17,7 +17,7 @@ df_order_by_col(df, col, decreasing = FALSE, on_missing_col = "warn")
 "warn" - log warning, "skip" - skip missing column(s), "stop" - throw error}
 }
 \value{
-modified input data.frame
+Modified input data.frame
 }
 \description{
 Sort data.frame by column name

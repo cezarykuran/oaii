@@ -2,16 +2,17 @@
 % Please edit documentation in R/api_images.R
 \name{images_merge_sets}
 \alias{images_merge_sets}
-\title{Merge image set/sets (see \link{images_fech_set})}
+\title{Merge image set/sets}
 \usage{
 images_merge_sets(...)
 }
 \arguments{
-\item{...}{images set and/or images sets}
+\item{...}{images set(s), NULL also allowed}
 }
 \value{
-list of image set(s)
+List of image set(s)
 }
 \description{
-Merge image set/sets (see \link{images_fech_set})
+Merge given image set/sets into single images sets object (list with image
+sets). Have a look at \link{images_fech_set}.
 }

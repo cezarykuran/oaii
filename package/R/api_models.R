@@ -14,6 +14,15 @@ files_roxygen_tpl <- function(
 #' @inherit fine_tunes_roxygen_tpl params return
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' res_content <- models_list_request("my-secret-api-key-string")
+#' if (!is_error(res_content)) {
+#'   models_list_df <- models_fetch_list(res_content)
+#'   print(models_list_df)
+#' }
+#' }
+#'
 models_list_request <- function(api_key) {
   request(
     endpoint = "https://api.openai.com/v1/models",
@@ -22,10 +31,12 @@ models_list_request <- function(api_key) {
   )
 }
 
-#' Extract models list as data.frame from response object
+#' Extract models from response object
 #'
+#' Extract models list as data.frame from response object
+#' @inherit models_list_request examples
 #' @param res_content response object returned by \link{models_list_request}
-#' @return models as data.frame
+#' @return List of available models as data.frame
 #' @export
 #'
 models_fetch_list <- function(res_content) {
@@ -53,7 +64,6 @@ print.oaiiModelsDF <- function(x, ...) {
   NextMethod()
 }
 
-
 #' API models: delete request
 #'
 #' \url{https://platform.openai.com/docs/api-reference/fine-tunes/delete-model}
@@ -64,7 +74,7 @@ print.oaiiModelsDF <- function(x, ...) {
 models_delete_request <- function(api_key, model) {
   # asserts
   stopifnot(
-    "`model` must be a non-empty string" = checkmate::testString(model, min.chars = 1),
+    "`model` must be a non-empty string" = checkmate::testString(model, min.chars = 1)
   )
 
   request(

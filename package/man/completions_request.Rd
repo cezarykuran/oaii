@@ -24,7 +24,8 @@ completions_request(
 )
 }
 \arguments{
-\item{api_key}{string, API key}
+\item{api_key}{string, OpenAI API key
+(see \url{https://platform.openai.com/account/api-keys})}
 
 \item{model}{string, ID of the model to use. You can use the
 \href{https://platform.openai.com/docs/api-reference/models/list}{List models}
@@ -90,16 +91,17 @@ and n specifies how many to return – best_of must be greater than n.}
 which can help OpenAI to monitor and detect abuse}
 }
 \value{
-content of the httr response object or SimpleError enhanced with
-two additional fields: status_code (response$status_code) and message_long
-(built on response content)
+\link[httr]{content} of the httr \link[httr]{response} object
+or SimpleError (\link[base]{conditions}) enhanced with
+two additional fields: `status_code` (response$status_code)
+and `message_long` (built on response content)
 }
 \description{
 \url{https://platform.openai.com/docs/api-reference/completions/create}
 }
 \examples{
 \dontrun{
-  prompt <- "x=1, y=2, z = x*y\nz = ?"
+  prompt <- "x=1, y=2, z=x*y, z=?"
   res_content <- completions_request(
     api_key = "my-secret-api-key-string",
     model = "text-davinci-003",

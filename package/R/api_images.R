@@ -6,7 +6,7 @@
 #' @param n integer, the number of images to generate. Must be between 1 and 10.
 #' @param size string, the size of the generated images. Must be one of
 #' "256x256", "512x512" or "1024x1024"
-#' @param response_format string,tThe format in which the generated images
+#' @param response_format string, the format in which the generated images
 #' are returned. Must be one of "url" or "b64_json".
 #' @param user string a unique identifier representing your end-user,
 #' which can help OpenAI to monitor and detect abuse.
@@ -21,7 +21,7 @@ images_roxygen_tpl <- function(
     user
 ) NULL
 
-#' API images: create request
+#' API images: create (generator) request
 #'
 #' \url{https://platform.openai.com/docs/api-reference/images/create}
 #' @inherit images_roxygen_tpl params return
@@ -37,11 +37,16 @@ images_generator_request <- function(
 ) {
   # asserts
   stopifnot(
-    "`prompt` must be a non-empty string"= checkmate::testString(prompt, min.chars = 1),
-    "`response_format` must be a NULL or non-empty string"= checkmate::testString(response_format, min.chars = 1, null.ok = TRUE),
-    "`size` must be a NULL or non-empty string"= checkmate::testString(size, min.chars = 1, null.ok = TRUE),
-    "`n` must be a NULL or integer" = checkmate::testInt(n, null.ok = TRUE),
-    "`user` must be a NULL or non-empty string"= checkmate::testString(user, min.chars = 1, null.ok = TRUE)
+    "`prompt` must be a non-empty string" =
+        checkmate::testString(prompt, min.chars = 1),
+    "`response_format` must be a NULL or non-empty string" =
+        checkmate::testString(response_format, min.chars = 1, null.ok = TRUE),
+    "`size` must be a NULL or non-empty string" =
+        checkmate::testString(size, min.chars = 1, null.ok = TRUE),
+    "`n` must be a NULL or integer" =
+        checkmate::testInt(n, null.ok = TRUE),
+    "`user` must be a NULL or non-empty string" =
+        checkmate::testString(user, min.chars = 1, null.ok = TRUE)
   )
 
   request("https://api.openai.com/v1/images/generations",
@@ -60,12 +65,12 @@ images_generator_request <- function(
 #'
 #' \url{https://platform.openai.com/docs/api-reference/images/edits}
 #' @inherit images_roxygen_tpl params return
-#' @param image string/raw, the image to edit. Must be a valid PNG file, less than
-#' 4MB, and square. If mask is not provided, image must have transparency,
+#' @param image string/raw, the image to edit. Must be a valid PNG file, less
+#' than 4MB, and square. If mask is not provided, image must have transparency,
 #' which will be used as the mask.
-#' @param mask string/raw/null, an additional image whose fully transparent areas
-#' (e.g. where alpha is zero) indicate where image should be edited. Must be
-#' a valid PNG file, less than 4MB, and have the same dimensions as `image`.
+#' @param mask string/raw/null, an additional image whose fully transparent
+#' areas (e.g. where alpha is zero) indicate where image should be edited. Must
+#' be a valid PNG file, less than 4MB, and have the same dimensions as `image`.
 #' @export
 #'
 images_edit_request <- function(
@@ -81,14 +86,21 @@ images_edit_request <- function(
   # asserts
   stopifnot(
     "`image` must be a fle path or raw content" =
-      checkmate::testFileExists(image) || checkmate::testRaw(image),
-    "`prompt` must be a non-empty string"= checkmate::testString(prompt, min.chars = 1),
+        checkmate::testFileExists(image) || checkmate::testRaw(image),
+    "`prompt` must be a non-empty string" =
+        checkmate::testString(prompt, min.chars = 1),
     "`mask` must be a fle path or raw content" =
-      checkmate::testNull(mask) || checkmate::testFileExists(mask) || checkmate::testRaw(mask),
-    "`response_format` must be a NULL or non-empty string"= checkmate::testString(response_format, min.chars = 1, null.ok = TRUE),
-    "`size` must be a NULL or non-empty string"= checkmate::testString(size, min.chars = 1, null.ok = TRUE),
-    "`n` must be a NULL or integer" = checkmate::testInt(n, null.ok = TRUE),
-    "`user` must be a NULL or non-empty string"= checkmate::testString(user, min.chars = 1, null.ok = TRUE)
+        checkmate::testNull(mask) ||
+        checkmate::testFileExists(mask) ||
+        checkmate::testRaw(mask),
+    "`response_format` must be a NULL or non-empty string" =
+        checkmate::testString(response_format, min.chars = 1, null.ok = TRUE),
+    "`size` must be a NULL or non-empty string" =
+        checkmate::testString(size, min.chars = 1, null.ok = TRUE),
+    "`n` must be a NULL or integer" =
+        checkmate::testInt(n, null.ok = TRUE),
+    "`user` must be a NULL or non-empty string" =
+        checkmate::testString(user, min.chars = 1, null.ok = TRUE)
   )
 
   files <- c()
@@ -130,8 +142,29 @@ images_edit_request <- function(
   )
 }
 
-#' Test if x is a image set (a list consisting of three elements: data, prompt and size)
+#' Fetch image set from response content
 #'
+#' \url{https://platform.openai.com/docs/api-reference/images/create}
+#' \url{https://platform.openai.com/docs/api-reference/images/edits}
+#' @inherit images_roxygen_tpl params
+#' @param res_content response object returned by
+#' \link{images_generator_request} or \link{images_edit_request}
+#' @return Image set as a list consisting of three elements: `data`, `prompt`
+#' and `size`
+#' @export
+#'
+images_fech_set <- function(res_content, prompt = NULL, size = NULL) {
+  list(
+    data = res_content$data,
+    prompt = prompt,
+    size = size
+  )
+}
+
+#' Test if x is a image set
+#'
+#' Test if x is a image set - a list consisting of three elements: data, prompt
+#' and size
 #' @param x R variable to test
 #' @return TRUE/FALSE
 #'
@@ -143,25 +176,12 @@ is_image_set <- function(x) {
     is.list(x$data)
 }
 
-#' Fetch image set from response content
+#' Merge image set/sets
 #'
-#' @inherit images_roxygen_tpl params
-#' @param res_content response object
-#' @return image set - a list consisting of three elements: data, prompt and size
-#' @export
-#'
-images_fech_set <- function(res_content, prompt = NULL, size = NULL) {
-  list(
-    data = res_content$data,
-    prompt = prompt,
-    size = size
-  )
-}
-
-#' Merge image set/sets (see \link{images_fech_set})
-#'
-#' @param ... images set and/or images sets
-#' @return list of image set(s)
+#' Merge given image set/sets into single images sets object (list with image
+#' sets). Have a look at \link{images_fech_set}.
+#' @param ... images set(s), NULL also allowed
+#' @return List of image set(s)
 #' @export
 #'
 images_merge_sets <- function(...) {

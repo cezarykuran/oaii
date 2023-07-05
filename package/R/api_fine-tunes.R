@@ -8,7 +8,7 @@ fine_tunes_roxygen_tpl <- function(
 ) NULL
 
 
-#' API fine tunes: create request
+#' API fine tunes: create (model) request
 #'
 #' \url{https://platform.openai.com/docs/api-reference/fine-tunes/create}
 #' @inherit fine_tunes_roxygen_tpl params return
@@ -121,6 +121,15 @@ fine_tunes_create_request <- function(
 #' @inherit fine_tunes_roxygen_tpl params return
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' res_content <- fine_tunes_list_request("my-secret-api-key-string")
+#' if (!is_error(res_content)) {
+#'   fine_tunes_list_df <- fine_tunes_fetch_list(res_content)
+#'   print(fine_tunes_list_df)
+#' }
+#' }
+#'
 fine_tunes_list_request <- function(api_key) {
   request(
     endpoint = "https://api.openai.com/v1/fine-tunes",
@@ -129,10 +138,12 @@ fine_tunes_list_request <- function(api_key) {
   )
 }
 
-#' Extract fine-tunes models list as data.frame from response object
+#' Extract fine-tunes models list from response object
 #'
+#' Extract fine-tunes models list as data.frame from response object
+#' @inherit fine_tunes_list_request examples
 #' @param res_content response object returned by \link{fine_tunes_list_request}
-#' @return fine-tunes models as data.frame
+#' @return fine-tunes list models as data.frame
 #' @export
 #'
 fine_tunes_fetch_list <- function(res_content) {

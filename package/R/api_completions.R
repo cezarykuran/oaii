@@ -63,7 +63,7 @@ files_roxygen_tpl <- function(
 #'
 #' @examples
 #' \dontrun{
-#'   prompt <- "x=1, y=2, z = x*y\nz = ?"
+#'   prompt <- "x=1, y=2, z=x*y, z=?"
 #'   res_content <- completions_request(
 #'     api_key = "my-secret-api-key-string",
 #'     model = "text-davinci-003",
@@ -140,16 +140,24 @@ completions_request <- function(
   )
 }
 
-#' Fetch completions text from response content as dialog data.frame
+#' Fetch completions text from response content
 #'
-#' @seealso [dialog_df()]
+#' Fetch completions text from response content (\link{completions_request})
+#' as dialog data.frame
+#' @inherit completions_request examples
 #' @param res_content response object returned by \link{completions_request}
 #' @param role string, dialog role (phrase owner)
-#' @param ltrim flag, trim left whitespace characters
+#' @param ltrim flag, trim left white space character(s) from text
 #' @return dialog data.frame
 #' @export
 #'
 completions_fetch_text <- function(res_content, role = "ai", ltrim = TRUE) {
+  # asserts
+  stopifnot(
+    "`role` must be a non-empty string" = checkmate::testString(role, min.chars = 1),
+    "`ltrim` must be a flag" = checkmate::testFlag(ltrim)
+  )
+
   do.call(merge_dialog_df, lapply(res_content$choices, function(choice) {
     dialog_df(
       role = role,

@@ -28,6 +28,3 @@ print(
 )
 
 }
-\seealso{
-[dialog_df()]
-}

@@ -22,7 +22,7 @@ df_col_dt_format(
 "warn" - log warning, "skip" - skip missing column(s), "stop" - throw error}
 }
 \value{
-modified input data.frame
+Modified input data.frame
 }
 \description{
 Replace unix timestamp column(s) to formated dt string

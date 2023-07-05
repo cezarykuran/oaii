@@ -1,7 +1,27 @@
 oaii = {
+  init : function() {
+    Shiny.addCustomMessageHandler("oaii.textConsole", oaii.textConsole.messageHandler)
+    Shiny.addCustomMessageHandler("oaii.rDownload", oaii.rDownload.messageHandler)
+  },
+
   scrollDown : function(id) {
     obj = document.getElementById(id)
     obj.scrollTop = obj.scrollHeight
+  },
+
+  download : function(filename, content) {
+    let a = document.createElement('a');
+    a.download = filename
+    a.href = content
+    a.click()
+  },
+
+  rDownload : {
+    messageHandler : function(message) {
+      oaii.download(
+        message.filename,
+        "data:text/plain;charset=utf-8," + encodeURIComponent(atob(message.content)))
+    }
   },
 
   textConsole : {
@@ -53,12 +73,10 @@ oaii = {
       download : function(obj, e, filename = "image.png") {
         e = event || window.event
         e.stopPropagation()
-
-        let a = document.createElement('a');
-        a.href = $(obj).parent().children("img").attr("src")
-        a.download = filename
-        a.click()
-        return false
+        oaii.download(
+          filename,
+          $(obj).parent().children("img").attr("src")
+        )
       }
     },
 
@@ -175,4 +193,4 @@ oaii = {
     Shiny.setInputValue(n, v)
   }
 }
-Shiny.addCustomMessageHandler("oaii.textConsole", oaii.textConsole.messageHandler)
+oaii.init()

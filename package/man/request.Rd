@@ -9,7 +9,8 @@ request(endpoint, api_key, body = NULL, encode = "json", method = "POST")
 \arguments{
 \item{endpoint}{string, API endpoint url}
 
-\item{api_key}{string, API key}
+\item{api_key}{string, OpenAI API key
+(see \url{https://platform.openai.com/account/api-keys})}
 
 \item{body}{One of the following:
 \itemize{
@@ -42,9 +43,10 @@ need to make sure to set the \code{\link[httr:content_type]{content_type()}} you
 \item{method}{string, request method}
 }
 \value{
-content of the httr response object or SimpleError enhanced with
-two additional fields: status_code (response$status_code) and message_long
-(built on response content)
+\link[httr]{content} of the httr \link[httr]{response} object
+or SimpleError (\link[base]{conditions}) enhanced with
+two additional fields: `status_code` (response$status_code)
+and `message_long` (built on response content)
 }
 \description{
 \url{https://platform.openai.com/docs/api-reference/making-requests}

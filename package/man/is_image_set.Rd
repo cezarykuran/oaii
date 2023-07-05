@@ -2,7 +2,7 @@
 % Please edit documentation in R/api_images.R
 \name{is_image_set}
 \alias{is_image_set}
-\title{Test if x is a image set (a list consisting of three elements: data, prompt and size)}
+\title{Test if x is a image set}
 \usage{
 is_image_set(x)
 }
@@ -13,5 +13,6 @@ is_image_set(x)
 TRUE/FALSE
 }
 \description{
-Test if x is a image set (a list consisting of three elements: data, prompt and size)
+Test if x is a image set - a list consisting of three elements: data, prompt
+and size
 }

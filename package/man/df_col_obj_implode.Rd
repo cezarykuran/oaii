@@ -50,7 +50,7 @@ name, value)}
 "warn" - log warning, "skip" - skip missing column(s), "stop" - throw error}
 }
 \value{
-modified input data.frame
+Modified input data.frame
 }
 \description{
 Change to string nested lists in a given data.frame

@@ -3,11 +3,13 @@
 #' \url{https://platform.openai.com/docs/api-reference/making-requests}
 #' @inheritParams httr::POST
 #' @param endpoint string, API endpoint url
-#' @param api_key string, API key
+#' @param api_key string, OpenAI API key
+#' (see \url{https://platform.openai.com/account/api-keys})
 #' @param method string, request method
-#' @return content of the httr response object or SimpleError enhanced with
-#' two additional fields: status_code (response$status_code) and message_long
-#' (built on response content)
+#' @return \link[httr]{content} of the httr \link[httr]{response} object
+#' or SimpleError (\link[base]{conditions}) enhanced with
+#' two additional fields: `status_code` (response$status_code)
+#' and `message_long` (built on response content)
 #' @export
 #'
 request <- function(
@@ -28,7 +30,7 @@ request <- function(
 
   tryCatch(
     expr = {
-      log_debug("request('", endpoint, "', ...)")
+      log_debug("request(endpoint='", endpoint, "', method='", method, "', ...)")
       res <- do.call(
         get(method, asNamespace("httr")),
         list(

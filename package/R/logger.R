@@ -29,7 +29,7 @@ log_info <- function(...) do.call(logger$info, list(...))
 log_debug <- function(...) do.call(logger$debug, list(...))
 
 
-#' Set log functions used by this package
+#' Set log functions used by `oaii` package
 #'
 #' @param ... parameters in form log_level = function
 #' @return NULL
@@ -42,6 +42,7 @@ log_debug <- function(...) do.call(logger$debug, list(...))
 #' log_warning <- function(...) log4r::warn(logger, ...)
 #' log_info <- function(...) log4r::info(logger, ...)
 #' log_debug <- function(...) log4r::debug(logger, ...)
+#'
 #' oaii::set_logger(
 #'   error = log_error,
 #'   warning = log_warning,

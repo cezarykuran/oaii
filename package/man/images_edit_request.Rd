@@ -16,20 +16,21 @@ images_edit_request(
 )
 }
 \arguments{
-\item{api_key}{string, API key}
+\item{api_key}{string, OpenAI API key
+(see \url{https://platform.openai.com/account/api-keys})}
 
-\item{image}{string/raw, the image to edit. Must be a valid PNG file, less than
-4MB, and square. If mask is not provided, image must have transparency,
+\item{image}{string/raw, the image to edit. Must be a valid PNG file, less
+than 4MB, and square. If mask is not provided, image must have transparency,
 which will be used as the mask.}
 
 \item{prompt}{string, a text description of the desired image(s).
 The maximum length is 1000 characters.}
 
-\item{mask}{string/raw/null, an additional image whose fully transparent areas
-(e.g. where alpha is zero) indicate where image should be edited. Must be
-a valid PNG file, less than 4MB, and have the same dimensions as `image`.}
+\item{mask}{string/raw/null, an additional image whose fully transparent
+areas (e.g. where alpha is zero) indicate where image should be edited. Must
+be a valid PNG file, less than 4MB, and have the same dimensions as `image`.}
 
-\item{response_format}{string,tThe format in which the generated images
+\item{response_format}{string, the format in which the generated images
 are returned. Must be one of "url" or "b64_json".}
 
 \item{size}{string, the size of the generated images. Must be one of
@@ -41,9 +42,10 @@ are returned. Must be one of "url" or "b64_json".}
 which can help OpenAI to monitor and detect abuse.}
 }
 \value{
-content of the httr response object or SimpleError enhanced with
-two additional fields: status_code (response$status_code) and message_long
-(built on response content)
+\link[httr]{content} of the httr \link[httr]{response} object
+or SimpleError (\link[base]{conditions}) enhanced with
+two additional fields: `status_code` (response$status_code)
+and `message_long` (built on response content)
 }
 \description{
 \url{https://platform.openai.com/docs/api-reference/images/edits}

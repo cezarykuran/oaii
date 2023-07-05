@@ -7,7 +7,8 @@
 images_fech_set(res_content, prompt = NULL, size = NULL)
 }
 \arguments{
-\item{res_content}{response object}
+\item{res_content}{response object returned by
+\link{images_generator_request} or \link{images_edit_request}}
 
 \item{prompt}{string, a text description of the desired image(s).
 The maximum length is 1000 characters.}
@@ -16,8 +17,10 @@ The maximum length is 1000 characters.}
 "256x256", "512x512" or "1024x1024"}
 }
 \value{
-image set - a list consisting of three elements: data, prompt and size
+Image set as a list consisting of three elements: `data`, `prompt`
+and `size`
 }
 \description{
-Fetch image set from response content
+\url{https://platform.openai.com/docs/api-reference/images/create}
+\url{https://platform.openai.com/docs/api-reference/images/edits}
 }
