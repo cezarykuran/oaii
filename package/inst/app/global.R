@@ -91,10 +91,10 @@ dialogMessages <- function(messages, idDialogContainer = NULL) {
   htmltools::tagList(
     htmltools::tags$table(
       class = "table",
-      lapply(messages, function(message) {
+      lapply(seq_len(NROW(messages)), function(row) {
         htmltools::tags$tr(
-          htmltools::tags$td(message$role),
-          htmltools::tags$td(htmltools::HTML(gsub("\n", "<br>", message$content)))
+          htmltools::tags$td(messages[row, "role"]),
+          htmltools::tags$td(htmltools::HTML(gsub("\n", "<br>", messages[row, "content"])))
         )
       })
     ),

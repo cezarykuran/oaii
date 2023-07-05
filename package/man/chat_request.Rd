@@ -18,8 +18,7 @@ chat_request(
 \arguments{
 \item{api_key}{string, API key}
 
-\item{messages}{list (messages "object"), a list of messages comprising
-the conversation so far}
+\item{messages}{data.frame, data.frame with messages comprising the conversation so far}
 
 \item{model}{string, ID of the model to use.
 See the \href{https://platform.openai.com/docs/models/model-endpoint-compatibility}{model endpoint compatibility table}
@@ -54,10 +53,9 @@ two additional fields: status_code (response$status_code) and message_long
 }
 \examples{
 \dontrun{
-  question <- chat_message("hi")
   res_content <- chat_request(
     api_key = "my-secret-api-key-string",
-    messages = chat_merge_messages(question)
+    messages = chat_messages("hi")
   )
   if (!is_error(res_content)) {
     answer <- chat_fetch_messages(res_content)

@@ -4,7 +4,12 @@
 \alias{df_col_dt_format}
 \title{Replace unix timestamp column(s) to formated dt string}
 \usage{
-df_col_dt_format(df, col, dt_format = "\%Y-\%m-\%d \%H:\%M:\%S")
+df_col_dt_format(
+  df,
+  col,
+  dt_format = "\%Y-\%m-\%d \%H:\%M:\%S",
+  on_missing_col = "warn"
+)
 }
 \arguments{
 \item{df}{data.frame, input data.frame}
@@ -12,6 +17,9 @@ df_col_dt_format(df, col, dt_format = "\%Y-\%m-\%d \%H:\%M:\%S")
 \item{col}{character vector, column names of the df that will be modified}
 
 \item{dt_format}{string, date time format}
+
+\item{on_missing_col}{string, behavior for missing column(s):
+"warn" - log warning, "skip" - skip missing column(s), "stop" - throw error}
 }
 \value{
 modified input data.frame

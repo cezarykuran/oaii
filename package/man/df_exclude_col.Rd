@@ -4,12 +4,15 @@
 \alias{df_exclude_col}
 \title{Remove columns from data.frame}
 \usage{
-df_exclude_col(df, col)
+df_exclude_col(df, col, on_missing_col = "warn")
 }
 \arguments{
 \item{df}{data.frame, input data.frame}
 
 \item{col}{character vector, column name(s) to be deleted}
+
+\item{on_missing_col}{string, behavior for missing column(s):
+"warn" - log warning, "skip" - skip missing column(s), "stop" - throw error}
 }
 \value{
 modified input data.frame

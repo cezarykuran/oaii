@@ -1,31 +1,12 @@
 #' df roxygen template
 #'
 #' @param df data.frame, input data.frame
+#' @param on_missing_col string, behavior for missing column(s):
+#' "warn" - log warning, "skip" - skip missing column(s), "stop" - throw error
 #' @return modified input data.frame
 #' @keywords internal
 #'
-df_roxygen_tpl <- function(df) NULL
-
-#' Remove columns from data.frame
-#'
-#' @inherit df_roxygen_tpl params return
-#' @param col character vector, column name(s) to be deleted
-#' @export
-#'
-#' @examples
-#' df <- data.frame(a = 1:3, b = 1:3, c = 1:3)
-#' df_exclude_col(df, "b")
-#' df_exclude_col(df, c("a", "c"))
-#'
-df_exclude_col <- function(df, col) {
-  # asserts
-  stopifnot(
-    "`df` must be a data.frame" = checkmate::testDataFrame(df),
-    "`col` must be a character vectior" = checkmate::testCharacter(col)
-  )
-
-  df[, -which(names(df) %in% col)]
-}
+df_roxygen_tpl <- function(df, on_missing_col) NULL
 
 #' Replace all NULL values in given data.frame
 #'
@@ -44,6 +25,59 @@ df_null_replace <- function(df, replacement = "") {
   df
 }
 
+#' Assert helper for the df_X functions
+#' @noRd
+df_test_col <- function(df, col, on_missing_col) {
+  on_missing_col != "stop" || all(col %in% names(df))
+}
+
+#' Helper for the df_X functions - remove missing column name(s),
+#' warn about it (if required)
+#' @noRd
+df_proccess_col <- function(df, col, on_missing_col) {
+  names_df <- names(df)
+  missed <- col[!col %in% names(df)]
+  if (length(missed)) {
+    if (on_missing_col == "warn") {
+      log_warning(
+        as.character(as.list(sys.call(-1))[[1]]),
+        "() - missing column names(s) '", paste0(missed, collapse = "', '"), "' in df"
+      )
+    }
+    col[col %in% names_df]
+  }
+  else col
+}
+
+#' Remove columns from data.frame
+#'
+#' @inherit df_roxygen_tpl params return
+#' @param col character vector, column name(s) to be deleted
+#' @export
+#'
+#' @examples
+#' df <- data.frame(a = 1:3, b = 1:3, c = 1:3)
+#' df_exclude_col(df, "b")
+#' df_exclude_col(df, c("a", "c"))
+#'
+df_exclude_col <- function(df, col, on_missing_col = "warn") {
+  # asserts
+  stopifnot(
+    "`df` must be a data.frame" = checkmate::testDataFrame(df),
+    "`col` must be a non-empty character vector" =
+        checkmate::testCharacter(col, min.len = 1),
+    "`on_missing_col` must be a 'warn', 'skip' or 'stop'" =
+        checkmate::testString(on_missing_col, min.chars = 1) &&
+        on_missing_col %in% c("warn", "skip", "stop"),
+    "`col` contains a column name that does not exist in df" =
+        df_test_col(df, col, on_missing_col)
+  )
+
+  col <- df_proccess_col(df, col, on_missing_col)
+  if (!length(col)) return(df)
+  df[, -which(names(df) %in% col)]
+}
+
 #' Sort data.frame by column name
 #'
 #' @inherit df_roxygen_tpl params return
@@ -60,13 +94,27 @@ df_null_replace <- function(df, replacement = "") {
 #' df_order_by_col(df, "b", decreasing = TRUE)
 #' df_order_by_col(df, "c")
 #'
-df_order_by_col <- function(df, col, decreasing = FALSE) {
+df_order_by_col <- function(
+    df,
+    col,
+    decreasing = FALSE,
+    on_missing_col = "warn"
+  ) {
   # asserts
   stopifnot(
     "`df` must be a data.frame" = checkmate::testDataFrame(df),
-    "`col` must be a non-empty string" = checkmate::testString(col, min.chars = 1),
-    "`decreasing` must be a flag" = checkmate::testFlag(decreasing)
+    "`col` must be a non-empty character vector" =
+        checkmate::testCharacter(col, min.len = 1),
+    "`decreasing` must be a flag" = checkmate::testFlag(decreasing),
+    "`on_missing_col` must be a 'warn', 'skip' or 'stop'" =
+        checkmate::testString(on_missing_col, min.chars = 1) &&
+        on_missing_col %in% c("warn", "skip", "stop"),
+    "`col` contains a column name that does not exist in df" =
+        df_test_col(df, col, on_missing_col)
   )
+
+  col <- df_proccess_col(df, col, on_missing_col)
+  if (!length(col)) return(df)
   df[order(unlist(df[, col]), decreasing = decreasing), ]
 }
 
@@ -74,7 +122,7 @@ df_order_by_col <- function(df, col, decreasing = FALSE) {
 #'
 #' @inherit df_roxygen_tpl params return
 #' @param col character vector, df column names containing objects
-#' @param obj_prop character vector, object properties
+#' @param obj_prop NULL/character vector, object properties (NULL means all)
 #' @param nested flag, whether the rows of the columns contain multiple objects
 #' @param cell_header string/NULL, cell header
 #' @param objs_glue string, how to combine objects
@@ -97,7 +145,7 @@ df_order_by_col <- function(df, col, decreasing = FALSE) {
 df_col_obj_implode <- function(
     df,
     col,
-    obj_prop,
+    obj_prop = NULL,
     nested = TRUE,
     cell_header = "",
     objs_glue = "----\n",
@@ -106,13 +154,16 @@ df_col_obj_implode <- function(
     props_glue = "\n",
     obj_footer = "",
     prop_fmt = "%s: %s",
-    null_prop_str = "[null]"
-) {
+    null_prop_str = "[null]",
+    on_missing_col = "warn"
+  ) {
   # asserts
   stopifnot(
     "`df` must be a data.frame" = checkmate::testDataFrame(df),
-    "`col` must be a character vectior" = checkmate::testCharacter(col),
-    "`obj_prop` must be a character vectior" = checkmate::testCharacter(obj_prop),
+    "`col` must be a non-empty character vector" =
+        checkmate::testCharacter(col, min.len = 1),
+    "`obj_prop` must be a NULL or character vectior" =
+        checkmate::testCharacter(obj_prop, min.len = 1, null.ok = TRUE),
     "`nested` must be a flag" = checkmate::testFlag(nested),
     "`cell_header` must be a string" = checkmate::testString(cell_header),
     "`objs_glue` must be a string" = checkmate::testString(objs_glue),
@@ -121,10 +172,17 @@ df_col_obj_implode <- function(
     "`props_glue` must be a string" = checkmate::testString(props_glue),
     "`obj_footer` must be a string" = checkmate::testString(obj_footer),
     "`prop_fmt` must be a string" = checkmate::testString(prop_fmt),
-    "`null_prop_str` must be a string" = checkmate::testString(null_prop_str)
+    "`null_prop_str` must be a string" = checkmate::testString(null_prop_str),
+    "`on_missing_col` must be a 'warn', 'skip' or 'stop'" =
+        checkmate::testString(on_missing_col, min.chars = 1) &&
+        on_missing_col %in% c("warn", "skip", "stop"),
+    "`col` contains a column name that does not exist in df" =
+        df_test_col(df, col, on_missing_col)
   )
 
-  # iterate over colums
+  col <- df_proccess_col(df, col, on_missing_col)
+
+  # iterate over column name(s)
   for (coln in col) {
     # update data.frame column
     df[, coln] <-
@@ -139,6 +197,7 @@ df_col_obj_implode <- function(
           paste0(
             lapply(objs, function(obj) {
               # object (collapsed properties)
+              if (is.null(obj_prop)) obj_prop <- names(obj)
               paste0(
                 obj_header,
                 paste0(
@@ -178,14 +237,28 @@ df_col_obj_implode <- function(
 #' df_col_dt_format(df, "dt")
 #' df_col_dt_format(df, "dt", "%H:%M")
 #'
-df_col_dt_format <- function(df, col, dt_format = "%Y-%m-%d %H:%M:%S") {
+df_col_dt_format <- function(
+    df,
+    col,
+    dt_format = "%Y-%m-%d %H:%M:%S",
+    on_missing_col = "warn"
+  ) {
   # asserts
   stopifnot(
     "`df` must be a data.frame" = checkmate::testDataFrame(df),
-    "`col` must be a character vectior" = checkmate::testCharacter(col),
-    "`dt_format` must be a string" = checkmate::testString(dt_format)
+    "`col` must be a non-empty character vector" =
+        checkmate::testCharacter(col, min.len = 1),
+    "`dt_format` must be a string" = checkmate::testString(dt_format),
+    "`on_missing_col` must be a 'warn', 'skip' or 'stop'" =
+        checkmate::testString(on_missing_col, min.chars = 1) &&
+        on_missing_col %in% c("warn", "skip", "stop"),
+    "`col` contains a column name that does not exist in df" =
+        df_test_col(df, col, on_missing_col)
   )
 
+  col <- df_proccess_col(df, col, on_missing_col)
+
+  # iterate over column name(s)
   for (coln in col) {
     df[, coln] <-
       list(lapply(

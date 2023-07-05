@@ -1,7 +1,7 @@
 Package: oaii
 Type: Package
 Title: 'OpenAI' API R Interface
-Version: 0.1.4
+Version: 0.1.5
 Authors@R:
   person("Cezary", "Kuran", , "cezary.kuran@gmail.com",  role = c("aut", "cre"))
 Description: A comprehensive set of helpers that streamline data transmission
@@ -13,7 +13,8 @@ LazyData: true
 RoxygenNote: 7.2.3
 Imports:
   checkmate,
-  httr
+  httr,
+  magrittr
 Suggests:
   htmltools,
   markdown,

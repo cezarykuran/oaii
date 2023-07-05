@@ -2,19 +2,23 @@
 % Please edit documentation in R/api_completions.R
 \name{completions_fetch_text}
 \alias{completions_fetch_text}
-\title{Fetch list of answer(s) from response content}
+\title{Fetch completions text from response content as dialog data.frame}
 \usage{
-completions_fetch_text(res_content)
+completions_fetch_text(res_content, role = "ai", ltrim = TRUE)
 }
 \arguments{
-\item{res_content}{response object returned by \link{completions_create_request}}
+\item{res_content}{response object returned by \link{completions_request}}
+
+\item{role}{string, dialog role (phrase owner)}
+
+\item{ltrim}{flag, trim left whitespace characters}
 }
 \value{
-list of text answers
+dialog data.frame
 }
 \description{
-Fetch list of answer(s) from response content
+Fetch completions text from response content as dialog data.frame
 }
 \seealso{
-[completions_create_request()]
+[dialog_df()]
 }

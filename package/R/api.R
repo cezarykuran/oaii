@@ -39,6 +39,7 @@ request <- function(
         )
       )
 
+      # extract content
       content <- httr::content(res)
 
       stopifnot(
@@ -48,6 +49,9 @@ request <- function(
       content
     },
     error = function(e) {
+      # append oaiiResSE class
+      class(e) <- c("oaiiResSE", class(e))
+
       # append status_code
       e$status_code <- if (exists("res")) res$status_code
 
@@ -58,7 +62,7 @@ request <- function(
           if (is.null(content$error))
             paste0(", content: '", content, "'")
           else
-            paste0(", api error message: '", content$error$message, "'")
+            paste0(", recived error message: '", content$error$message, "'")
         }
       )
 
@@ -82,5 +86,17 @@ request <- function(
 #' is_error(simpleError("test"))
 #'
 is_error <- function(x) {
-  inherits(x, c("error", "simpleError"))
+  inherits(x, c("error", "simpleError", "oaiiResSE"))
+}
+
+#' Class oaiiResSE print S3 method
+#'
+#' @inherit base::print description params return
+#' @export
+#'
+print.oaiiResSE <- function (x, ...) {
+  cat("status_code:", x$status_code, "\n")
+  cat("message:", x$message, "\n")
+  cat("message_long:", x$message_long, "\n")
+  invisible(x)
 }

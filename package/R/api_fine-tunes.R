@@ -128,3 +128,40 @@ fine_tunes_list_request <- function(api_key) {
     method = "GET"
   )
 }
+
+#' Extract fine-tunes models list as data.frame from response object
+#'
+#' @param res_content response object returned by \link{fine_tunes_list_request}
+#' @return fine-tunes models as data.frame
+#' @export
+#'
+fine_tunes_fetch_list <- function(res_content) {
+  fine_tunes <- as.data.frame(do.call(rbind, res_content$data))
+  class(fine_tunes) <- c("oaiiFineTunesDF", class(fine_tunes))
+  fine_tunes
+}
+
+#' print S3 method for oaiiFilesDF class
+#'
+#' @inherit base::print description params return
+#' @export
+#'
+print.oaiiFineTunesDF <- function(x, ...) {
+  x %>%
+    df_col_dt_format(
+      c("created_at", "updated_at"),
+      on_missing_col = "skip"
+    ) %>%
+    df_col_obj_implode(
+      c("training_files", "result_files"),
+      props_glue = ", ",
+      on_missing_col = "skip"
+    ) %>%
+    df_col_obj_implode(
+      "hyperparams",
+      props_glue = ", ",
+      nested = FALSE,
+      on_missing_col = "skip"
+    ) -> x
+  NextMethod()
+}

@@ -4,7 +4,7 @@
 \alias{df_order_by_col}
 \title{Sort data.frame by column name}
 \usage{
-df_order_by_col(df, col, decreasing = FALSE)
+df_order_by_col(df, col, decreasing = FALSE, on_missing_col = "warn")
 }
 \arguments{
 \item{df}{data.frame, input data.frame}
@@ -12,6 +12,9 @@ df_order_by_col(df, col, decreasing = FALSE)
 \item{col}{string, column name as sort source}
 
 \item{decreasing}{flag, should the sort order be increasing or decreasing?}
+
+\item{on_missing_col}{string, behavior for missing column(s):
+"warn" - log warning, "skip" - skip missing column(s), "stop" - throw error}
 }
 \value{
 modified input data.frame

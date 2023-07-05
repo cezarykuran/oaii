@@ -2,8 +2,7 @@
 #'
 #' \url{https://platform.openai.com/docs/api-reference/completions}
 #' @inherit request params return
-#' @param messages list (messages "object"), a list of messages comprising
-#' the conversation so far
+#' @param messages data.frame, data.frame with messages comprising the conversation so far
 #' @param model string, ID of the model to use.
 #' See the \href{https://platform.openai.com/docs/models/model-endpoint-compatibility}{model endpoint compatibility table}
 #' for details on which models work with the Chat API.
@@ -25,10 +24,9 @@
 #'
 #' @examples
 #' \dontrun{
-#'   question <- chat_message("hi")
 #'   res_content <- chat_request(
 #'     api_key = "my-secret-api-key-string",
-#'     messages = chat_merge_messages(question)
+#'     messages = chat_messages("hi")
 #'   )
 #'   if (!is_error(res_content)) {
 #'     answer <- chat_fetch_messages(res_content)
@@ -49,7 +47,7 @@ chat_request <- function(
 ) {
   # asserts
   stopifnot(
-    "`messages` must be a list"= checkmate::testList(messages),
+    "`messages` must be a data.frame" = checkmate::testDataFrame(messages),
     "`model` must be a non-empty string" = checkmate::testString(model, min.chars = 1),
     "`temperature` must be a double" = checkmate::testDouble(temperature),
     "`n` must be a integer" = checkmate::testInt(n),
@@ -63,7 +61,7 @@ chat_request <- function(
     api_key,
     body = list(
       model = model,
-      messages = messages,
+      messages = messages[, c("role", "content")],
       temperature = temperature,
       n = n,
       max_tokens = max_tokens,
@@ -73,75 +71,19 @@ chat_request <- function(
   )
 }
 
-#' Test if x is a chat message object. See\link{chat_message}
+#' Fetch messages (dialog data.frame with chat messages) from response content
 #'
-#' @param x R object to test
-#' @return TRUE/FALSE
-#'
-is_chat_message <- function(x) {
-  req <- c("content", "role")
-  is.list(x) &&
-    all(names(x) %in% req) &&
-    all(req %in% names(x))
-}
-
-#' Create chat message "object"
-#'
-#' @param content string, message content
-#' @param role string, message role ("owner")
-#' @return chat "message object" - a list consisting of two elements: content and role
-#' @export
-#'
-#' @examples
-#' chat_message("some text message")
-#' chat_message("some another text message", role = "assistant")
-#'
-chat_message <- function(content, role = "user") {
-  # asserts
-  stopifnot(
-    "`content` must be a non-empty string" = checkmate::testString(content, min.chars = 1),
-    "`role` must be a non-empty string" = checkmate::testString(role, min.chars = 1)
-  )
-
-  list(
-    role = role,
-    content = content
-  )
-}
-
-#' Fetch messages (list of chat message "objects") from response content
-#'
+#' @seealso [dialog_df()]
 #' @param res_content response object returned by \link{chat_request}
-#' @return list of chat message "objects" (see \link{chat_message})
+#' @return dialog data.frame (see \link{dialog_df})
 #' @export
 #'
 chat_fetch_messages <- function(res_content) {
-  lapply(res_content$choices, function(l) l$message)
-}
-
-#' Merge chat messages
-#'
-#' @param ... chat message and/or messages objects
-#' @return list of chat "message objects" (see \link{chat_message})
-#' @export
-#'
-#' @examples
-#' msg1 <- chat_message("message 1")
-#' msg2 <- chat_message("message 2")
-#' chat_merge_messages(
-#'   msg1,
-#'   chat_merge_messages(msg1, msg2),
-#'   NULL,
-#'   msg2
-#' )
-#'
-chat_merge_messages <- function(...) {
-  messages <- NULL
-  for (m in list(...)) {
-    if (is.list(m)) {
-      if (is_chat_message(m)) m <- list(m)
-      messages <- c(messages, m)
-    }
-  }
-  messages
+  do.call(merge_dialog_df, lapply(res_content$choices, function(choice) {
+    dialog_df(
+      content = choice$message$content,
+      role = choice$message$role,
+      finish_reason = choice$finish_reason
+    )
+  }))
 }

@@ -23,6 +23,28 @@ files_list_request <- function(api_key) {
   )
 }
 
+#' Extract files list as data.frame from response object
+#'
+#' @param res_content response object returned by \link{files_list_request}
+#' @return files as data.frame
+#' @export
+#'
+files_fetch_list <- function(res_content) {
+  files <- as.data.frame(do.call(rbind, res_content$data))
+  class(files) <- c("oaiiFilesDF", class(files))
+  files
+}
+
+#' print S3 method for oaiiFilesDF class
+#'
+#' @inherit base::print description params return
+#' @export
+#'
+print.oaiiFilesDF <- function(x, ...) {
+  x <- df_col_dt_format(x, "created_at", on_missing_col = "skip")
+  NextMethod()
+}
+
 #' API files: upload request
 #'
 #' \url{https://platform.openai.com/docs/api-reference/files/upload}

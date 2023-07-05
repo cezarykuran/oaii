@@ -22,6 +22,38 @@ models_list_request <- function(api_key) {
   )
 }
 
+#' Extract models list as data.frame from response object
+#'
+#' @param res_content response object returned by \link{models_list_request}
+#' @return models as data.frame
+#' @export
+#'
+models_fetch_list <- function(res_content) {
+  models <- as.data.frame(do.call(rbind, res_content$data))
+  class(models) <- c("oaiiModelsDF", class(models))
+  models
+}
+
+#' print S3 method for oaiiModelsDF class
+#'
+#' @inherit base::print description params return
+#' @export
+#'
+print.oaiiModelsDF <- function(x, ...) {
+  x %>%
+    df_col_dt_format(
+      "created",
+      on_missing_col = "skip"
+    ) %>%
+    df_col_obj_implode(
+      "permission",
+      props_glue = ", ",
+      on_missing_col = "skip"
+    ) -> x
+  NextMethod()
+}
+
+
 #' API models: delete request
 #'
 #' \url{https://platform.openai.com/docs/api-reference/fine-tunes/delete-model}

@@ -59,10 +59,10 @@ server <- function(input, output, session) {
 
     textConsoleDisable(session, "chatQ")
 
-    q <- oaii::chat_message(.chatQ)
+    q <- oaii::dialog_df(.chatQ)
     res_content <- oaii::chat_request(
       .api_key,
-      oaii::chat_merge_messages(chatMessages(), q),
+      oaii::merge_dialog_df(chatMessages(), q),
       model = input$chatModel,
       temperature = as.double(input$chatTemperature),
       n = as.integer(input$chatN),
@@ -75,7 +75,7 @@ server <- function(input, output, session) {
     }
     else {
       a <- oaii::chat_fetch_messages(res_content)
-      chatMessages(oaii::chat_merge_messages(chatMessages(), q, a))
+      chatMessages(oaii::merge_dialog_df(chatMessages(), q, a))
       textConsoleReset(session, "chatQ")
     }
     textConsoleEnable(session, "chatQ")
@@ -89,7 +89,7 @@ server <- function(input, output, session) {
     },
     function(file) {
       log_debug("observeEvent(input$chatDialogContainerDownload, {..}) [content]")
-      df <- do.call(rbind, chatMessages())
+      df <- chatMessages()
       df[, "content"] <- utils::URLencode(df[, "content"])
       write.table(
         df,
@@ -114,9 +114,7 @@ server <- function(input, output, session) {
           header = TRUE
         )
         df[, "content"] <- utils::URLdecode(df[, "content"])
-        chatMessages(
-          lapply(seq_len(NROW(df)), function(n) df[n, , drop = TRUE])
-        )
+        chatMessages(df)
         showNotification(
           paste0("File '", datapath ,"' uploaded successfully!"),
           type = "message"
@@ -293,7 +291,7 @@ server <- function(input, output, session) {
       data.frame()
     }
     else {
-      as.data.frame(do.call(rbind, res_content$data))
+      oaii::files_fetch_list(res_content)
     }
   })
 
@@ -402,12 +400,12 @@ server <- function(input, output, session) {
       data.frame()
     }
     else {
-      as.data.frame(do.call(rbind, res_content$data))
+      oaii::fine_tunes_fetch_list(res_content)
     }
   })
 
   # df_col_obj_implode html table version (helper)
-  fine_tunes_df_impode_table <- function(df, col, obj_prop, nested = TRUE) {
+  fine_tunes_df_implode_table <- function(df, col, obj_prop = NULL, nested = TRUE) {
     oaii::df_col_obj_implode(
       df, col, obj_prop, nested,
       objs_glue = "",
@@ -473,13 +471,12 @@ server <- function(input, output, session) {
           oaii::df_col_dt_format(
             c("created_at", "updated_at")
           ) %>%
-          fine_tunes_df_impode_table(
+          fine_tunes_df_implode_table(
             c("training_files", "result_files"),
             c("filename", "id")
           ) %>%
-          fine_tunes_df_impode_table(
+          fine_tunes_df_implode_table(
             "hyperparams",
-            c("n_epochs", "batch_size", "prompt_loss_weight", "learning_rate_multiplier"),
             nested = FALSE
           )
       }
@@ -536,7 +533,7 @@ server <- function(input, output, session) {
 
     textConsoleDisable(session, "completionsPrompt")
 
-    res_content <- oaii::completions_create_request(
+    res_content <- oaii::completions_request(
       .api_key,
       model = input$completionsModel,
       prompt = .completionsPrompt,
@@ -551,18 +548,12 @@ server <- function(input, output, session) {
     }
     else {
       output$completionsDialogContainer <- renderUI({
-        dialogMessages(c(
-          list(oaii::completion_message(.completionsPrompt, "user")),
-          lapply(
-            oaii::completions_fetch_text(res_content),
-            function(text) {
-              oaii::completion_message(
-                sub("^[\\s]+", "", text, perl = TRUE),
-                "ai"
-              )
-            }
+        dialogMessages(
+          oaii::merge_dialog_df(
+            oaii::dialog_df(.completionsPrompt, "user"),
+            oaii::completions_fetch_text(res_content)
           )
-        ))
+        )
       })
 
       textConsoleReset(session, "completionsPrompt")

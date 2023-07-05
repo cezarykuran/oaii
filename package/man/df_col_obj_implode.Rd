@@ -7,7 +7,7 @@
 df_col_obj_implode(
   df,
   col,
-  obj_prop,
+  obj_prop = NULL,
   nested = TRUE,
   cell_header = "",
   objs_glue = "----\\n",
@@ -16,7 +16,8 @@ df_col_obj_implode(
   props_glue = "\\n",
   obj_footer = "",
   prop_fmt = "\%s: \%s",
-  null_prop_str = "[null]"
+  null_prop_str = "[null]",
+  on_missing_col = "warn"
 )
 }
 \arguments{
@@ -24,7 +25,7 @@ df_col_obj_implode(
 
 \item{col}{character vector, df column names containing objects}
 
-\item{obj_prop}{character vector, object properties}
+\item{obj_prop}{NULL/character vector, object properties (NULL means all)}
 
 \item{nested}{flag, whether the rows of the columns contain multiple objects}
 
@@ -44,6 +45,9 @@ df_col_obj_implode(
 
 \item{null_prop_str}{string, value for NULL object property
 name, value)}
+
+\item{on_missing_col}{string, behavior for missing column(s):
+"warn" - log warning, "skip" - skip missing column(s), "stop" - throw error}
 }
 \value{
 modified input data.frame

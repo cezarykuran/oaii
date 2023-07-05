@@ -64,18 +64,18 @@ files_roxygen_tpl <- function(
 #' @examples
 #' \dontrun{
 #'   prompt <- "x=1, y=2, z = x*y\nz = ?"
-#'   res_content <- completions_create_request(
+#'   res_content <- completions_request(
 #'     api_key = "my-secret-api-key-string",
 #'     model = "text-davinci-003",
 #'     prompt = prompt
 #'   )
 #'   if (!is_error(res_content)) {
-#'     answer <- chat_fetch_messages(completions_fetch_text)
+#'     answer <- completions_fetch_text(res_content)
 #'     print(answer)
 #'   }
 #' }
 #'
-completions_create_request <- function(
+completions_request <- function(
     api_key,
     model,
     prompt,
@@ -97,7 +97,8 @@ completions_create_request <- function(
   # asserts
   stopifnot(
     "`model` must be a non-empty string" = checkmate::testString(model, min.chars = 1),
-    "`prompt` must be a non-empty string"= checkmate::testString(prompt, min.chars = 1),
+    "`prompt` must be a non-empty character vector" =
+        checkmate::testCharacter(prompt, min.len = 1, min.chars = 1),
     "`suffix` must be a NULL or non-empty string"= checkmate::testString(suffix, min.chars = 1, null.ok = TRUE),
     "`max_tokens` must be a NULL or integer" = checkmate::testInt(max_tokens, null.ok = TRUE),
     "`temperature` must be a NULL or double" = checkmate::testDouble(temperature, null.ok = TRUE),
@@ -139,33 +140,23 @@ completions_create_request <- function(
   )
 }
 
-#' Fetch list of answer(s) from response content
+#' Fetch completions text from response content as dialog data.frame
 #'
-#' @seealso [completions_create_request()]
-#' @param res_content response object returned by \link{completions_create_request}
-#' @return list of text answers
+#' @seealso [dialog_df()]
+#' @param res_content response object returned by \link{completions_request}
+#' @param role string, dialog role (phrase owner)
+#' @param ltrim flag, trim left whitespace characters
+#' @return dialog data.frame
 #' @export
 #'
-completions_fetch_text <- function(res_content) {
-  lapply(res_content$choices, function(l) l$text)
-}
-
-#' Create completion "message object"
-#'
-#' @param content string, message content
-#' @param role string, message "owner"
-#' @return completion "message object" - a list consisting of two elements: content and role
-#' @export
-#'
-completion_message <- function(content, role = "user") {
-  # asserts
-  stopifnot(
-    "`content` must be a non-empty string" = checkmate::testString(content, min.chars = 1),
-    "`role` must be a non-empty string" = checkmate::testString(role, min.chars = 1)
-  )
-
-  list(
-    role = role,
-    content = content
-  )
+completions_fetch_text <- function(res_content, role = "ai", ltrim = TRUE) {
+  do.call(merge_dialog_df, lapply(res_content$choices, function(choice) {
+    dialog_df(
+      role = role,
+      content =
+        if (ltrim) sub("^[\\s]+", "", choice$text, perl = TRUE)
+        else choice$text,
+      finish_reason = choice$finish_reason
+    )
+  }))
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/api_chat.R
 \name{chat_fetch_messages}
 \alias{chat_fetch_messages}
-\title{Fetch messages (list of chat message "objects") from response content}
+\title{Fetch messages (dialog data.frame with chat messages) from response content}
 \usage{
 chat_fetch_messages(res_content)
 }
@@ -10,8 +10,11 @@ chat_fetch_messages(res_content)
 \item{res_content}{response object returned by \link{chat_request}}
 }
 \value{
-list of chat message "objects" (see \link{chat_message})
+dialog data.frame (see \link{dialog_df})
 }
 \description{
-Fetch messages (list of chat message "objects") from response content
+Fetch messages (dialog data.frame with chat messages) from response content
+}
+\seealso{
+[dialog_df()]
 }
