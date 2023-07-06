@@ -5,7 +5,9 @@ This is a very early version of the R library to facilitate communication with t
 **The oaii package contains:**
 
 - a set of helpers for communication with the API  
+- a set of helper to manipulate data
 - shiny demo application (if you want, you can test it at https://cezarykuran.shinyapps.io/oaii/).
+- CLI chat demo application
   
 **Endpoint helpers implemented so far:**
 

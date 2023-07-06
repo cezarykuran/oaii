@@ -161,7 +161,7 @@ imagesSets <- function(images, idContainer) {
 # application md file to html
 appMd <- function(md_file) {
   htmltools::HTML(markdown::renderMarkdown(system.file(
-    "app", "md", paste0(md_file, ".md"), package = "oaii"
+    "app", "shiny", "md", paste0(md_file, ".md"), package = "oaii"
   )))
 }
 

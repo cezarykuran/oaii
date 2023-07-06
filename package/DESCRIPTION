@@ -1,7 +1,7 @@
 Package: oaii
 Type: Package
 Title: 'OpenAI' API R Interface
-Version: 0.1.6
+Version: 0.1.7
 Authors@R:
   person("Cezary", "Kuran", , "cezary.kuran@gmail.com",  role = c("aut", "cre"))
 Description: A comprehensive set of helpers that streamline data transmission
@@ -17,8 +17,14 @@ Imports:
   magrittr,
   utils
 Suggests:
+  base64enc,
+  cli,
+  colourpicker,
+  fontawesome,
   htmltools,
+  log4r,
   markdown,
   shiny,
+  shinyjs,
   testthat (>= 3.0.0)
 Config/testthat/edition: 3
