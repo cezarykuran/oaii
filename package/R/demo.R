@@ -75,14 +75,15 @@ demoChatApp <- function() {
 
   display_help <- function() {
     cli::cat_line(cli::col_green("Available commands:"))
-    cli::cat_line(" /quit or /exit - terminate program")
+    cli::cat_line(" /model new_model_name")
+    cli::cat_line(" /temperature new_temperature_value")
+    cli::cat_line(" /n new_n_value")
+    cli::cat_line(" /max_tokens new_max_tokens_value")
+    cli::cat_line(" /presence_penalty new_presence_penalty_value")
+    cli::cat_line(" /frequency_penalty new_frequency_penalty_value")
+    cli::cat_line(" /settings - display current settings")
     cli::cat_line(" /help - print this information")
-    cli::cat_line(" /model model_name")
-    cli::cat_line(" /temperature temperature_value")
-    cli::cat_line(" /n n_value")
-    cli::cat_line(" /max_tokens max_tokens_value")
-    cli::cat_line(" /presence_penalty presence_penalty_value")
-    cli::cat_line(" /frequency_penalty frequency_penalty_value")
+    cli::cat_line(cli::style_bold(" /quit or /exit - terminate program"))
     cli::cat_line()
   }
 
