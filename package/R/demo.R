@@ -1,19 +1,3 @@
-#' Check the existence of required packages
-#'
-#' @param ... required package name(s)
-#' @return FALSE if one of the packages is missing, TRUE otherwise
-#' @noRd
-#'
-check_demo_req_pkgs <- function(...) {
-  req <- unlist(list(...))
-  missed <- req[!req %in% rownames(utils::installed.packages())]
-  if (length(missed)) {
-    log_error("this demo required '", paste0(missed, collapse = "', '"), "' packages!")
-    FALSE
-  }
-  else TRUE
-}
-
 #' Run demo shiny app
 #'
 #' @inherit shiny::runApp description params return
@@ -21,11 +5,11 @@ check_demo_req_pkgs <- function(...) {
 #'
 #' @examples
 #' \dontrun{
-#'   demoShinyApp()
-#'   demoShinyApp("127.0.0.1", 80)
+#'   demo_shiny()
+#'   demo_shiny("127.0.0.1", 80)
 #' }
 #'
-demoShinyApp <- function(host = "0.0.0.0", port = 3838) {
+demo_shiny <- function(host = "0.0.0.0", port = 3838) {
   req_pkgs <- c(
     "base64enc",
     "cli",
@@ -46,149 +30,78 @@ demoShinyApp <- function(host = "0.0.0.0", port = 3838) {
   }
 }
 
-#' Run demo chat console application
+#' Run one of the console application
 #'
-#' Run simle demo chat application in the console. If you do not want to enter
-#' the api key, set the API_KEY environment variable.
+#' Run one of the console application from the package app/cli directory.
+#' @inheritParams request
+#' @param show_source flag, should the code of the selected script be displayed
+#' before executing it?
 #' @return unused
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#'   demoChatApp()
+#'   demo_cli()
+#'   demo_cli("super-secret-key")
 #' }
-demoChatApp <- function() {
-  if (!check_demo_req_pkgs("cli")) return()
+#'
+demo_cli <- function(api_key = Sys.getenv("API_KEY"), show_source = TRUE) {
+  if (!check_demo_req_pkgs("cli", "jsonlite")) return()
 
-  # ---- settings -----
-
-  settings <- new.env()
-  settings$model <- "gpt-3.5-turbo"
-  settings$temperature <- 0.7
-  settings$n <- 1
-  settings$max_tokens <- 50
-  settings$presence_penalty <- 0
-  settings$frequency_penalty <- 0
-
-
-  # ---- helpers ----
-
-  display_help <- function() {
-    cli::cat_line(cli::col_green("Available commands:"))
-    cli::cat_line(" /model new_model_name")
-    cli::cat_line(" /temperature new_temperature_value")
-    cli::cat_line(" /n new_n_value")
-    cli::cat_line(" /max_tokens new_max_tokens_value")
-    cli::cat_line(" /presence_penalty new_presence_penalty_value")
-    cli::cat_line(" /frequency_penalty new_frequency_penalty_value")
-    cli::cat_line(" /settings - display current settings")
-    cli::cat_line(" /help - print this information")
-    cli::cat_line(cli::style_bold(" /quit or /exit - terminate program"))
-    cli::cat_line()
-  }
-
-  display_settings <- function() {
-    n_size <- max(nchar(names(settings))) + 1
-    fmt <- paste0(" %-", n_size, "s: %s")
-
-    cli::cat_line(cli::col_green("Current settings:"))
-    for (n in names(settings)) {
-      cli::cat_line(sprintf(fmt, n, settings[[n]]))
-    }
-    cli::cat_line()
-  }
-
-  is_cmd <- function(txt) substr(txt, 1, 1) == "/"
-
-  exec_cmd <- function(txt) {
-    cmd <- unlist(strsplit(substring(txt, 2), "\\s+", perl = TRUE))
-    switch(cmd[1],
-      # display info
-      help = display_help(),
-      settings = display_settings(),
-
-      # settings (integers)
-      n =,
-      max_tokens =
-      {
-        settings[[cmd[1]]] <- as.integer(cmd[2])
-        display_settings()
-      },
-      # settings (floats)
-      temperature =,
-      presence_penalty =,
-      frequency_penalty =
-      {
-        settings[[cmd[1]]] <- as.double(cmd[2])
-        display_settings()
-      },
-
-      # default
-      {
-       cli::cat_line(cli::col_br_red("Unknown command '", cmd[1], "'"))
-       display_help()
-      }
-    )
-  }
-
-
-  # ---- main ----
-
-  # get OpenAI api key
-  API_KEY <- Sys.getenv("API_KEY")
-  while(!nchar(API_KEY)) {
-    API_KEY <- readline("API_KEY: ")
+  # get OpenAI api key (if missing)
+  while(!nchar(api_key)) {
+    api_key <- readline("api_key: ")
   }
   cli::cat_line()
 
-  # display help
-  display_help()
+  # get list of available scripts
+  apps <- sort(list.files(
+    system.file("app", "cli", package = "oaii"),
+    pattern = "*.R",
+    full.names = TRUE
+  ))
 
-  # start conversation
-  dialog <- NULL
-  repeat {
-    # get text from user
-    text <- ""
-    while(!nchar(text)) {
-      text <- readline(cli::col_blue("you: "))
+  # let user chose script/application
+  n <- NA
+  while(is.na(n) || n < 1 || n > length(apps)+1) {
+    cli::cat_line("Select demo CLI app:", col = "green")
+    for(n in seq_along(apps)) {
+      app_basename <- basename(apps[n])
+      app_name <- gsub("_", " ", substr(app_basename, 4, nchar(app_basename) -2))
+      cli::cat_line(" ", cli::style_bold(n), ": ", app_name)
     }
+    cli::cat_line(" ", cli::style_bold(n+1), ": ", cli::style_bold("exit"))
 
-    # check if the text is a command, if so, process it
-    if (is_cmd(text)) {
-      if (text %in% c("/exit", "/quit")) return(invisible(NULL))
-      exec_cmd(text)
-      next
-    }
-    # create dialog data.frame from `text`
-    dialog_user <- dialog_df(text)
-
-    # send request
-    log <- utils::capture.output({
-      res_content <- chat_request(
-        API_KEY,
-        merge_dialog_df(dialog, dialog_user),
-        model = settings$model,
-        temperature = settings$temperature,
-        n = settings$n,
-        max_tokens = settings$max_tokens,
-        presence_penalty = settings$presence_penalty,
-        frequency_penalty = settings$frequency_penalty
-      )
-    }, type = "message")
-
-    # process response
-    if (is_error(res_content)) {
-      for (n in seq_along(log)) {
-        cli::cat_line(cli::col_red(log[n]))
-      }
-    }
-    else {
-      dialog_ai <- chat_fetch_messages(res_content)
-      dialog <- merge_dialog_df(dialog, dialog_user, dialog_ai)
-      for(n in seq(NROW(dialog_ai))) {
-        cat(cli::col_blue("ai: "))
-        cli::cat_line(dialog_ai[n, "content"])
-      }
-    }
+    n <- as.integer(readline("selection: "))
+    cli::cat_line()
   }
+  if (n == length(apps)+1) return(invisible())
+
+  # display app source
+  if (show_source) {
+    cli::cli_rule("Script content")
+    cli::cat_line(readLines(apps[n]))
+    cli::cat_line()
+  }
+
+  # run app and display output
+  cli::cli_rule("Script output")
+  cli::cat_line()
+  source(file  = apps[n], echo = FALSE, local = TRUE)
+}
+
+#' Check the existence of required packages
+#'
+#' @param ... required package name(s)
+#' @return FALSE if one of the packages is missing, TRUE otherwise
+#' @noRd
+#'
+check_demo_req_pkgs <- function(...) {
+  req <- unlist(list(...))
+  missed <- req[!req %in% rownames(utils::installed.packages())]
+  if (length(missed)) {
+    log_error("this demo required '", paste0(missed, collapse = "', '"), "' packages!")
+    FALSE
+  }
+  else TRUE
 }

@@ -32,7 +32,7 @@ log_debug <- function(...) do.call(logger$debug, list(...))
 #' Set log functions used by `oaii` package
 #'
 #' @param ... parameters in form log_level = function
-#' @return NULL
+#' @return invisible(NULL)
 #' @export
 #'
 #' @examples

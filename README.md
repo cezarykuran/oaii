@@ -1,14 +1,14 @@
 # OpenAI API R implementation
 
-This is a very early version of the R library to facilitate communication with the OpenAI API.
+This is an early version of an R library aimed at streamlining communication with the OpenAI API.
 
-**The oaii package contains:**
+**The oaii package offers the following features:**
 
-- a set of helpers for communication with the API  
-- a set of helper to manipulate data
-- shiny demo application (if you want, you can test it at https://cezarykuran.shinyapps.io/oaii/).
-- CLI chat demo application
-  
+- A comprehensive set of helper functions for seamless communication with API.
+- Useful tools for efficient data manipulation and transformation.
+- An interactive Shiny demo application, which can be accessed at https://cezarykuran.shinyapps.io/oaii/ (feel free to explore its functionality!).
+- Several demonstration terminal applications written as R scripts. These applications serve as practical examples, demonstrating how to effectively leverage the package's functions for API communication.
+
 **Endpoint helpers implemented so far:**
 
 - files
@@ -19,8 +19,11 @@ This is a very early version of the R library to facilitate communication with t
 - image generator, image editor (rather for fun)
 
 ## Repo structure
+
 All API helpers can be found in the [package/R](https://github.com/cezarykuran/oaii/tree/master/package/R) directory.
-Shiny demo application is in the [package/inst/app](https://github.com/cezarykuran/oaii/tree/master/package/inst/app).
+
+Shiny demo application is in the [package/inst/app/shiny](https://github.com/cezarykuran/oaii/tree/master/package/inst/app/shiny)  directory.  
+CLI demo R scrips are in the [package/inst/app/cli](https://github.com/cezarykuran/oaii/tree/master/package/inst/app/cli)  directory.
 
 ## Instalation
 
@@ -28,9 +31,9 @@ Shiny demo application is in the [package/inst/app](https://github.com/cezarykur
 
 ## Other
 
-**OpenAI useful links:**
+**[OpenAI](https://openai.com/) useful links:**
 
-- [homepage](https://openai.com/)
-- [API](https://platform.openai.com/docs/api-reference/)
+- [API reference](https://platform.openai.com/docs/api-reference/)
+- [API help pages](https://help.openai.com/en/collections/3675931-openai-api)
 - [docs](https://platform.openai.com/docs/introduction)
 - [openai-cookbook](https://github.com/openai/openai-cookbook/)

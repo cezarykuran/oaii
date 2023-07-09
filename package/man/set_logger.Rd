@@ -9,6 +9,9 @@ set_logger(...)
 \arguments{
 \item{...}{parameters in form log_level = function}
 }
+\value{
+invisible(NULL)
+}
 \description{
 Set log functions used by `oaii` package
 }
