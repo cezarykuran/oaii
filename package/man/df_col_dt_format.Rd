@@ -7,7 +7,8 @@
 df_col_dt_format(
   df,
   col,
-  dt_format = "\%Y-\%m-\%d \%H:\%M:\%S",
+  format = "\%Y-\%m-\%d \%H:\%M:\%S",
+  tz = "",
   on_missing_col = "warn"
 )
 }
@@ -16,7 +17,15 @@ df_col_dt_format(
 
 \item{col}{character vector, column names of the df that will be modified}
 
-\item{dt_format}{string, date time format}
+\item{format}{A character string. The default for the format methods is
+"%Y-%m-%d %H:%M:%S" if any element has a time component which is not midnight,
+and "%Y-%m-%d" otherwise. If options("digits.secs") is set, up to the specified
+number of digits will be printed for seconds.}
+
+\item{tz}{A character string specifying the time zone to be used for
+the conversion. System-specific (see as.POSIXlt), but "" is the current time
+zone, and "GMT" is UTC. Invalid values are most commonly treated as UTC,
+on some platforms with a warning.}
 
 \item{on_missing_col}{string, behavior for missing column(s):
 "warn" - log warning, "skip" - skip missing column(s), "stop" - throw error}

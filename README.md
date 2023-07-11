@@ -22,8 +22,8 @@ This is an early version of an R library aimed at streamlining communication wit
 
 All API helpers can be found in the [package/R](https://github.com/cezarykuran/oaii/tree/master/package/R) directory.
 
-Shiny demo application is in the [package/inst/app/shiny](https://github.com/cezarykuran/oaii/tree/master/package/inst/app/shiny)  directory.  
-CLI demo R scrips are in the [package/inst/app/cli](https://github.com/cezarykuran/oaii/tree/master/package/inst/app/cli)  directory.
+Shiny demo application is in the [package/inst/app/shiny](https://github.com/cezarykuran/oaii/tree/master/package/inst/app/shiny)  directory. To find information on how to run the application, type `?oaii::demo_shiny()`.
+CLI demo R scrips are in the [package/inst/app/cli](https://github.com/cezarykuran/oaii/tree/master/package/inst/app/cli)  directory. For more information, type `?oaii::demo_cli()`.
 
 ## Instalation
 

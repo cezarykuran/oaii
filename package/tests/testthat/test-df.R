@@ -72,10 +72,10 @@ test_that("df_col_dt_format", {
   )
 
   df_out <- data.frame(a = 1:3)
-  df_out$dt <- list("2023.06.27 14:23:21", "2023.06.27 14:23:22", "2023.06.27 14:23:23")
+  df_out$dt <- list("2023.06.27 12:23:21", "2023.06.27 12:23:22", "2023.06.27 12:23:23")
 
   expect_equal(
-    df_col_dt_format(df_in, "dt", "%Y.%m.%d %H:%M:%S"),
+    df_col_dt_format(df_in, "dt", "%Y.%m.%d %H:%M:%S", tz = "GMT"),
     df_out
   )
 })

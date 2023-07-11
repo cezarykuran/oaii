@@ -226,7 +226,14 @@ df_col_obj_implode <- function(
 #'
 #' @inherit df_roxygen_tpl params return
 #' @param col character vector, column names of the df that will be modified
-#' @param dt_format string, date time format
+#' @param format A character string. The default for the format methods is
+#' "%Y-%m-%d %H:%M:%S" if any element has a time component which is not midnight,
+#' and "%Y-%m-%d" otherwise. If options("digits.secs") is set, up to the specified
+#' number of digits will be printed for seconds.
+#' @param tz A character string specifying the time zone to be used for
+#' the conversion. System-specific (see as.POSIXlt), but "" is the current time
+#' zone, and "GMT" is UTC. Invalid values are most commonly treated as UTC,
+#' on some platforms with a warning.
 #' @export
 #'
 #' @examples
@@ -240,7 +247,8 @@ df_col_obj_implode <- function(
 df_col_dt_format <- function(
     df,
     col,
-    dt_format = "%Y-%m-%d %H:%M:%S",
+    format = "%Y-%m-%d %H:%M:%S",
+    tz = "",
     on_missing_col = "warn"
   ) {
   # asserts
@@ -248,7 +256,8 @@ df_col_dt_format <- function(
     "`df` must be a data.frame" = checkmate::testDataFrame(df),
     "`col` must be a non-empty character vector" =
         checkmate::testCharacter(col, min.len = 1),
-    "`dt_format` must be a string" = checkmate::testString(dt_format),
+    "`format` must be a string" = checkmate::testString(format),
+    "`tz` must be a string" = checkmate::testString(tz),
     "`on_missing_col` must be a 'warn', 'skip' or 'stop'" =
         checkmate::testString(on_missing_col, min.chars = 1) &&
         on_missing_col %in% c("warn", "skip", "stop"),
@@ -264,9 +273,10 @@ df_col_dt_format <- function(
       list(lapply(
         df[, coln],
         function(dt) {
-          format(
-            as.POSIXct(dt, origin="1970-01-01"),
-            dt_format,
+          base::format(
+            as.POSIXct(dt, origin="1970-01-01", tz = "GMT"),
+            format = format,
+            tz = tz,
             usetz = FALSE
           )
         }
