@@ -5,8 +5,7 @@ Version: 0.1.9
 Authors@R:
   person("Cezary", "Kuran", , "cezary.kuran@gmail.com",  role = c("aut", "cre"))
 Description: A comprehensive set of helpers that streamline data transmission
-  and processing, making it effortless to interact with the 'OpenAI' API
-  <https://platform.openai.com/docs/api-reference/>.
+  and processing, making it effortless to interact with the 'OpenAI' API.
 License: MIT + file LICENSE
 URL: https://github.com/cezarykuran/oaii
 Encoding: UTF-8

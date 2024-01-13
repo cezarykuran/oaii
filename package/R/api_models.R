@@ -1,17 +1,7 @@
-#' API models: roxygen template
-#'
-#' @inherit request params return
-#' @keywords internal
-#'
-files_roxygen_tpl <- function(
-    api_key
-) NULL
-
-
 #' API models: list request
 #'
 #' To get more details, visit https://platform.openai.com/docs/api-reference/models/list
-#' @inherit fine_tunes_roxygen_tpl params return
+#' @inherit request params return
 #' @export
 #'
 #' @examples
@@ -67,7 +57,7 @@ print.oaiiModelsDF <- function(x, ...) {
 #' API models: delete request
 #'
 #' To get more details, visit https://platform.openai.com/docs/api-reference/fine-tunes/delete-model
-#' @inherit fine_tunes_roxygen_tpl params return
+#' @inherit request params return
 #' @param model string, the model to delete
 #' @export
 #'

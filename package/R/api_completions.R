@@ -1,16 +1,7 @@
-#' API completions: roxygen template
-#'
-#' @inherit request params return
-#' @keywords internal
-#'
-files_roxygen_tpl <- function(
-    api_key
-) NULL
-
 #' API completions: create request
 #'
 #' To get more details, visit https://platform.openai.com/docs/api-reference/completions/create
-#' @inherit files_roxygen_tpl params return
+#' @inherit request params return
 #' @param prompt API endpoint parameter
 #' @param model string, ID of the model to use. You can use the list models
 #' (https://platform.openai.com/docs/api-reference/models/list)

@@ -1,17 +1,7 @@
-#' API fine tunes: roxygen template
-#'
-#' @inherit request params return
-#' @keywords internal
-#'
-fine_tunes_roxygen_tpl <- function(
-    api_key
-) NULL
-
-
 #' API fine tunes: create (model) request
 #'
 #' To get more details, visit https://platform.openai.com/docs/api-reference/fine-tunes/create
-#' @inherit fine_tunes_roxygen_tpl params return
+#' @inherit request params return
 #' @param training_file string, the ID of an uploaded file that contains
 #' training data. See files_upload_request().
 #' @param validation_file string/NULL, the ID of an uploaded file that contains
@@ -118,7 +108,7 @@ fine_tunes_create_request <- function(
 #' API fine tunes: list request
 #'
 #' To get more details, visit https://platform.openai.com/docs/api-reference/fine-tunes/list
-#' @inherit fine_tunes_roxygen_tpl params return
+#' @inherit request params return
 #' @export
 #'
 #' @examples

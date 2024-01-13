@@ -273,12 +273,9 @@ df_col_dt_format <- function(
       list(lapply(
         df[, coln],
         function(dt) {
-          strftime(
-            as.POSIXct(dt, origin="1970-01-01", tz = "GMT"),
-            format = format,
-            tz = tz,
-            usetz = FALSE
-          )
+          dt_POSIXct <- as.POSIXct(dt, origin="1970-01-01", tz = "GMT")
+          attr(dt_POSIXct,"tzone") <- "GMT"
+          strftime(dt_POSIXct, format = format, tz = tz, usetz = FALSE)
         }
       ))
   }
