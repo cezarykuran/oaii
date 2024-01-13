@@ -2,7 +2,7 @@
 #'
 #' @param content string, message content
 #' @param role string, message role ("owner")
-#' @param finish_reason see \url{https://platform.openai.com/docs/guides/gpt/chat-completions-response-format}
+#' @param finish_reason see https://platform.openai.com/docs/guides/gpt/chat-completions-response-format
 #' @return A one-row data.frame with columns: `content`, `role` and `finish_reason`
 #' @export
 #'

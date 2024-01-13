@@ -273,7 +273,7 @@ df_col_dt_format <- function(
       list(lapply(
         df[, coln],
         function(dt) {
-          base::format(
+          strftime(
             as.POSIXct(dt, origin="1970-01-01", tz = "GMT"),
             format = format,
             tz = tz,
