@@ -1,10 +1,10 @@
 #' API chat: send create (chat) request
 #'
-#' \url{https://platform.openai.com/docs/api-reference/chat/create}
+#' To get more details, visit https://platform.openai.com/docs/api-reference/chat/create
 #' @inherit request params return
 #' @param messages data.frame, data.frame with messages comprising the conversation so far
 #' @param model string, ID of the model to use.
-#' See the \href{https://platform.openai.com/docs/models/model-endpoint-compatibility}{model endpoint compatibility table}
+#' See the model endpoint compatibility table (https://platform.openai.com/docs/models/model-endpoint-compatibility)
 #' for details on which models work with the Chat API.
 #' @param temperature double, what sampling temperature to use, between 0 and 2.
 #' Higher values like 0.8 will make the output more random,

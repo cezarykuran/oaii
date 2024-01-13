@@ -9,18 +9,18 @@ files_roxygen_tpl <- function(
 
 #' API completions: create request
 #'
-#' \url{https://platform.openai.com/docs/api-reference/completions/create}
+#' To get more details, visit https://platform.openai.com/docs/api-reference/completions/create
 #' @inherit files_roxygen_tpl params return
 #' @param prompt API endpoint parameter
-#' @param model string, ID of the model to use. You can use the
-#' \href{https://platform.openai.com/docs/api-reference/models/list}{List models}
-#' API to see all of your available models, or see our
-#' \href{https://platform.openai.com/docs/models/overview}{Model overview}
-#' for descriptions of them.API endpoint parameter
+#' @param model string, ID of the model to use. You can use the list models
+#' (https://platform.openai.com/docs/api-reference/models/list)
+#' API to see all of your available models, or see our model overview
+#' (https://platform.openai.com/docs/models/overview)
+#' for descriptions of them.
 #' @param suffix string/NULL, the suffix that comes after a completion
 #' of inserted text.
-#' @param max_tokens integer, the maximum number of
-#' \href{https://platform.openai.com/tokenizer}{tokens} to generate
+#' @param max_tokens integer, the maximum number of tokens
+#' (https://platform.openai.com/tokenizer) to generate
 #' in the completion. The token count of your prompt plus max_tokens cannot
 #' exceed the model's context length.
 #' @param temperature double, what sampling temperature to use, between 0 and 2.

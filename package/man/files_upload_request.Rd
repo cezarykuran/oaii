@@ -8,7 +8,7 @@ files_upload_request(api_key, file, purpose)
 }
 \arguments{
 \item{api_key}{string, OpenAI API key
-(see \url{https://platform.openai.com/account/api-keys})}
+(see https://platform.openai.com/account/api-keys)}
 
 \item{file}{string, path or content of the JSON Lines file to be uploaded}
 
@@ -22,5 +22,5 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-\url{https://platform.openai.com/docs/api-reference/files/upload}
+To get more details, visit https://platform.openai.com/docs/api-reference/files/upload
 }

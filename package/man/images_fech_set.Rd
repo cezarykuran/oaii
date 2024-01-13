@@ -21,6 +21,6 @@ Image set as a list consisting of three elements: `data`, `prompt`
 and `size`
 }
 \description{
-\url{https://platform.openai.com/docs/api-reference/images/create}
-\url{https://platform.openai.com/docs/api-reference/images/edits}
+To get more details, visit https://platform.openai.com/docs/api-reference/images/create
+https://platform.openai.com/docs/api-reference/images/edits
 }

@@ -15,7 +15,7 @@ images_generator_request(
 }
 \arguments{
 \item{api_key}{string, OpenAI API key
-(see \url{https://platform.openai.com/account/api-keys})}
+(see https://platform.openai.com/account/api-keys)}
 
 \item{prompt}{string, a text description of the desired image(s).
 The maximum length is 1000 characters.}
@@ -38,5 +38,5 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-\url{https://platform.openai.com/docs/api-reference/images/create}
+To get more details, visit https://platform.openai.com/docs/api-reference/images/create
 }

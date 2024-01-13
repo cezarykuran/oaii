@@ -10,7 +10,7 @@ files_roxygen_tpl <- function(
 
 #' API models: list request
 #'
-#' \url{https://platform.openai.com/docs/api-reference/models/list}
+#' To get more details, visit https://platform.openai.com/docs/api-reference/models/list
 #' @inherit fine_tunes_roxygen_tpl params return
 #' @export
 #'
@@ -66,7 +66,7 @@ print.oaiiModelsDF <- function(x, ...) {
 
 #' API models: delete request
 #'
-#' \url{https://platform.openai.com/docs/api-reference/fine-tunes/delete-model}
+#' To get more details, visit https://platform.openai.com/docs/api-reference/fine-tunes/delete-model
 #' @inherit fine_tunes_roxygen_tpl params return
 #' @param model string, the model to delete
 #' @export

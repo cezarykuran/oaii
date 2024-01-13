@@ -17,12 +17,12 @@ chat_request(
 }
 \arguments{
 \item{api_key}{string, OpenAI API key
-(see \url{https://platform.openai.com/account/api-keys})}
+(see https://platform.openai.com/account/api-keys)}
 
 \item{messages}{data.frame, data.frame with messages comprising the conversation so far}
 
 \item{model}{string, ID of the model to use.
-See the \href{https://platform.openai.com/docs/models/model-endpoint-compatibility}{model endpoint compatibility table}
+See the model endpoint compatibility table (https://platform.openai.com/docs/models/model-endpoint-compatibility)
 for details on which models work with the Chat API.}
 
 \item{temperature}{double, what sampling temperature to use, between 0 and 2.
@@ -51,7 +51,7 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-\url{https://platform.openai.com/docs/api-reference/chat/create}
+To get more details, visit https://platform.openai.com/docs/api-reference/chat/create
 }
 \examples{
 \dontrun{

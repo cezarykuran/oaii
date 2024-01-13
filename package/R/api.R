@@ -1,10 +1,10 @@
 #' API request
 #'
-#' \url{https://platform.openai.com/docs/api-reference/making-requests}
+#' To get more details, visit https://platform.openai.com/docs/api-reference/making-requests
 #' @inheritParams httr::POST
 #' @param endpoint string, API endpoint url
 #' @param api_key string, OpenAI API key
-#' (see \url{https://platform.openai.com/account/api-keys})
+#' (see https://platform.openai.com/account/api-keys)
 #' @param method string, request method
 #' @return \link[httr]{content} of the httr \link[httr]{response} object
 #' or SimpleError (\link[base]{conditions}) enhanced with

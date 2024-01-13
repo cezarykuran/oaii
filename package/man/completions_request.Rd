@@ -25,21 +25,21 @@ completions_request(
 }
 \arguments{
 \item{api_key}{string, OpenAI API key
-(see \url{https://platform.openai.com/account/api-keys})}
+(see https://platform.openai.com/account/api-keys)}
 
-\item{model}{string, ID of the model to use. You can use the
-\href{https://platform.openai.com/docs/api-reference/models/list}{List models}
-API to see all of your available models, or see our
-\href{https://platform.openai.com/docs/models/overview}{Model overview}
-for descriptions of them.API endpoint parameter}
+\item{model}{string, ID of the model to use. You can use the list models
+(https://platform.openai.com/docs/api-reference/models/list)
+API to see all of your available models, or see our model overview
+(https://platform.openai.com/docs/models/overview)
+for descriptions of them.}
 
 \item{prompt}{API endpoint parameter}
 
 \item{suffix}{string/NULL, the suffix that comes after a completion
 of inserted text.}
 
-\item{max_tokens}{integer, the maximum number of
-\href{https://platform.openai.com/tokenizer}{tokens} to generate
+\item{max_tokens}{integer, the maximum number of tokens
+(https://platform.openai.com/tokenizer) to generate
 in the completion. The token count of your prompt plus max_tokens cannot
 exceed the model's context length.}
 
@@ -97,7 +97,7 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-\url{https://platform.openai.com/docs/api-reference/completions/create}
+To get more details, visit https://platform.openai.com/docs/api-reference/completions/create
 }
 \examples{
 \dontrun{

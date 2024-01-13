@@ -10,7 +10,7 @@ request(endpoint, api_key, body = NULL, encode = "json", method = "POST")
 \item{endpoint}{string, API endpoint url}
 
 \item{api_key}{string, OpenAI API key
-(see \url{https://platform.openai.com/account/api-keys})}
+(see https://platform.openai.com/account/api-keys)}
 
 \item{body}{One of the following:
 \itemize{
@@ -49,5 +49,5 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-\url{https://platform.openai.com/docs/api-reference/making-requests}
+To get more details, visit https://platform.openai.com/docs/api-reference/making-requests
 }

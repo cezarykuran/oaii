@@ -11,7 +11,7 @@ files_roxygen_tpl <- function(
 
 #' API files: get list request
 #'
-#' \url{https://platform.openai.com/docs/api-reference/files/list}
+#' To get more details, visit https://platform.openai.com/docs/api-reference/files/list
 #' @inherit files_roxygen_tpl params return
 #' @export
 #'
@@ -57,7 +57,7 @@ print.oaiiFilesDF <- function(x, ...) {
 
 #' API files: upload request
 #'
-#' \url{https://platform.openai.com/docs/api-reference/files/upload}
+#' To get more details, visit https://platform.openai.com/docs/api-reference/files/upload
 #' @inherit files_roxygen_tpl params return
 #' @param file string, path or content of the JSON Lines file to be uploaded
 #' @param purpose string, the intended purpose of the uploaded documents.
@@ -95,7 +95,7 @@ files_upload_request <- function(api_key, file, purpose) {
 
 #' API files: delete request
 #'
-#' \url{https://platform.openai.com/docs/api-reference/files/delete}
+#' To get more details, visit https://platform.openai.com/docs/api-reference/files/delete
 #' @inherit files_roxygen_tpl params return
 #' @export
 #'
@@ -114,7 +114,7 @@ files_delete_request <- function(api_key, file_id) {
 
 #' API files: retrieve request
 #'
-#' \url{https://platform.openai.com/docs/api-reference/files/retrieve}
+#' To get more details, visit https://platform.openai.com/docs/api-reference/files/retrieve
 #' @inherit files_roxygen_tpl params return
 #' @export
 #'
@@ -134,7 +134,7 @@ files_retrieve_request <- function(api_key, file_id) {
 
 #' API files: retrieve content request
 #'
-#' \url{https://platform.openai.com/docs/api-reference/files/retrieve-content}
+#' To get more details, visit https://platform.openai.com/docs/api-reference/files/retrieve-content
 #' @inherit files_roxygen_tpl params return
 #' @export
 #'

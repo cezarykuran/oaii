@@ -17,7 +17,7 @@ images_edit_request(
 }
 \arguments{
 \item{api_key}{string, OpenAI API key
-(see \url{https://platform.openai.com/account/api-keys})}
+(see https://platform.openai.com/account/api-keys)}
 
 \item{image}{string/raw, the image to edit. Must be a valid PNG file, less
 than 4MB, and square. If mask is not provided, image must have transparency,
@@ -48,5 +48,5 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-\url{https://platform.openai.com/docs/api-reference/images/edits}
+To get more details, visit https://platform.openai.com/docs/api-reference/images/edits
 }

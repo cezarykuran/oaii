@@ -8,7 +8,7 @@ demo_cli(api_key = Sys.getenv("API_KEY"), show_source = TRUE)
 }
 \arguments{
 \item{api_key}{string, OpenAI API key
-(see \url{https://platform.openai.com/account/api-keys})}
+(see https://platform.openai.com/account/api-keys)}
 
 \item{show_source}{flag, should the code of the selected script be displayed
 before executing it?}

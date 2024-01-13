@@ -23,7 +23,7 @@ images_roxygen_tpl <- function(
 
 #' API images: create (generator) request
 #'
-#' \url{https://platform.openai.com/docs/api-reference/images/create}
+#' To get more details, visit https://platform.openai.com/docs/api-reference/images/create
 #' @inherit images_roxygen_tpl params return
 #' @export
 #'
@@ -63,7 +63,7 @@ images_generator_request <- function(
 
 #' API images: edit request
 #'
-#' \url{https://platform.openai.com/docs/api-reference/images/edits}
+#' To get more details, visit https://platform.openai.com/docs/api-reference/images/edits
 #' @inherit images_roxygen_tpl params return
 #' @param image string/raw, the image to edit. Must be a valid PNG file, less
 #' than 4MB, and square. If mask is not provided, image must have transparency,
@@ -144,8 +144,8 @@ images_edit_request <- function(
 
 #' Fetch image set from response content
 #'
-#' \url{https://platform.openai.com/docs/api-reference/images/create}
-#' \url{https://platform.openai.com/docs/api-reference/images/edits}
+#' To get more details, visit https://platform.openai.com/docs/api-reference/images/create
+#' https://platform.openai.com/docs/api-reference/images/edits
 #' @inherit images_roxygen_tpl params
 #' @param res_content response object returned by
 #' \link{images_generator_request} or \link{images_edit_request}

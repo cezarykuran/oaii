@@ -8,7 +8,7 @@ models_delete_request(api_key, model)
 }
 \arguments{
 \item{api_key}{string, OpenAI API key
-(see \url{https://platform.openai.com/account/api-keys})}
+(see https://platform.openai.com/account/api-keys)}
 
 \item{model}{string, the model to delete}
 }
@@ -19,5 +19,5 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-\url{https://platform.openai.com/docs/api-reference/fine-tunes/delete-model}
+To get more details, visit https://platform.openai.com/docs/api-reference/fine-tunes/delete-model
 }

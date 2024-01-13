@@ -13,7 +13,7 @@ files_roxygen_tpl(api_key)
 }
 \arguments{
 \item{api_key}{string, OpenAI API key
-(see \url{https://platform.openai.com/account/api-keys})}
+(see https://platform.openai.com/account/api-keys)}
 
 \item{file_id}{string, id of the uploaded file}
 }

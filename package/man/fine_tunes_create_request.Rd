@@ -22,7 +22,7 @@ fine_tunes_create_request(
 }
 \arguments{
 \item{api_key}{string, OpenAI API key
-(see \url{https://platform.openai.com/account/api-keys})}
+(see https://platform.openai.com/account/api-keys)}
 
 \item{training_file}{string, the ID of an uploaded file that contains
 training data. See files_upload_request().}
@@ -33,7 +33,7 @@ validation data.}
 \item{model}{string, the name of the base model to fine-tune.
 You can select one of "ada", "babbage", "curie", "davinci", or a fine-tuned
 model created after 2022-04-21. To learn more about these models, see the
-\href{https://platform.openai.com/docs/models}{Models} documentation.}
+models (https://platform.openai.com/docs/models) documentation.}
 
 \item{n_epochs}{integer, the number of epochs to train the model for.
 An epoch refers to one full cycle through the training dataset.}
@@ -94,5 +94,5 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-\url{https://platform.openai.com/docs/api-reference/fine-tunes/create}
+To get more details, visit https://platform.openai.com/docs/api-reference/fine-tunes/create
 }

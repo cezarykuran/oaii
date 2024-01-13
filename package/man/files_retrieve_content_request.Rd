@@ -8,7 +8,7 @@ files_retrieve_content_request(api_key, file_id)
 }
 \arguments{
 \item{api_key}{string, OpenAI API key
-(see \url{https://platform.openai.com/account/api-keys})}
+(see https://platform.openai.com/account/api-keys)}
 
 \item{file_id}{string, id of the uploaded file}
 }
@@ -19,5 +19,5 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-\url{https://platform.openai.com/docs/api-reference/files/retrieve-content}
+To get more details, visit https://platform.openai.com/docs/api-reference/files/retrieve-content
 }
