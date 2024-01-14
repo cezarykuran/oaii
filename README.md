@@ -1,6 +1,6 @@
 # OpenAI API R implementation
 
-This is an early version of an R library aimed at streamlining communication with the OpenAI API.
+This is an R library aimed at streamlining communication with the OpenAI API.
 
 **The oaii package offers the following features:**
 
@@ -11,12 +11,15 @@ This is an early version of an R library aimed at streamlining communication wit
 
 **Endpoint helpers implemented so far:**
 
+- audio
+- chat
+- completions
+- embeddings
 - files
 - fine tunes
-- completions
-- models  
-- chat
-- image generator, image editor (rather for fun)
+- image generator, image editor
+- models
+- moderations
 
 ## Repo structure
 
@@ -27,6 +30,7 @@ CLI demo R scrips are in the [package/inst/app/cli](https://github.com/cezarykur
 
 ## Instalation
 
+`install.packages('oaii')`
 `devtools::install_github("https://github.com/cezarykuran/oaii.git", subdir = "package")`
 
 ## Other

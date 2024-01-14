@@ -81,13 +81,7 @@ files_upload_request <- function(api_key, file, purpose) {
     api_key = api_key,
     body = list(
       purpose = purpose,
-      file =
-        if (file.exists(file)) httr::upload_file(file)
-        else {
-          files["file"] <- tempfile()
-          writeBin(file, files["file"])
-          httr::upload_file(files["file"])
-        }
+      file = api_upload_file(file)
     ),
     encode = "multipart"
   )

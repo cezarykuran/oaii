@@ -108,36 +108,18 @@ images_edit_request <- function(
     unlink(files)
   })
 
-  body <- list(
-    prompt = prompt,
-    response_format = response_format,
-    size = size,
-    n = n,
-    user = user
-  )
-
-  if (is.raw(image)) {
-    files['image'] <- tempfile()
-    writeBin(image, files['image'])
-    body$image <- httr::upload_file(files['image'])
-  }
-  else {
-    body$image <- httr::upload_file(image)
-  }
-
-  if (is.raw(mask)) {
-    files['mask'] <- tempfile()
-    writeBin(mask, files['mask'])
-    body$mask <- httr::upload_file(files["mask"])
-  }
-  else if (is.character(mask)) {
-    body$mask <- httr::upload_file(mask)
-  }
-
-  res_content <- request(
+  request(
     endpoint = "https://api.openai.com/v1/images/edits",
     api_key = api_key,
-    body = body,
+    body = list(
+      prompt = prompt,
+      response_format = response_format,
+      size = size,
+      n = n,
+      user = user,
+      image = api_upload_file(image),
+      mask = api_upload_file(mask)
+    ),
     encode = "multipart"
   )
 }
