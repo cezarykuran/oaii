@@ -198,6 +198,7 @@ df_col_obj_implode <- function(
             lapply(objs, function(obj) {
               # object (collapsed properties)
               if (is.null(obj_prop)) obj_prop <- names(obj)
+              if (is.null(obj_prop)) obj_prop <- seq_along(obj)
               paste0(
                 obj_header,
                 paste0(
@@ -225,15 +226,8 @@ df_col_obj_implode <- function(
 #' Replace unix timestamp column(s) to formated dt string
 #'
 #' @inherit df_roxygen_tpl params return
+#' @inheritParams timestap_dt_str
 #' @param col character vector, column names of the df that will be modified
-#' @param format A character string. The default for the format methods is
-#' "%Y-%m-%d %H:%M:%S" if any element has a time component which is not midnight,
-#' and "%Y-%m-%d" otherwise. If options("digits.secs") is set, up to the specified
-#' number of digits will be printed for seconds.
-#' @param tz A character string specifying the time zone to be used for
-#' the conversion. System-specific (see as.POSIXlt), but "" is the current time
-#' zone, and "GMT" is UTC. Invalid values are most commonly treated as UTC,
-#' on some platforms with a warning.
 #' @export
 #'
 #' @examples
@@ -256,8 +250,6 @@ df_col_dt_format <- function(
     "`df` must be a data.frame" = checkmate::testDataFrame(df),
     "`col` must be a non-empty character vector" =
         checkmate::testCharacter(col, min.len = 1),
-    "`format` must be a string" = checkmate::testString(format),
-    "`tz` must be a string" = checkmate::testString(tz),
     "`on_missing_col` must be a 'warn', 'skip' or 'stop'" =
         checkmate::testString(on_missing_col, min.chars = 1) &&
         on_missing_col %in% c("warn", "skip", "stop"),
@@ -269,15 +261,10 @@ df_col_dt_format <- function(
 
   # iterate over column name(s)
   for (coln in col) {
-    df[, coln] <-
-      list(lapply(
-        df[, coln],
-        function(dt) {
-          dt_POSIXct <- as.POSIXct(dt, origin="1970-01-01", tz = "GMT")
-          attr(dt_POSIXct,"tzone") <- "GMT"
-          strftime(dt_POSIXct, format = format, tz = tz, usetz = FALSE)
-        }
-      ))
+    df[, coln] <- list(lapply(
+      df[, coln],
+      function(timestamp) timestap_dt_str(timestamp, format, tz)
+    ))
   }
   df
 }

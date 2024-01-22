@@ -4,7 +4,14 @@
 \alias{request}
 \title{API request}
 \usage{
-request(endpoint, api_key, body = NULL, encode = "json", method = "POST")
+request(
+  endpoint,
+  api_key,
+  body = NULL,
+  query = NULL,
+  encode = "json",
+  method = "POST"
+)
 }
 \arguments{
 \item{endpoint}{string, API endpoint url}
@@ -27,6 +34,8 @@ as the second argument to \code{upload_file()}
 you are sending.
 \item A named list: See details for encode.
 }}
+
+\item{query}{NULL/list, query string elements as list(name1 = value1, name2 = value2)}
 
 \item{encode}{If the body is a named list, how should it be encoded? Can be
 one of form (application/x-www-form-urlencoded), multipart,

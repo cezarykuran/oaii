@@ -6,8 +6,6 @@ This is an R library aimed at streamlining communication with the OpenAI API.
 
 - A comprehensive set of helper functions for seamless communication with API.
 - Useful tools for efficient data manipulation and transformation.
-- An interactive Shiny demo application, which can be accessed at https://cezarykuran.shinyapps.io/oaii/ (feel free to explore its functionality!).
-- Several demonstration terminal applications written as R scripts. These applications serve as practical examples, demonstrating how to effectively leverage the package's functions for API communication.
 
 **Endpoint helpers implemented so far:**
 
@@ -21,17 +19,19 @@ This is an R library aimed at streamlining communication with the OpenAI API.
 - models
 - moderations
 
-## Repo structure
-
-All API helpers can be found in the [package/R](https://github.com/cezarykuran/oaii/tree/master/package/R) directory.
-
-Shiny demo application is in the [package/inst/app/shiny](https://github.com/cezarykuran/oaii/tree/master/package/inst/app/shiny)  directory. To find information on how to run the application, type `?oaii::demo_shiny()`.
-CLI demo R scrips are in the [package/inst/app/cli](https://github.com/cezarykuran/oaii/tree/master/package/inst/app/cli)  directory. For more information, type `?oaii::demo_cli()`.
-
 ## Instalation
 
 `install.packages('oaii')`
+
 `devtools::install_github("https://github.com/cezarykuran/oaii.git", subdir = "package")`
+
+## Demo
+
+There exists a sister package named [oaiiDemoApps](https://github.com/cezarykuran/oaiiDemoApps) containing applications that demonstrate the practical use of the `oaii` package.
+The [oaiiDemoApps](https://github.com/cezarykuran/oaiiDemoApps) package contains:
+
+- An interactive Shiny demo application, which can be accessed at https://cezarykuran.shinyapps.io/oaii/ (feel free to explore its functionality!).
+- Several demonstration terminal applications written as R scripts. These applications serve as practical examples, demonstrating how to effectively leverage the package's functions for API communication.
 
 ## Other
 

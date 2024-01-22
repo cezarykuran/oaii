@@ -5,6 +5,7 @@
 #' @param endpoint string, API endpoint url
 #' @param api_key string, OpenAI API key
 #' (see https://platform.openai.com/account/api-keys)
+#' @param query NULL/list, query string elements as list(name1 = value1, name2 = value2)
 #' @param method string, request method
 #' @return \link[httr]{content} of the httr \link[httr]{response} object
 #' or SimpleError (\link[base]{conditions}) enhanced with
@@ -16,6 +17,7 @@ request <- function(
     endpoint,
     api_key,
     body = NULL,
+    query = NULL,
     encode = "json",
     method = "POST"
 ) {
@@ -23,7 +25,8 @@ request <- function(
   stopifnot(
     "`endpoint` must be a non-empty string" = checkmate::testString(endpoint, min.chars = 1),
     "`api_key` must be a non-empty string" = checkmate::testString(api_key, min.chars = 1),
-    "`body` must be a NULL or list()" = checkmate::testList(body, null.ok = TRUE),
+    "`body` must be a NULL or list" = checkmate::testList(body, null.ok = TRUE),
+    "`query` must be a NULL or list" = checkmate::testList(query, null.ok = TRUE),
     "`encode` must be a non-empty string" = checkmate::testString(encode, min.chars = 1),
     "`method` must be a non-empty string" = checkmate::testString(method, min.chars = 1)
   )
@@ -37,6 +40,7 @@ request <- function(
           url = endpoint,
           config = httr::add_headers("Authorization" = paste("Bearer", api_key)),
           body = body,
+          query = query,
           encode = encode
         )
       )
@@ -51,8 +55,8 @@ request <- function(
       content
     },
     error = function(e) {
-      # append oaiiResSE class
-      class(e) <- c("oaiiResSE", class(e))
+      # append oaii_res_se class
+      class(e) <- c("oaii_res_se", class(e))
 
       # append status_code
       e$status_code <- if (exists("res")) res$status_code
@@ -88,15 +92,15 @@ request <- function(
 #' is_error(simpleError("test"))
 #'
 is_error <- function(x) {
-  inherits(x, c("error", "simpleError", "oaiiResSE"))
+  inherits(x, c("error", "simpleError", "oaii_res_se"))
 }
 
-#' Class oaiiResSE print S3 method
+#' Class oaii_res_se print S3 method
 #'
 #' @inherit base::print description params return
 #' @export
 #'
-print.oaiiResSE <- function (x, ...) {
+print.oaii_res_se <- function (x, ...) {
   cat("status_code:", x$status_code, "\n")
   cat("message:", x$message, "\n")
   cat("message_long:", x$message_long, "\n")
