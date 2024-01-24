@@ -26,18 +26,24 @@ This is an R library aimed at streamlining communication with the OpenAI API.
 - models
 - moderations
 
-## Instalation
+## Package instalation
 
-`install.packages('oaii')`
+**stable**  
+`install.packages('oaii')`  
+or  
+`remotes::install_github("https://github.com/cezarykuran/oaii.git", subdir = "package", ref = "master")`  
+`devtools::install_github("https://github.com/cezarykuran/oaii.git", subdir = "package", ref = "master")`
 
-`devtools::install_github("https://github.com/cezarykuran/oaii.git", subdir = "package")`
+**develop**  
+`remotes::install_github("https://github.com/cezarykuran/oaii.git", subdir = "package", ref = "develop")`  
+`devtools::install_github("https://github.com/cezarykuran/oaii.git", subdir = "package", ref = "develop")`  
 
-## Demo
+## Demo applications
 
 There exists a sister package named [oaiiDemoApps](https://github.com/cezarykuran/oaiiDemoApps) containing applications that demonstrate the practical use of the `oaii` package.
 The [oaiiDemoApps](https://github.com/cezarykuran/oaiiDemoApps) package contains:
 
-- An interactive Shiny demo application, which can be accessed at https://cezarykuran.shinyapps.io/oaii/ (feel free to explore its functionality!).
+- An interactive Shiny demo application, which can be accessed at https://r.cezarykuran.it/shiny/oaii/ (feel free to explore its functionality!).
 - Several demonstration terminal applications written as R scripts. These applications serve as practical examples, demonstrating how to effectively leverage the package's functions for API communication.
 
 ## Other
