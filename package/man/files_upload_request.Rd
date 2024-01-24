@@ -4,16 +4,17 @@
 \alias{files_upload_request}
 \title{API files: upload request}
 \usage{
-files_upload_request(api_key, file, purpose)
+files_upload_request(api_key, file, purpose, file_type = NULL)
 }
 \arguments{
 \item{api_key}{string, OpenAI API key
 (see https://platform.openai.com/account/api-keys)}
 
-\item{file}{string, path or content of the JSON Lines file to be uploaded}
+\item{file}{string/raw, path or content of the JSON Lines file to be uploaded}
 
-\item{purpose}{string, the intended purpose of the uploaded documents.
-Use "fine-tune" for Fine-tuning.}
+\item{purpose}{string, the intended purpose of the uploaded documents. Use "fine-tune" for Fine-tuning.}
+
+\item{file_type}{NULL/string, mime type of `file`. See \link{api_upload_file}}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object
@@ -22,5 +23,9 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-To get more details, visit https://platform.openai.com/docs/api-reference/files/upload
+Upload a file that can be used across various endpoints. The size of all the files uploaded by one organization can
+be up to 100 GB. The size of individual files can be a maximum of 512 MB or 2 million tokens for Assistants. See the
+Assistants Tools guide (https://platform.openai.com/docs/assistants/tools) to learn more about the types of files
+supported. The Fine-tuning API only supports .jsonl files. To get more details, visit:
+https://platform.openai.com/docs/api-reference/files/upload
 }

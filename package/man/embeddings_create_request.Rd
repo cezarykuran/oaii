@@ -16,24 +16,19 @@ embeddings_create_request(
 \item{api_key}{string, OpenAI API key
 (see https://platform.openai.com/account/api-keys)}
 
-\item{input}{character vector, input text to embed, encoded as a string
-or array of tokens. To embed multiple inputs in a single request, pass
-an array of strings or array of token arrays. The input must not exceed
-the max input tokens for the model (8192 tokens for text-embedding-ada-002),
-cannot be an empty string, and any array must be 2048 dimensions or less.}
+\item{input}{character vector, input text to embed, encoded as a string or array of tokens. To embed multiple inputs
+in a single request, pass an array of strings or array of token arrays. The input must not exceed the max input
+tokens for the model (8192 tokens for text-embedding-ada-002), cannot be an empty string, and any array must be 2048
+dimensions or less.}
 
 \item{model}{string, ID of the model to use. You can use the list models API
-(https://platform.openai.com/docs/api-reference/models/list)
-to see all of your available models, or see our model overview
-(https://platform.openai.com/docs/models/overview)
-for descriptions of them.}
+(https://platform.openai.com/docs/api-reference/models/list) to see all of your available models, or see our model
+overview (https://platform.openai.com/docs/models/overview) for descriptions of them.}
 
-\item{encoding_format}{string, he format to return the embeddings in. Can be
-either float (default) or base64.}
+\item{encoding_format}{string, he format to return the embeddings in. Can be either float (default) or base64.}
 
-\item{user}{string, a unique identifier representing your end-user, which can
-help OpenAI to monitor and detect abuse. To learn more visit
-https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids}
+\item{user}{string, a unique identifier representing your end-user, which can help OpenAI to monitor and detect
+abuse. To learn more visit https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object

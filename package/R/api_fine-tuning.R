@@ -1,34 +1,26 @@
 #' API fine-tuning: create job (model) request
 #'
-#' Creates a fine-tuning job which begins the process of creating a new model
-#' from a given dataset. To get more details, visit
-#' https://platform.openai.com/docs/guides/fine-tuning
+#' Creates a fine-tuning job which begins the process of creating a new model from a given dataset. To get more details,
+#' visit https://platform.openai.com/docs/guides/fine-tuning
 #' https://platform.openai.com/docs/api-reference/fine-tuning/create
 #' @inherit request params return
-#' @param model string, the name of the base model to fine-tune.
-#' You can select one of the supported models: gpt-3.5-turbo-1106 (recommended),
-#' gpt-3.5-turbo-0613, babbage-002, davinci-002, gpt-4-0613 (experimental).
-#' @param training_file string, the ID of an uploaded file that contains
-#' training data. See files_upload_request().
+#' @param model string, the name of the base model to fine-tune. You can select one of the supported models:
+#' gpt-3.5-turbo-1106 (recommended), gpt-3.5-turbo-0613, babbage-002, davinci-002, gpt-4-0613 (experimental)
+#' @param training_file string, the ID of an uploaded file that contains training data. See \link{files_upload_request}.
 #' @param hyperparameters list/NULL, the hyperparameters used for the fine-tuning job.
-#' `hyperparameters$batch_size` string/integer/NULL defaults to "auto", number
-#' of examples in each batch. A larger batch size means that model parameters are
-#' updated less frequently, but with lower variance.
-#' `hyperparameters$learning_rate_multiplier` string/number/NULL defaults to "auto",
-#' scaling factor for the learning rate. A smaller learning rate may be useful
-#' to avoid overfitting.
-#' `hyperparameters$n_epochs` string/integer/NULL, defaults to "auto", the number
-#' of epochs to train the model for. An epoch refers to one full cycle through
-#' the training dataset.
-#' @param suffix string/NULL, A string of up to 18 characters that will be added
-#' to your fine-tuned model name. For example, a suffix of "custom-model-name"
-#' would produce a model name like ft:gpt-3.5-turbo:openai:custom-model-name:7p4lURel
-#' @param validation_file string/NULL, the ID of an uploaded file that contains
-#' validation data. If you provide this file, the data is used to generate validation
-#' metrics periodically during fine-tuning. These metrics can be viewed in the
-#' fine-tuning results file. The same data should not be present in both train and
-#' validation files. Your dataset must be formatted as a JSONL file. You must
-#' upload your file with the purpose fine-tune.
+#' `hyperparameters$batch_size` string/integer/NULL defaults to "auto", number of examples in each batch. A larger batch
+#' size means that model parameters are updated less frequently, but with lower variance.
+#' `hyperparameters$learning_rate_multiplier` string/number/NULL defaults to "auto", scaling factor for the learning
+#' rate. A smaller learning rate may be useful to avoid overfitting.
+#' `hyperparameters$n_epochs` string/integer/NULL, defaults to "auto", the number of epochs to train the model for. An
+#' epoch refers to one full cycle through the training dataset.
+#' @param suffix string/NULL, A string of up to 18 characters that will be added to your fine-tuned model name. For
+#' example, a suffix of "custom-model-name" would produce a model name like 
+#' ft:gpt-3.5-turbo:openai:custom-model-name:7p4lURel
+#' @param validation_file string/NULL, the ID of an uploaded file that contains validation data. If you provide this
+#' file, the data is used to generate validation metrics periodically during fine-tuning. These metrics can be viewed in
+#' the fine-tuning results file. The same data should not be present in both train and validation files. Your dataset
+#' must be formatted as a JSONL file. You must upload your file with the purpose fine-tune.
 #' @export
 #'
 fine_tuning_create_job_request <- function(

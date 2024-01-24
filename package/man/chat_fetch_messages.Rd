@@ -20,7 +20,8 @@ Fetch messages (dialog data.frame with chat messages) from response content
   question <- dialog_df("hi")
   res_content <- chat_request(
     api_key = "my-secret-api-key-string",
-    messages = question
+    messages = question,
+    model = "gpt-3.5-turbo"
   )
   if (!is_error(res_content)) {
     answer <- chat_fetch_messages(res_content)

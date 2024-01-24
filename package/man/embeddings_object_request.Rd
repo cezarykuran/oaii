@@ -12,8 +12,8 @@ embeddings_object_request(api_key, index, embedding, object)
 
 \item{index}{integer, The index of the embedding in the list of embeddings.}
 
-\item{embedding}{double vector, the embedding vector, which is a "list of floats".
-The length of vector depends on the model as listed in the embedding guide.}
+\item{embedding}{double vector, the embedding vector, which is a "list of floats". The length of vector depends on
+the model as listed in the embedding guide.}
 
 \item{object}{string, the object type, which is always "embedding".}
 }

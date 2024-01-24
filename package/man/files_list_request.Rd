@@ -4,11 +4,13 @@
 \alias{files_list_request}
 \title{API files: get list request}
 \usage{
-files_list_request(api_key)
+files_list_request(api_key, purpose = NULL)
 }
 \arguments{
 \item{api_key}{string, OpenAI API key
 (see https://platform.openai.com/account/api-keys)}
+
+\item{purpose}{NULL/string, only return files with the given purpose}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object
@@ -17,7 +19,8 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-To get more details, visit https://platform.openai.com/docs/api-reference/files/list
+Returns a list of files that belong to the user's organization. To get more details, visit:
+https://platform.openai.com/docs/api-reference/files/list
 }
 \examples{
 \dontrun{

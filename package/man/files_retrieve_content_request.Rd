@@ -21,3 +21,15 @@ and `message_long` (built on response content)
 \description{
 To get more details, visit https://platform.openai.com/docs/api-reference/files/retrieve-content
 }
+\examples{
+\dontrun{
+res_content <- files_retrieve_content_request(
+  "my-secret-api-key-string",
+  "some-file-id"
+)
+if (!is_error(res_content)) {
+  writeBin(res_content, "some-file.jsonl")
+}
+}
+
+}

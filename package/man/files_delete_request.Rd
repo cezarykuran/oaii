@@ -2,7 +2,7 @@
 % Please edit documentation in R/api_files.R
 \name{files_delete_request}
 \alias{files_delete_request}
-\title{API files: delete request}
+\title{API files: delete file request}
 \usage{
 files_delete_request(api_key, file_id)
 }
@@ -19,5 +19,5 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-To get more details, visit https://platform.openai.com/docs/api-reference/files/delete
+Delete a file. To get more details, visit https://platform.openai.com/docs/api-reference/files/delete
 }

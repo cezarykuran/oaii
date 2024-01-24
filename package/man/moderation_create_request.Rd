@@ -12,13 +12,11 @@ moderation_create_request(api_key, input, model = NULL)
 
 \item{input}{string, the input text to classify}
 
-\item{model}{string, two content moderations models are available:
-'text-moderation-stable' and 'text-moderation-latest'. The default is
-'text-moderation-latest' which will be automatically upgraded over time. This
-ensures you are always using our most accurate model. If you use
-'text-moderation-stable', we will provide advanced notice before updating the
-model. Accuracy of 'text-moderation-stable' may be slightly lower than for
-'text-moderation-latest'.}
+\item{model}{string, two content moderations models are available: `text-moderation-stable` and 
+`text-moderation-latest`. The default is `text-moderation-latest` which will be automatically upgraded over time.
+This ensures you are always using our most accurate model. If you use `text-moderation-stable`, we will provide
+advanced notice before updating the model. Accuracy of 'text-moderation-stable' may be slightly lower than for
+`text-moderation-latest`.}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object
@@ -27,8 +25,7 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-Given a input text, outputs if the model classifies it as violating OpenAI's
-content policy. To get more details, visit
-https://platform.openai.com/docs/api-reference/moderations/create
+Given a input text, outputs if the model classifies it as violating OpenAI's content policy. To get more details,
+visit https://platform.openai.com/docs/api-reference/moderations/create
 https://platform.openai.com/docs/guides/moderation
 }

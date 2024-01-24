@@ -2,7 +2,7 @@
 % Please edit documentation in R/api_models.R
 \name{models_delete_request}
 \alias{models_delete_request}
-\title{API models: delete request}
+\title{API models: delete model request}
 \usage{
 models_delete_request(api_key, model)
 }
@@ -19,5 +19,7 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-To get more details, visit https://platform.openai.com/docs/api-reference/fine-tunes/delete-model
+Delete a fine-tuned model. You must have the Owner role in your organization to delete a model. To get more details,
+visit https://platform.openai.com/docs/models
+https://platform.openai.com/docs/api-reference/fine-tunes/delete-model
 }

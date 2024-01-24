@@ -2,7 +2,7 @@
 % Please edit documentation in R/api_files.R
 \name{files_retrieve_request}
 \alias{files_retrieve_request}
-\title{API files: retrieve request}
+\title{API files: retrieve file request}
 \usage{
 files_retrieve_request(api_key, file_id)
 }
@@ -19,5 +19,6 @@ two additional fields: `status_code` (response$status_code)
 and `message_long` (built on response content)
 }
 \description{
-To get more details, visit https://platform.openai.com/docs/api-reference/files/retrieve
+Returns information about a specific file. To get more details, visit: 
+https://platform.openai.com/docs/api-reference/files/retrieve
 }

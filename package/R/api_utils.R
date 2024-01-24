@@ -11,9 +11,9 @@ api_upload_file <- function(f, type = NULL) {
   else if (is.raw(f)) {
     f_tmp <- tempfile()
     writeBin(f, f_tmp)
-    httr::upload_file(f_tmp)
+    httr::upload_file(f_tmp, type)
   }
   else {
-    httr::upload_file(f)
+    httr::upload_file(f, type)
   }
 }

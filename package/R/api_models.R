@@ -1,6 +1,8 @@
 #' API models: list request
 #'
-#' To get more details, visit https://platform.openai.com/docs/api-reference/models/list
+#' Lists the currently available models, and provides basic information about each one such as the owner and
+#' availability. To get more details, visit: https://platform.openai.com/docs/models
+#' https://platform.openai.com/docs/api-reference/models/list
 #' @inherit request params return
 #' @export
 #'
@@ -31,16 +33,16 @@ models_list_request <- function(api_key) {
 #'
 models_fetch_list <- function(res_content) {
   models <- as.data.frame(do.call(rbind, res_content$data))
-  class(models) <- c("oaiiModelsDF", class(models))
+  class(models) <- c("oaii_models_df", class(models))
   models
 }
 
-#' print S3 method for oaiiModelsDF class
+#' print S3 method for oaii_models_df class
 #'
 #' @inherit base::print description params return
 #' @export
 #'
-print.oaiiModelsDF <- function(x, ...) {
+print.oaii_models_df <- function(x, ...) {
   x %>%
     df_col_dt_format(
       "created",
@@ -54,9 +56,34 @@ print.oaiiModelsDF <- function(x, ...) {
   NextMethod()
 }
 
-#' API models: delete request
+#' API models: retrieve model request
 #'
-#' To get more details, visit https://platform.openai.com/docs/api-reference/fine-tunes/delete-model
+#' Retrieves a model instance, providing basic information about the model such as the owner and permissioning.
+#' To get more details, visit: https://platform.openai.com/docs/models
+#' https://platform.openai.com/docs/api-reference/models/list
+#' @inherit request params return
+#' @param model string, the ID of the model to use for this request
+#' @export
+#'
+models_retrieve_request <- function(api_key, model) {
+  # asserts
+  stopifnot(
+    "`model` must be a non-empty string" = checkmate::testString(model, min.chars = 1)
+  )
+
+  request(
+    endpoint = paste0("https://api.openai.com/v1/models/", model),
+    api_key = api_key,
+    method = "GET"
+  )
+}
+
+
+#' API models: delete model request
+#'
+#' Delete a fine-tuned model. You must have the Owner role in your organization to delete a model. To get more details,
+#' visit https://platform.openai.com/docs/models
+#' https://platform.openai.com/docs/api-reference/fine-tunes/delete-model
 #' @inherit request params return
 #' @param model string, the model to delete
 #' @export

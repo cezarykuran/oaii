@@ -10,11 +10,9 @@ images_fech_set(res_content, prompt = NULL, size = NULL)
 \item{res_content}{response object returned by
 \link{images_generator_request} or \link{images_edit_request}}
 
-\item{prompt}{string, a text description of the desired image(s).
-The maximum length is 1000 characters.}
+\item{prompt}{NULL/string additional info put into the image set object}
 
-\item{size}{string, the size of the generated images. Must be one of
-"256x256", "512x512" or "1024x1024"}
+\item{size}{NULL/string additional info put into the image set object}
 }
 \value{
 Image set as a list consisting of three elements: `data`, `prompt`
