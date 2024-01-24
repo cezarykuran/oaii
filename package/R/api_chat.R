@@ -133,10 +133,10 @@ chat_request <- function(
     "`stream` must be a NULL or flag" = checkmate::testFlag(stream, null.ok = TRUE),
     "`temperature` must be a NULL or double" = checkmate::testDouble(temperature, null.ok = TRUE),
     "`top_p` must be a NULL or double" = checkmate::testDouble(top_p, null.ok = TRUE),
-    "`tools` must be a NULL or \"object\" (list)" = checkmate::testList(tools, null.ok = 1),
+    "`tools` must be a NULL or \"object\" (list)" = checkmate::testList(tools, null.ok = TRUE),
     "`tool_choice` must be a NULL, string or \"object\" (list)" =
-        checkmate::testString(tool_choice, null.ok = 1) ||
-        checkmate::testList(tool_choice, null.ok = 1),
+        checkmate::testString(tool_choice, null.ok = TRUE) ||
+        checkmate::testList(tool_choice, null.ok = TRUE),
     "`user` must be a NULL or non-empty string" = checkmate::testString(user, null.ok = TRUE, min.chars = 1)
   )
 
