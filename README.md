@@ -1,6 +1,8 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/cezarykuran/oaii/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cezarykuran/oaii/actions/workflows/R-CMD-check.yaml)
 [![CodeFactor](https://www.codefactor.io/repository/github/cezarykuran/oaii/badge)](https://www.codefactor.io/repository/github/cezarykuran/oaii)
+[![CRAN](https://www.r-pkg.org/badges/version/oaii)](https://cran.r-project.org/package=oaii)
+[![CRAN](http://cranlogs.r-pkg.org/badges/last-month/oaii)](https://cran.r-project.org/package=oaii)
 <!-- badges: end -->
 
 # OpenAI API R implementation
@@ -20,7 +22,7 @@ This is an R library aimed at streamlining communication with the OpenAI API.
 - embeddings
 - files
 - fine tunes
-- image generator, image editor
+- images
 - models
 - moderations
 
