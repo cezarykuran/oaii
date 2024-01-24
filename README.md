@@ -1,5 +1,6 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/cezarykuran/oaii/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cezarykuran/oaii/actions/workflows/R-CMD-check.yaml)
+[![CodeFactor](https://www.codefactor.io/repository/github/cezarykuran/oaii/badge)](https://www.codefactor.io/repository/github/cezarykuran/oaii)
 <!-- badges: end -->
 
 # OpenAI API R implementation
