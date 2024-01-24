@@ -1,3 +1,7 @@
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/cezarykuran/oaii/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cezarykuran/oaii/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 # OpenAI API R implementation
 
 This is an R library aimed at streamlining communication with the OpenAI API.
