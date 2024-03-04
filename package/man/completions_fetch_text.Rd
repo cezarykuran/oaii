@@ -24,7 +24,6 @@ as dialog data.frame
 \dontrun{
   prompt <- "x=1, y=2, z=x*y, z=?"
   res_content <- completions_request(
-    api_key = "my-secret-api-key-string",
     model = "text-davinci-003",
     prompt = prompt
   )

@@ -11,16 +11,20 @@
 #' or SimpleError (\link[base]{conditions}) enhanced with
 #' two additional fields: `status_code` (response$status_code)
 #' and `message_long` (built on response content)
+#' @param content_class NULL/character vector, NULL or additional class
+#' name(s) (S3) appended to the response content
 #' @export
 #'
 request <- function(
     endpoint,
-    api_key,
+    api_key = api_get_key(),
     body = NULL,
     query = NULL,
     encode = "json",
-    method = "POST"
-) {
+    method = "POST",
+    content_class = NULL
+  ) {
+
   # asserts
   stopifnot(
     "`endpoint` must be a non-empty string" = checkmate::testString(endpoint, min.chars = 1),
@@ -28,7 +32,9 @@ request <- function(
     "`body` must be a NULL or list" = checkmate::testList(body, null.ok = TRUE),
     "`query` must be a NULL or list" = checkmate::testList(query, null.ok = TRUE),
     "`encode` must be a non-empty string" = checkmate::testString(encode, min.chars = 1),
-    "`method` must be a non-empty string" = checkmate::testString(method, min.chars = 1)
+    "`method` must be a non-empty string" = checkmate::testString(method, min.chars = 1),
+    "`content_class` must be a NULL or character vector" =
+        checkmate::testCharacter(content_class, min.chars = 1, null.ok = TRUE)
   )
 
   tryCatch(
@@ -52,6 +58,7 @@ request <- function(
         "API endpoind responsed with code != 200" = httr::http_error(res) == FALSE
       )
 
+      class(content) <- c(content_class, class(content))
       content
     },
     error = function(e) {
@@ -79,30 +86,4 @@ request <- function(
       e
     }
   )
-}
-
-#' Test if object belongs to "error" class
-#'
-#' @param x R variable
-#' @return TRUE/FALSE
-#' @export
-#'
-#' @examples
-#' is_error(FALSE)
-#' is_error(simpleError("test"))
-#'
-is_error <- function(x) {
-  inherits(x, c("error", "simpleError", "oaii_res_se"))
-}
-
-#' Class oaii_res_se print S3 method
-#'
-#' @inherit base::print description params return
-#' @export
-#'
-print.oaii_res_se <- function (x, ...) {
-  cat("status_code:", x$status_code, "\n")
-  cat("message:", x$message, "\n")
-  cat("message_long:", x$message_long, "\n")
-  invisible(x)
 }

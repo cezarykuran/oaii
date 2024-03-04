@@ -17,12 +17,13 @@
 #' @export
 #'
 embeddings_create_request <- function(
-    api_key,
     input,
     model,
     encoding_format = NULL,
-    user = NULL
-) {
+    user = NULL,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`input` must be a non-empty character vector" =
@@ -61,11 +62,12 @@ embeddings_create_request <- function(
 #' @export
 #'
 embeddings_object_request <- function(
-    api_key,
     index,
     embedding,
-    object
-) {
+    object,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`index` must be a double" = checkmate::testDouble(index, len = 1),

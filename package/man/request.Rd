@@ -6,11 +6,12 @@
 \usage{
 request(
   endpoint,
-  api_key,
+  api_key = api_get_key(),
   body = NULL,
   query = NULL,
   encode = "json",
-  method = "POST"
+  method = "POST",
+  content_class = NULL
 )
 }
 \arguments{
@@ -50,6 +51,9 @@ wrap in \code{I()}. For "raw", either a character or raw vector. You'll
 need to make sure to set the \code{\link[httr:content_type]{content_type()}} yourself.}
 
 \item{method}{string, request method}
+
+\item{content_class}{NULL/character vector, NULL or additional class
+name(s) (S3) appended to the response content}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object

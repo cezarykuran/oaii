@@ -24,13 +24,14 @@
 #' @export
 #'
 fine_tuning_create_job_request <- function(
-    api_key,
     model,
     training_file,
     hyperparameters = NULL,
     suffix = NULL,
-    validation_file = NULL
-) {
+    validation_file = NULL,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`model` must be a non-empty string" = checkmate::testString(model, min.chars = 1),
@@ -78,7 +79,7 @@ fine_tuning_create_job_request <- function(
 #'
 #' @examples
 #' \dontrun{
-#' res_content <- fine_tuning_jobs_list_request("my-secret-api-key-string")
+#' res_content <- fine_tuning_jobs_list_request()
 #' if (!is_error(res_content)) {
 #'   fine_tuning_jobs_df <- fine_tuning_fetch_jobs_list(res_content)
 #'   print(fine_tuning_jobs_df)
@@ -86,10 +87,11 @@ fine_tuning_create_job_request <- function(
 #' }
 #'
 fine_tuning_jobs_list_request <- function(
-    api_key,
     after = NULL,
-    limit = NULL
+    limit = NULL,
+    api_key = api_get_key()
   ) {
+
   # asserts
   stopifnot(
     "`after` must be a NULL or non-empty string" =
@@ -122,32 +124,6 @@ fine_tuning_fetch_jobs_list <- function(res_content) {
   jobs
 }
 
-#' print S3 method for oaii_fine_tuning_jobs_df class
-#'
-#' @inherit base::print description params return
-#' @export
-#'
-print.oaii_fine_tuning_jobs_df <- function(x, ...) {
-  x %>%
-    df_col_dt_format(
-      c("created_at", "finished_at"),
-      on_missing_col = "skip"
-    ) %>%
-    df_col_obj_implode(
-      c("training_file", "result_files"),
-      props_glue = ", ",
-      on_missing_col = "skip"
-    ) %>%
-    df_col_obj_implode(
-      "hyperparameters",
-      props_glue = ", ",
-      nested = FALSE,
-      on_missing_col = "skip"
-    ) -> x
-  NextMethod()
-}
-
-
 #' API fine-tuning: list events request
 #'
 #' Get status updates for a fine-tuning job. To get more details, visit
@@ -161,7 +137,7 @@ print.oaii_fine_tuning_jobs_df <- function(x, ...) {
 #'
 #' @examples
 #' \dontrun{
-#' res_content <- fine_tuning_events_list_request("my-secret-api-key-string", "job-id")
+#' res_content <- fine_tuning_events_list_request("job-id")
 #' if (!is_error(res_content)) {
 #'   fine_tuning_events_df <- fine_tuning_fetch_events_list(res_content)
 #'   print(fine_tuning_events_df)
@@ -169,11 +145,12 @@ print.oaii_fine_tuning_jobs_df <- function(x, ...) {
 #' }
 #'
 fine_tuning_events_list_request <- function(
-    api_key,
     fine_tuning_job_id,
     after = NULL,
-    limit = NULL
-) {
+    limit = NULL,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`fine_tuning_job_id` must be a non-empty string" =
@@ -208,20 +185,6 @@ fine_tuning_fetch_events_list <- function(res_content) {
   events
 }
 
-#' print S3 method for oaii_fine_tuning_events_df class
-#'
-#' @inherit base::print description params return
-#' @export
-#'
-print.oaii_fine_tuning_events_df <- function(x, ...) {
-  x %>%
-    df_col_dt_format(
-      c("created_at"),
-      on_missing_col = "skip"
-    ) -> x
-  NextMethod()
-}
-
 #' API fine-tuning: retrieve fine-tuning job request
 #'
 #' Get info about a fine-tuning job. To get more details, visit
@@ -233,7 +196,7 @@ print.oaii_fine_tuning_events_df <- function(x, ...) {
 #'
 #' @examples
 #' \dontrun{
-#' res_content <- fine_tuning_retrive_job_request("my-secret-api-key-string", "job-id")
+#' res_content <- fine_tuning_retrive_job_request("job-id")
 #' if (!is_error(res_content)) {
 #'   fine_tuning_events_df <- fine_tuning_fetch_events_list(res_content)
 #'   print(fine_tuning_events_df)
@@ -241,9 +204,10 @@ print.oaii_fine_tuning_events_df <- function(x, ...) {
 #' }
 #'
 fine_tuning_retrive_job_request <- function(
-    api_key,
-    fine_tuning_job_id
-) {
+    fine_tuning_job_id,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`fine_tuning_job_id` must be a non-empty string" =
@@ -271,17 +235,6 @@ fine_tuning_fetch_retrived_job <- function(res_content) {
   job
 }
 
-#' print S3 method for oaii_fine_tuning_job class
-#'
-#' @inherit base::print description params return
-#' @export
-#'
-print.oaii_fine_tuning_job <- function(x, ...) {
-  x$created_at <- timestap_dt_str(x$created_at)
-  x$finished_at <- timestap_dt_str(x$finished_at)
-  NextMethod()
-}
-
 #' API fine-tuning: cancel fine-tuning job request
 #'
 #' Immediately cancel a fine-tune job. To get more details, visit
@@ -293,16 +246,17 @@ print.oaii_fine_tuning_job <- function(x, ...) {
 #'
 #' @examples
 #' \dontrun{
-#' res_content <- fine_tuning_cancel_job_request("my-secret-api-key-string", "job-id")
+#' res_content <- fine_tuning_cancel_job_request("job-id")
 #' if (!is_error(res_content)) {
 #'   message("job canceled")
 #' }
 #' }
 #'
 fine_tuning_cancel_job_request <- function(
-    api_key,
-    fine_tuning_job_id
-) {
+    fine_tuning_job_id,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`fine_tuning_job_id` must be a non-empty string" =

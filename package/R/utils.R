@@ -1,3 +1,59 @@
+#' Test if object belongs to "error" class
+#'
+#' @param x R variable
+#' @return TRUE/FALSE
+#' @export
+#'
+#' @examples
+#' is_error(FALSE)
+#' is_error(simpleError("test"))
+#'
+is_error <- function(x) {
+  inherits(x, c("error", "simpleError", "oaii_res_se"))
+}
+
+#' Test if RStudio Viewer (build in browser) is available
+#'
+#' @return TRUE/FALSE
+#' @export
+#' 
+is_browseable <- function() {
+  identical(.Platform$GUI, "RStudio") &&
+    "htmltools" %in% rownames(utils::installed.packages())  
+}
+
+#' Create browseable HTML audio
+#'
+#' @param data audio data
+#' @param format audio format
+#' @return HTML audio
+#' @export
+#' 
+browseable_audio <- function(data, format = "mp3") {
+  mime <- paste0(
+    "audio/",
+    switch(format,
+      mp3 = "mpeg",
+      opus = "opus",
+      aac = "mp4",
+      flac = "flac",
+      format
+    )
+  )
+  print(
+    htmltools::browsable(
+      htmltools::tags$audio(
+        controls="controls",
+        autobuffer="autobuffer",
+        autoplay="autoplay",
+        htmltools::tags$source(
+          src = paste0("data:", mime, ";base64,", base64enc::base64encode(data))
+        )
+      )
+    )
+  )
+}
+
 #' Convert unix timestamp to formated date/time string
 #'
 #' @inherit base::strftime params return

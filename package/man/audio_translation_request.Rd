@@ -5,18 +5,15 @@
 \title{API audio: translate audio file into English text}
 \usage{
 audio_translation_request(
-  api_key,
   file,
   model,
   prompt = NULL,
   response_format = NULL,
-  temperature = NULL
+  temperature = NULL,
+  api_key = api_get_key()
 )
 }
 \arguments{
-\item{api_key}{string, OpenAI API key
-(see https://platform.openai.com/account/api-keys)}
-
 \item{file}{string/raw, content of the input audio file or path to the input
 audio file to translate, in one of these formats: flac, mp3, mp4, mpeg, mpga,
 m4a, ogg, wav, or webm.#'}
@@ -35,6 +32,9 @@ values like 0.8 will make the output more random, while lower values like 0.2
 will make it more focused and deterministic. If set to 0, the model will use
 log probability to automatically increase the temperature until certain
 thresholds are hit. 0 is default.}
+
+\item{api_key}{string, OpenAI API key
+(see https://platform.openai.com/account/api-keys)}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object
@@ -50,7 +50,6 @@ https://platform.openai.com/docs/guides/speech-to-text
 \examples{
 \dontrun{
 res_content <- audio_translation_request(
-  "my-secret-api-key-string",
   "path/to/audio/file.mp3",
   "whisper-1",
   response_format = "text"

@@ -4,13 +4,13 @@
 \alias{fine_tuning_retrive_job_request}
 \title{API fine-tuning: retrieve fine-tuning job request}
 \usage{
-fine_tuning_retrive_job_request(api_key, fine_tuning_job_id)
+fine_tuning_retrive_job_request(fine_tuning_job_id, api_key = api_get_key())
 }
 \arguments{
+\item{fine_tuning_job_id}{string, the ID of the fine-tuning job to get events for}
+
 \item{api_key}{string, OpenAI API key
 (see https://platform.openai.com/account/api-keys)}
-
-\item{fine_tuning_job_id}{string, the ID of the fine-tuning job to get events for}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object
@@ -25,7 +25,7 @@ https://platform.openai.com/docs/api-reference/fine-tuning/retrieve
 }
 \examples{
 \dontrun{
-res_content <- fine_tuning_retrive_job_request("my-secret-api-key-string", "job-id")
+res_content <- fine_tuning_retrive_job_request("job-id")
 if (!is_error(res_content)) {
   fine_tuning_events_df <- fine_tuning_fetch_events_list(res_content)
   print(fine_tuning_events_df)

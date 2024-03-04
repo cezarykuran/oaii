@@ -4,15 +4,19 @@
 \alias{fine_tuning_jobs_list_request}
 \title{API fine-tuning: list jobs request}
 \usage{
-fine_tuning_jobs_list_request(api_key, after = NULL, limit = NULL)
+fine_tuning_jobs_list_request(
+  after = NULL,
+  limit = NULL,
+  api_key = api_get_key()
+)
 }
 \arguments{
-\item{api_key}{string, OpenAI API key
-(see https://platform.openai.com/account/api-keys)}
-
 \item{after}{NULL/string, identifier for the last job from the previous pagination request}
 
 \item{limit}{NULL/integer, number of fine-tuning jobs to retrieve (default 20)}
+
+\item{api_key}{string, OpenAI API key
+(see https://platform.openai.com/account/api-keys)}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object
@@ -27,7 +31,7 @@ https://platform.openai.com/docs/api-reference/fine-tuning/list
 }
 \examples{
 \dontrun{
-res_content <- fine_tuning_jobs_list_request("my-secret-api-key-string")
+res_content <- fine_tuning_jobs_list_request()
 if (!is_error(res_content)) {
   fine_tuning_jobs_df <- fine_tuning_fetch_jobs_list(res_content)
   print(fine_tuning_jobs_df)

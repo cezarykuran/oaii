@@ -5,20 +5,17 @@
 \title{API audio: speech to text (transcryption)}
 \usage{
 audio_transcription_request(
-  api_key,
   file,
   model,
   language = NULL,
   prompt = NULL,
   response_format = NULL,
   temperature = NULL,
-  file_type = NULL
+  file_type = NULL,
+  api_key = api_get_key()
 )
 }
 \arguments{
-\item{api_key}{string, OpenAI API key
-(see https://platform.openai.com/account/api-keys)}
-
 \item{file}{string/raw, content of the audio file or path to the audio file
 to transcribe, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg,
 wav, or webm.}
@@ -46,6 +43,9 @@ thresholds are hit. 0 is default.}
 
 \item{file_type}{NULL/string mime type of file (e.g. "audio/mpeg").
 If NULL (default), will be guess by mime::guess_type() when needed.}
+
+\item{api_key}{string, OpenAI API key
+(see https://platform.openai.com/account/api-keys)}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object
@@ -61,7 +61,6 @@ https://platform.openai.com/docs/guides/speech-to-text
 \examples{
 \dontrun{
 res_content <- audio_speech_request(
-  "my-secret-api-key-string",
   "path/to/audio/file.mp3",
   "whisper-1",
   "en",

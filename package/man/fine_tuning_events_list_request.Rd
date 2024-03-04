@@ -5,21 +5,21 @@
 \title{API fine-tuning: list events request}
 \usage{
 fine_tuning_events_list_request(
-  api_key,
   fine_tuning_job_id,
   after = NULL,
-  limit = NULL
+  limit = NULL,
+  api_key = api_get_key()
 )
 }
 \arguments{
-\item{api_key}{string, OpenAI API key
-(see https://platform.openai.com/account/api-keys)}
-
 \item{fine_tuning_job_id}{string, the ID of the fine-tuning job to get events for}
 
 \item{after}{string/NULL, identifier for the last event from the previous pagination request.}
 
 \item{limit}{integer/NULL, number of events to retrieve (defaults to 20)}
+
+\item{api_key}{string, OpenAI API key
+(see https://platform.openai.com/account/api-keys)}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object
@@ -34,7 +34,7 @@ https://platform.openai.com/docs/api-reference/fine-tuning/list-events
 }
 \examples{
 \dontrun{
-res_content <- fine_tuning_events_list_request("my-secret-api-key-string", "job-id")
+res_content <- fine_tuning_events_list_request("job-id")
 if (!is_error(res_content)) {
   fine_tuning_events_df <- fine_tuning_fetch_events_list(res_content)
   print(fine_tuning_events_df)

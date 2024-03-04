@@ -5,17 +5,14 @@
 \title{API embeddings: create embeddings}
 \usage{
 embeddings_create_request(
-  api_key,
   input,
   model,
   encoding_format = NULL,
-  user = NULL
+  user = NULL,
+  api_key = api_get_key()
 )
 }
 \arguments{
-\item{api_key}{string, OpenAI API key
-(see https://platform.openai.com/account/api-keys)}
-
 \item{input}{character vector, input text to embed, encoded as a string or array of tokens. To embed multiple inputs
 in a single request, pass an array of strings or array of token arrays. The input must not exceed the max input
 tokens for the model (8192 tokens for text-embedding-ada-002), cannot be an empty string, and any array must be 2048
@@ -29,6 +26,9 @@ overview (https://platform.openai.com/docs/models/overview) for descriptions of 
 
 \item{user}{string, a unique identifier representing your end-user, which can help OpenAI to monitor and detect
 abuse. To learn more visit https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids}
+
+\item{api_key}{string, OpenAI API key
+(see https://platform.openai.com/account/api-keys)}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object

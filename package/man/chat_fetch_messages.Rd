@@ -19,7 +19,6 @@ Fetch messages (dialog data.frame with chat messages) from response content
 \dontrun{
   question <- dialog_df("hi")
   res_content <- chat_request(
-    api_key = "my-secret-api-key-string",
     messages = question,
     model = "gpt-3.5-turbo"
   )

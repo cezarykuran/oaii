@@ -4,18 +4,18 @@
 \alias{embeddings_object_request}
 \title{API embeddings: get embedding object}
 \usage{
-embeddings_object_request(api_key, index, embedding, object)
+embeddings_object_request(index, embedding, object, api_key = api_get_key())
 }
 \arguments{
-\item{api_key}{string, OpenAI API key
-(see https://platform.openai.com/account/api-keys)}
-
 \item{index}{integer, The index of the embedding in the list of embeddings.}
 
 \item{embedding}{double vector, the embedding vector, which is a "list of floats". The length of vector depends on
 the model as listed in the embedding guide.}
 
 \item{object}{string, the object type, which is always "embedding".}
+
+\item{api_key}{string, OpenAI API key
+(see https://platform.openai.com/account/api-keys)}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object

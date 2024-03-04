@@ -4,13 +4,13 @@
 \alias{files_retrieve_content_request}
 \title{API files: retrieve content request}
 \usage{
-files_retrieve_content_request(api_key, file_id)
+files_retrieve_content_request(file_id, api_key = api_get_key())
 }
 \arguments{
+\item{file_id}{string, id of the uploaded file}
+
 \item{api_key}{string, OpenAI API key
 (see https://platform.openai.com/account/api-keys)}
-
-\item{file_id}{string, id of the uploaded file}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object
@@ -23,10 +23,7 @@ To get more details, visit https://platform.openai.com/docs/api-reference/files/
 }
 \examples{
 \dontrun{
-res_content <- files_retrieve_content_request(
-  "my-secret-api-key-string",
-  "some-file-id"
-)
+res_content <- files_retrieve_content_request("some-file-id")
 if (!is_error(res_content)) {
   writeBin(res_content, "some-file.jsonl")
 }

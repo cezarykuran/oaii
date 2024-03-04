@@ -17,7 +17,7 @@ Extract fine-tuning job list as data.frame from response object
 }
 \examples{
 \dontrun{
-res_content <- fine_tuning_events_list_request("my-secret-api-key-string", "job-id")
+res_content <- fine_tuning_events_list_request("job-id")
 if (!is_error(res_content)) {
   fine_tuning_events_df <- fine_tuning_fetch_events_list(res_content)
   print(fine_tuning_events_df)

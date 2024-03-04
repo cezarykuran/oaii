@@ -5,18 +5,15 @@
 \title{API audio: text to speech request}
 \usage{
 audio_speech_request(
-  api_key,
   model,
   input,
   voice,
   response_format = NULL,
-  speed = NULL
+  speed = NULL,
+  api_key = api_get_key()
 )
 }
 \arguments{
-\item{api_key}{string, OpenAI API key
-(see https://platform.openai.com/account/api-keys)}
-
 \item{model}{string, one of the available TTS models: 'tts-1' or 'tts-1-hd'}
 
 \item{input}{string, the text to generate audio for.
@@ -32,6 +29,9 @@ mp3 (default), opus, aac, and flac}
 
 \item{speed}{double, the speed of the generated audio. Select a value from
 0.25 to 4.0, 1.0 is the default.}
+
+\item{api_key}{string, OpenAI API key
+(see https://platform.openai.com/account/api-keys)}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object
@@ -47,7 +47,6 @@ https://platform.openai.com/docs/guides/speech-to-text
 \examples{
 \dontrun{
 res_content <- audio_speech_request(
-  "my-secret-api-key-string",
   "tts-1",
   "When the power of love overcomes the love of power, the world will know peace.",
   "nova"

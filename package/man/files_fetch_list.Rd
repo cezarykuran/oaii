@@ -17,7 +17,7 @@ Extract files list as data.frame from response object
 }
 \examples{
 \dontrun{
-res_content <- files_list_request("my-secret-api-key-string")
+res_content <- files_list_request()
 if (!is_error(res_content)) {
   files_list_df <- files_fetch_list(res_content)
   print(files_list_df)

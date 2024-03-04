@@ -1,7 +1,7 @@
 Package: oaii
 Type: Package
 Title: 'OpenAI' API R Interface
-Version: 0.4.0
+Version: 0.5.0
 Authors@R:
   person("Cezary", "Kuran", , "cezary.kuran@gmail.com",  role = c("aut", "cre"))
 Description: A comprehensive set of helpers that streamline data transmission
@@ -11,11 +11,13 @@ URL: https://github.com/cezarykuran/oaii
 Encoding: UTF-8
 LazyData: true
 Imports:
+  base64enc,
   checkmate,
   httr,
   magrittr,
   utils
 Suggests:
+  htmltools,
   testthat (>= 3.0.0)
 Config/testthat/edition: 3
 RoxygenNote: 7.3.0

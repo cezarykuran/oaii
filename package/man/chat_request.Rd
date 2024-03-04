@@ -5,7 +5,6 @@
 \title{API chat: send create (chat) request}
 \usage{
 chat_request(
-  api_key,
   messages,
   model,
   frequency_penalty = NULL,
@@ -23,13 +22,11 @@ chat_request(
   top_p = NULL,
   tools = NULL,
   tool_choice = NULL,
-  user = NULL
+  user = NULL,
+  api_key = api_get_key()
 )
 }
 \arguments{
-\item{api_key}{string, OpenAI API key
-(see https://platform.openai.com/account/api-keys)}
-
 \item{messages}{data.frame, data.frame with messages comprising the conversation so far}
 
 \item{model}{string, ID of the model to use. See the model endpoint compatibility table
@@ -53,8 +50,7 @@ gpt-4-vision-preview model. Defaults to false.}
 \item{top_logprobs}{NULL/int, an integer between 0 and 5 specifying the number of most likely tokens to return at
 each token position, each with an associated log probability. logprobs must be set to true if this parameter is used.}
 
-\item{max_tokens}{NULL/int, the maximum number of tokens to generate
-in the chat completion}
+\item{max_tokens}{NULL/int, the maximum number of tokens to generate in the chat completion}
 
 \item{n}{NULL/int, how many chat completion choices to generate for each input message.}
 
@@ -119,6 +115,9 @@ default when no functions are present, `auto` is the default if functions are pr
 
 \item{user}{NULL/string, a unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
 https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids}
+
+\item{api_key}{string, OpenAI API key
+(see https://platform.openai.com/account/api-keys)}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object
@@ -135,7 +134,6 @@ https://platform.openai.com/docs/guides/text-generation
 \dontrun{
   question <- dialog_df("hi")
   res_content <- chat_request(
-    api_key = "my-secret-api-key-string",
     messages = question,
     model = "gpt-3.5-turbo"
   )

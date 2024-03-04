@@ -4,13 +4,13 @@
 \alias{models_retrieve_request}
 \title{API models: retrieve model request}
 \usage{
-models_retrieve_request(api_key, model)
+models_retrieve_request(model, api_key = api_get_key())
 }
 \arguments{
+\item{model}{string, the ID of the model to use for this request}
+
 \item{api_key}{string, OpenAI API key
 (see https://platform.openai.com/account/api-keys)}
-
-\item{model}{string, the ID of the model to use for this request}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object

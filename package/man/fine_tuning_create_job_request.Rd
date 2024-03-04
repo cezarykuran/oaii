@@ -5,18 +5,15 @@
 \title{API fine-tuning: create job (model) request}
 \usage{
 fine_tuning_create_job_request(
-  api_key,
   model,
   training_file,
   hyperparameters = NULL,
   suffix = NULL,
-  validation_file = NULL
+  validation_file = NULL,
+  api_key = api_get_key()
 )
 }
 \arguments{
-\item{api_key}{string, OpenAI API key
-(see https://platform.openai.com/account/api-keys)}
-
 \item{model}{string, the name of the base model to fine-tune. You can select one of the supported models:
 gpt-3.5-turbo-1106 (recommended), gpt-3.5-turbo-0613, babbage-002, davinci-002, gpt-4-0613 (experimental)}
 
@@ -38,6 +35,9 @@ ft:gpt-3.5-turbo:openai:custom-model-name:7p4lURel}
 file, the data is used to generate validation metrics periodically during fine-tuning. These metrics can be viewed in
 the fine-tuning results file. The same data should not be present in both train and validation files. Your dataset
 must be formatted as a JSONL file. You must upload your file with the purpose fine-tune.}
+
+\item{api_key}{string, OpenAI API key
+(see https://platform.openai.com/account/api-keys)}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object

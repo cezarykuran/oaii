@@ -23,7 +23,13 @@ files_roxygen_tpl <- function(
 #' @param file_type NULL/string, mime type of `file`. See \link{api_upload_file}
 #' @export
 #'
-files_upload_request <- function(api_key, file, purpose, file_type = NULL) {
+files_upload_request <- function(
+    file,
+    purpose,
+    file_type = NULL,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`purpose` must be a non-empty string" = checkmate::testString(purpose, min.chars = 1)
@@ -50,14 +56,18 @@ files_upload_request <- function(api_key, file, purpose, file_type = NULL) {
 #'
 #' @examples
 #' \dontrun{
-#' res_content <- files_list_request("my-secret-api-key-string")
+#' res_content <- files_list_request()
 #' if (!is_error(res_content)) {
 #'   files_list_df <- files_fetch_list(res_content)
 #'   print(files_list_df)
 #' }
 #' }
 #'
-files_list_request <- function(api_key, purpose = NULL) {
+files_list_request <- function(
+    purpose = NULL,
+    api_key = api_get_key()
+  ) {
+
   request(
     endpoint = "https://api.openai.com/v1/files",
     api_key = api_key,
@@ -96,7 +106,11 @@ print.oaii_files_df <- function(x, ...) {
 #' @inherit files_roxygen_tpl params return
 #' @export
 #'
-files_retrieve_request <- function(api_key, file_id) {
+files_retrieve_request <- function(
+    file_id,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`file_id` must be a non-empty string" = checkmate::testString(file_id, min.chars = 1)
@@ -115,7 +129,11 @@ files_retrieve_request <- function(api_key, file_id) {
 #' @inherit files_roxygen_tpl params return
 #' @export
 #'
-files_delete_request <- function(api_key, file_id) {
+files_delete_request <- function(
+    file_id,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`file_id` must be a non-empty string" = checkmate::testString(file_id, min.chars = 1)
@@ -137,16 +155,17 @@ files_delete_request <- function(api_key, file_id) {
 #' 
 #' @examples
 #' \dontrun{
-#' res_content <- files_retrieve_content_request(
-#'   "my-secret-api-key-string",
-#'   "some-file-id"
-#' )
+#' res_content <- files_retrieve_content_request("some-file-id")
 #' if (!is_error(res_content)) {
 #'   writeBin(res_content, "some-file.jsonl")
 #' }
 #' }
 #'
-files_retrieve_content_request <- function(api_key, file_id) {
+files_retrieve_content_request <- function(
+    file_id,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`file_id` must be a non-empty string" =

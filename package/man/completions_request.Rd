@@ -5,7 +5,6 @@
 \title{API completions: create request}
 \usage{
 completions_request(
-  api_key,
   model,
   prompt,
   suffix = NULL,
@@ -20,13 +19,11 @@ completions_request(
   presence_penalty = NULL,
   frequency_penalty = NULL,
   best_of = NULL,
-  user = NULL
+  user = NULL,
+  api_key = api_get_key()
 )
 }
 \arguments{
-\item{api_key}{string, OpenAI API key
-(see https://platform.openai.com/account/api-keys)}
-
 \item{model}{string, ID of the model to use. You can use the list models
 (https://platform.openai.com/docs/api-reference/models/list)
 API to see all of your available models, or see our model overview
@@ -89,6 +86,9 @@ and n specifies how many to return – best_of must be greater than n.}
 
 \item{user}{string, A unique identifier representing your end-user,
 which can help OpenAI to monitor and detect abuse}
+
+\item{api_key}{string, OpenAI API key
+(see https://platform.openai.com/account/api-keys)}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object
@@ -103,7 +103,6 @@ To get more details, visit https://platform.openai.com/docs/api-reference/comple
 \dontrun{
   prompt <- "x=1, y=2, z=x*y, z=?"
   res_content <- completions_request(
-    api_key = "my-secret-api-key-string",
     model = "text-davinci-003",
     prompt = prompt
   )

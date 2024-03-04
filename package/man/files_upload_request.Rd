@@ -4,17 +4,17 @@
 \alias{files_upload_request}
 \title{API files: upload request}
 \usage{
-files_upload_request(api_key, file, purpose, file_type = NULL)
+files_upload_request(file, purpose, file_type = NULL, api_key = api_get_key())
 }
 \arguments{
-\item{api_key}{string, OpenAI API key
-(see https://platform.openai.com/account/api-keys)}
-
 \item{file}{string/raw, path or content of the JSON Lines file to be uploaded}
 
 \item{purpose}{string, the intended purpose of the uploaded documents. Use "fine-tune" for Fine-tuning.}
 
 \item{file_type}{NULL/string, mime type of `file`. See \link{api_upload_file}}
+
+\item{api_key}{string, OpenAI API key
+(see https://platform.openai.com/account/api-keys)}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object

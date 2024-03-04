@@ -20,7 +20,6 @@
 #' @examples
 #' \dontrun{
 #' res_content <- audio_speech_request(
-#'   "my-secret-api-key-string",
 #'   "tts-1",
 #'   "When the power of love overcomes the love of power, the world will know peace.",
 #'   "nova"
@@ -31,13 +30,14 @@
 #' }
 #'
 audio_speech_request <- function(
-    api_key,
     model,
     input,
     voice,
     response_format = NULL,
-    speed = NULL
+    speed = NULL,
+    api_key = api_get_key()
   ) {
+
   # asserts
   stopifnot(
     "`model` must be a non-empty string" =
@@ -62,7 +62,8 @@ audio_speech_request <- function(
       voice = voice,
       response_format = response_format,
       speed = speed
-    )
+    ),
+    content_class = paste0(c("oaii_content_audio", response_format), collapse = "_")
   )
 }
 
@@ -98,7 +99,6 @@ audio_speech_request <- function(
 #' @examples
 #' \dontrun{
 #' res_content <- audio_speech_request(
-#'   "my-secret-api-key-string",
 #'   "path/to/audio/file.mp3",
 #'   "whisper-1",
 #'   "en",
@@ -110,15 +110,16 @@ audio_speech_request <- function(
 #' }
 #'
 audio_transcription_request <- function(
-    api_key,
     file,
     model,
     language = NULL,
     prompt = NULL,
     response_format = NULL,
     temperature = NULL,
-    file_type = NULL
-) {
+    file_type = NULL,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`file` must be a fle path or raw content" =
@@ -149,7 +150,8 @@ audio_transcription_request <- function(
       response_format = response_format,
       temperature = temperature
     ),
-    encode = "multipart"
+    encode = "multipart",
+    content_class = "oaii_content_transcription"
   )
 }
 
@@ -179,7 +181,6 @@ audio_transcription_request <- function(
 #' @examples
 #' \dontrun{
 #' res_content <- audio_translation_request(
-#'   "my-secret-api-key-string",
 #'   "path/to/audio/file.mp3",
 #'   "whisper-1",
 #'   response_format = "text"
@@ -190,13 +191,14 @@ audio_transcription_request <- function(
 #' }
 #'
 audio_translation_request <- function(
-    api_key,
     file,
     model,
     prompt = NULL,
     response_format = NULL,
-    temperature = NULL
-) {
+    temperature = NULL,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`file` must be a fle path or raw content" =

@@ -4,12 +4,9 @@
 \alias{moderation_create_request}
 \title{API moderations: create moderation}
 \usage{
-moderation_create_request(api_key, input, model = NULL)
+moderation_create_request(input, model = NULL, api_key = api_get_key())
 }
 \arguments{
-\item{api_key}{string, OpenAI API key
-(see https://platform.openai.com/account/api-keys)}
-
 \item{input}{string, the input text to classify}
 
 \item{model}{string, two content moderations models are available: `text-moderation-stable` and 
@@ -17,6 +14,9 @@ moderation_create_request(api_key, input, model = NULL)
 This ensures you are always using our most accurate model. If you use `text-moderation-stable`, we will provide
 advanced notice before updating the model. Accuracy of 'text-moderation-stable' may be slightly lower than for
 `text-moderation-latest`.}
+
+\item{api_key}{string, OpenAI API key
+(see https://platform.openai.com/account/api-keys)}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object

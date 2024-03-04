@@ -56,7 +56,6 @@
 #' \dontrun{
 #'   prompt <- "x=1, y=2, z=x*y, z=?"
 #'   res_content <- completions_request(
-#'     api_key = "my-secret-api-key-string",
 #'     model = "text-davinci-003",
 #'     prompt = prompt
 #'   )
@@ -67,7 +66,6 @@
 #' }
 #'
 completions_request <- function(
-    api_key,
     model,
     prompt,
     suffix = NULL,
@@ -83,8 +81,10 @@ completions_request <- function(
     frequency_penalty = NULL,
     best_of = NULL,
     #logit_bias = NULL,
-    user = NULL
-) {
+    user = NULL,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`model` must be a non-empty string" = checkmate::testString(model, min.chars = 1),

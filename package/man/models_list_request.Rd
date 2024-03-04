@@ -4,7 +4,7 @@
 \alias{models_list_request}
 \title{API models: list request}
 \usage{
-models_list_request(api_key)
+models_list_request(api_key = api_get_key())
 }
 \arguments{
 \item{api_key}{string, OpenAI API key
@@ -23,7 +23,7 @@ https://platform.openai.com/docs/api-reference/models/list
 }
 \examples{
 \dontrun{
-res_content <- models_list_request("my-secret-api-key-string")
+res_content <- models_list_request()
 if (!is_error(res_content)) {
   models_list_df <- models_fetch_list(res_content)
   print(models_list_df)

@@ -4,13 +4,13 @@
 \alias{files_list_request}
 \title{API files: get list request}
 \usage{
-files_list_request(api_key, purpose = NULL)
+files_list_request(purpose = NULL, api_key = api_get_key())
 }
 \arguments{
+\item{purpose}{NULL/string, only return files with the given purpose}
+
 \item{api_key}{string, OpenAI API key
 (see https://platform.openai.com/account/api-keys)}
-
-\item{purpose}{NULL/string, only return files with the given purpose}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object
@@ -24,7 +24,7 @@ https://platform.openai.com/docs/api-reference/files/list
 }
 \examples{
 \dontrun{
-res_content <- files_list_request("my-secret-api-key-string")
+res_content <- files_list_request()
 if (!is_error(res_content)) {
   files_list_df <- files_fetch_list(res_content)
   print(files_list_df)

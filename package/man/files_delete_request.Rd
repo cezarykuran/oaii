@@ -4,13 +4,13 @@
 \alias{files_delete_request}
 \title{API files: delete file request}
 \usage{
-files_delete_request(api_key, file_id)
+files_delete_request(file_id, api_key = api_get_key())
 }
 \arguments{
+\item{file_id}{string, id of the uploaded file}
+
 \item{api_key}{string, OpenAI API key
 (see https://platform.openai.com/account/api-keys)}
-
-\item{file_id}{string, id of the uploaded file}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object

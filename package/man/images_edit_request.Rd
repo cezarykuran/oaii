@@ -5,7 +5,6 @@
 \title{API images: edit request}
 \usage{
 images_edit_request(
-  api_key,
   image,
   prompt,
   mask = NULL,
@@ -13,13 +12,11 @@ images_edit_request(
   n = NULL,
   size = NULL,
   response_format = NULL,
-  user = NULL
+  user = NULL,
+  api_key = api_get_key()
 )
 }
 \arguments{
-\item{api_key}{string, OpenAI API key
-(see https://platform.openai.com/account/api-keys)}
-
 \item{image}{string/raw, the image to edit. Must be a valid PNG file, less than 4MB, and square. If mask is not
 provided, image must have transparency, which will be used as the mask.}
 
@@ -38,6 +35,9 @@ where image should be edited. Must be a valid PNG file, less than 4MB, and have 
 "b64_json".}
 
 \item{user}{string a unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.}
+
+\item{api_key}{string, OpenAI API key
+(see https://platform.openai.com/account/api-keys)}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object

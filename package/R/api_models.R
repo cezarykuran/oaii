@@ -8,14 +8,14 @@
 #'
 #' @examples
 #' \dontrun{
-#' res_content <- models_list_request("my-secret-api-key-string")
+#' res_content <- models_list_request()
 #' if (!is_error(res_content)) {
 #'   models_list_df <- models_fetch_list(res_content)
 #'   print(models_list_df)
 #' }
 #' }
 #'
-models_list_request <- function(api_key) {
+models_list_request <- function(api_key = api_get_key()) {
   request(
     endpoint = "https://api.openai.com/v1/models",
     api_key = api_key,
@@ -37,25 +37,6 @@ models_fetch_list <- function(res_content) {
   models
 }
 
-#' print S3 method for oaii_models_df class
-#'
-#' @inherit base::print description params return
-#' @export
-#'
-print.oaii_models_df <- function(x, ...) {
-  x %>%
-    df_col_dt_format(
-      "created",
-      on_missing_col = "skip"
-    ) %>%
-    df_col_obj_implode(
-      "permission",
-      props_glue = ", ",
-      on_missing_col = "skip"
-    ) -> x
-  NextMethod()
-}
-
 #' API models: retrieve model request
 #'
 #' Retrieves a model instance, providing basic information about the model such as the owner and permissioning.
@@ -65,7 +46,11 @@ print.oaii_models_df <- function(x, ...) {
 #' @param model string, the ID of the model to use for this request
 #' @export
 #'
-models_retrieve_request <- function(api_key, model) {
+models_retrieve_request <- function(
+    model,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`model` must be a non-empty string" = checkmate::testString(model, min.chars = 1)
@@ -88,7 +73,11 @@ models_retrieve_request <- function(api_key, model) {
 #' @param model string, the model to delete
 #' @export
 #'
-models_delete_request <- function(api_key, model) {
+models_delete_request <- function(
+    model,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`model` must be a non-empty string" = checkmate::testString(model, min.chars = 1)

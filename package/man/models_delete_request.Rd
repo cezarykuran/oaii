@@ -4,13 +4,13 @@
 \alias{models_delete_request}
 \title{API models: delete model request}
 \usage{
-models_delete_request(api_key, model)
+models_delete_request(model, api_key = api_get_key())
 }
 \arguments{
+\item{model}{string, the model to delete}
+
 \item{api_key}{string, OpenAI API key
 (see https://platform.openai.com/account/api-keys)}
-
-\item{model}{string, the model to delete}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object

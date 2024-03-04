@@ -19,7 +19,6 @@
 #' @export
 #'
 images_generator_request <- function(
-    api_key,
     prompt,
     model = NULL,
     n = NULL,
@@ -27,8 +26,10 @@ images_generator_request <- function(
     response_format = NULL,
     size = NULL,
     style = NULL,
-    user = NULL
-) {
+    user = NULL,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`prompt` must be a non-empty string" = checkmate::testString(prompt, min.chars = 1),
@@ -53,7 +54,8 @@ images_generator_request <- function(
       size = size,
       style = style,
       user = user
-    )
+    ),
+    content_class = "oaii_content_images"
   )
 }
 
@@ -76,7 +78,6 @@ images_generator_request <- function(
 #' @export
 #'
 images_edit_request <- function(
-    api_key,
     image,
     prompt,
     mask = NULL,
@@ -84,8 +85,10 @@ images_edit_request <- function(
     n = NULL,
     size = NULL,
     response_format = NULL,
-    user = NULL
-) {
+    user = NULL,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`image` must be a fle path or raw content" = checkmate::testFileExists(image) || checkmate::testRaw(image),
@@ -113,7 +116,8 @@ images_edit_request <- function(
       response_format = response_format,
       user = user
     ),
-    encode = "multipart"
+    encode = "multipart",
+    content_class = "oaii_content_images"
   )
 }
 
@@ -132,14 +136,15 @@ images_edit_request <- function(
 #' @export
 #'
 images_variation_request <- function(
-    api_key,
     image,
     model = NULL,
     n = NULL,
     response_format = NULL,
     size = NULL,
-    user = NULL
-) {
+    user = NULL,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`image` must be a fle path or raw content" = checkmate::testFileExists(image) || checkmate::testRaw(image),
@@ -162,7 +167,8 @@ images_variation_request <- function(
       size = size,
       user = user
     ),
-    encode = "multipart"
+    encode = "multipart",
+    content_class = "oaii_content_images"
   )
 }
 

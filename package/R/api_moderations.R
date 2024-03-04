@@ -13,10 +13,11 @@
 #' @export
 #'
 moderation_create_request <- function(
-    api_key,
     input,
-    model = NULL
-) {
+    model = NULL,
+    api_key = api_get_key()
+  ) {
+
   # asserts
   stopifnot(
     "`input` must be a non-empty string" = checkmate::testString(input),

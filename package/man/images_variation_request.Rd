@@ -5,19 +5,16 @@
 \title{API images: create image variation request}
 \usage{
 images_variation_request(
-  api_key,
   image,
   model = NULL,
   n = NULL,
   response_format = NULL,
   size = NULL,
-  user = NULL
+  user = NULL,
+  api_key = api_get_key()
 )
 }
 \arguments{
-\item{api_key}{string, OpenAI API key
-(see https://platform.openai.com/account/api-keys)}
-
 \item{image}{string/raw, the image to edit. Must be a valid PNG file, less than 4MB, and square}
 
 \item{model}{NULL/string, the model to use for image generation. Only dall-e-2 is supported at this time.}
@@ -30,6 +27,9 @@ images_variation_request(
 \item{size}{NULL/string, the size of the generated images. Must be one of 256x256, 512x512, or 1024x1024 (default).}
 
 \item{user}{string a unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.}
+
+\item{api_key}{string, OpenAI API key
+(see https://platform.openai.com/account/api-keys)}
 }
 \value{
 \link[httr]{content} of the httr \link[httr]{response} object

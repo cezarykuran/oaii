@@ -17,7 +17,7 @@ Extract models list as data.frame from response object
 }
 \examples{
 \dontrun{
-res_content <- models_list_request("my-secret-api-key-string")
+res_content <- models_list_request()
 if (!is_error(res_content)) {
   models_list_df <- models_fetch_list(res_content)
   print(models_list_df)
