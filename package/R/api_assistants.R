@@ -37,7 +37,7 @@ assistants_create_assistant_request <- function(
     "`description` must be a NULL or non-empty string" =
         checkmate::testString(description, min.chars = 1, null.ok = TRUE),
     "`instructions` must be a NULL or non-empty string" =
-       checkmate::testString(instructions, min.chars = 1, null.ok = TRUE),
+        checkmate::testString(instructions, min.chars = 1, null.ok = TRUE),
     "`tools` must be a NULL or non-empty list" =
         checkmate::testList(tools, min.len = 1, null.ok = TRUE),
     "`file_ids` must be a NULL or non-empty character vector" =
@@ -250,6 +250,7 @@ assistants_retrieve_assistant_file_request <- function(
 #' https://platform.openai.com/docs/api-reference/assistants/modifyAssistant
 #' https://platform.openai.com/docs/assistants
 #' @inherit request params return
+#' @param assistant_id string, the ID of the assistant to modify
 #' @param model string, ID of the model to use. You can use the List models API to see all of your available models, or
 #' see our model overview (https://platform.openai.com/docs/models/overview) for descriptions of them.
 #' @param name NULL/string, the name of the assistant. The maximum length is 256 characters.
@@ -265,7 +266,7 @@ assistants_retrieve_assistant_file_request <- function(
 #' and values can be a maxium of 512 characters long.
 #' @export
 #' 
-assistants_create_assistant_request <- function(
+assistants_modify_assistant_request <- function(
     assistant_id,
     model = NULL,
     name = NULL,
