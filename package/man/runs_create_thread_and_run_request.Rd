@@ -17,33 +17,41 @@ runs_create_thread_and_run_request(
 \arguments{
 \item{assistant_id}{string, the ID of the assistant to use to execute this run}
 
-\item{thread}{NULL/list, 
+\item{thread}{NULL/list,
+\preformatted{
 list(
   # messages "array" (list of list(s))
   messages = list(
     list(
-    # string (required), the role of the entity that is creating the message. Currently only user is supported.
+    # string (required), the role of the entity that is creating
+    # the message. Currently only user is supported.
     role = 
     # string (required), the content of the message.
     content = 
-    # character vector (optional), a list of File IDs that the message should use. There can be a maximum of 10 files
-    # attached to a message. Useful for tools like retrieval and code_interpreter that can access and use files.
+    # character vector (optional), a list of File IDs that
+    # the message should use. There can be a maximum of 10
+    # files attached to a message. Useful for tools like retrieval
+    # and code_interpreter that can access and use files.
     file_ids = 
-    # named list (optional), set of 16 key-value pairs that can be attached to an object. This can be useful for
-    storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long
-    and values can be a maximum of 512 characters long.
+    # named list (optional), set of 16 key-value pairs that
+    # can be attached to an object. This can be useful for
+    # storing additional information about the object in a
+    # structured format. Keys can be a maximum of 64 characters
+    # long and values can be a maximum of 512 characters long.
     metadata = list (
       meta1 = "value1"
     )
   )
  ),
- # named list (optional), set of 16 key-value pairs that can be attached to an object. This can be useful for
- storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long
- and values can be a maximum of 512 characters long.
+ # named list (optional), set of 16 key-value pairs that
+ # can be attached to an object. This can be useful for
+ # storing additional information about the object in a structured
+ # format. Keys can be a maximum of 64 characters long
+ # and values can be a maximum of 512 characters long.
  metadata = list(
    metaX = "value y"
  )
-)}
+)}}
 
 \item{model}{NULL/string, the ID of the model (https://platform.openai.com/docs/api-reference/models) to be used to
 execute this run. If a value is provided here, it will override the model associated with the assistant. If not, the
@@ -55,6 +63,7 @@ modifying the behavior on a per-run basis.}
 
 \item{tools}{NULL/named list, override the tools the assistant can use for this run. This is useful for modifying the
 behavior on a per-run basis. Example:
+\preformatted{
 # code interpreter tool
 list(
   type = "code_interpreter"
@@ -79,7 +88,7 @@ list(
     parameters = list (
     )
  )
-)}
+)}}
 
 \item{metadata}{NULL/list, set of 16 key-value pairs that can be attached to an object. This can be useful for
 storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long

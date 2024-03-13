@@ -20,7 +20,7 @@ api_upload_file <- function(f, type = NULL) {
 
 #' Get the OpenAI API key from environment variable
 #' 
-#' @seealso [api_set_key()]
+#' @seealso \link{api_set_key}
 #' @return API key string
 #' @export
 #' 
@@ -32,9 +32,9 @@ api_get_key <- function() {
 
 #' Store the OpenAI API key as environment variable
 #' 
-#' @seealso [api_get_key()]
+#' @seealso \link{api_get_key}
 #' @inheritParams request
-#' @return api_key
+#' @return API key string (`api_key`)
 #' @export
 #' 
 #' @examples

@@ -6,8 +6,8 @@
 #' and 4000 characters for dall-e-3.
 #' @param model NULL/string, the model to use for image generation. Defaults to `dall-e-2`
 #' @param n NULL/int, the number of images to generate. Must be between 1 and 10. For dall-e-3, only n=1 is supported.
-#' @param quality NULL/string, the quality of the image that will be generated. `hd` creates images with finer details and
-#' greater consistency across the image. This param is only supported for dall-e-3. Defaults to `standard`.
+#' @param quality NULL/string, the quality of the image that will be generated. `hd` creates images with finer details
+#' and greater consistency across the image. This param is only supported for dall-e-3. Defaults to `standard`.
 #' @param response_format NULL/string, the format in which the generated images are returned. Must be one of "url" or
 #' "b64_json".
 #' @param size NULL/string, the size of the generated images. Must be one of 256x256, 512x512, or 1024x1024 for
@@ -176,12 +176,10 @@ images_variation_request <- function(
 #'
 #' To get more details, visit https://platform.openai.com/docs/api-reference/images/create
 #' https://platform.openai.com/docs/api-reference/images/edits
-#' @param res_content response object returned by
-#' \link{images_generator_request} or \link{images_edit_request}
+#' @param res_content response object returned by \link{images_generator_request} or \link{images_edit_request}
 #' @param prompt NULL/string additional info put into the image set object
 #' @param size NULL/string additional info put into the image set object
-#' @return Image set as a list consisting of three elements: `data`, `prompt`
-#' and `size`
+#' @return Image set as a list consisting of three elements: `data`, `prompt` and `size`
 #' @export
 #'
 images_fech_set <- function(res_content, prompt = NULL, size = NULL) {
@@ -194,8 +192,7 @@ images_fech_set <- function(res_content, prompt = NULL, size = NULL) {
 
 #' Test if x is a image set
 #'
-#' Test if x is a image set - a list consisting of three elements: data, prompt
-#' and size
+#' Test if x is a image set - a list consisting of three elements: data, prompt and size
 #' @param x R variable to test
 #' @return TRUE/FALSE
 #'
@@ -209,8 +206,8 @@ is_image_set <- function(x) {
 
 #' Merge image set/sets
 #'
-#' Merge given image set/sets into single images sets object (list with image
-#' sets). Have a look at \link{images_fech_set}.
+#' Merge given image set/sets into single images sets object (list with image sets). Have a look at 
+#' \link{images_fech_set}.
 #' @param ... images set(s), NULL also allowed
 #' @return List of image set(s)
 #' @export

@@ -12,23 +12,30 @@ threads_create_thread_request(
 }
 \arguments{
 \item{messages}{NULL/list, a list of messages to start the thread with. The message "object" description:
+\preformatted{
 list(
   list(
-    # string (required), the role of the entity that is creating the message. Currently only user is supported.
-    role = 
+    # string (required), the role of the entity that is
+    # creating the message. Currently only 'user' is supported.
+    role = "user",
     # string (required), the content of the message.
     content = 
-    # character vector (optional), a list of File IDs that the message should use. There can be a maximum of 10 files
-    # attached to a message. Useful for tools like retrieval and code_interpreter that can access and use files.
+    # character vector (optional), a list of File IDs that
+    # the message should use. There can be a maximum of 10
+    # files attached to a message. Useful for tools like
+    # retrieval and code_interpreter that can access and
+    # use files.
     file_ids = 
-    # named list (optional), set of 16 key-value pairs that can be attached to an object. This can be useful for
-    storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long
-    and values can be a maximum of 512 characters long.
+    # named list (optional), set of 16 key-value pairs that
+    # can be attached to an object. This can be useful for
+    # storing additional information about the object in a
+    # structured format. Keys can be a maximum of 64 characters
+    # long and values can be a maximum of 512 characters long.
     metadata = list(
       meta1 = "value 2"
     )
   )
-)}
+)}}
 
 \item{metadata}{NULL/list, set of 16 key-value pairs that can be attached to an object. This can be useful for
 storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long

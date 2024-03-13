@@ -16,19 +16,15 @@ audio_speech_request(
 \arguments{
 \item{model}{string, one of the available TTS models: 'tts-1' or 'tts-1-hd'}
 
-\item{input}{string, the text to generate audio for.
-The maximum length is 4096 characters.}
+\item{input}{string, the text to generate audio for. The maximum length is 4096 characters.}
 
-\item{voice}{string, the voice to use when generating the audio. Supported
-voices are alloy, echo, fable, onyx, nova, and shimmer.
-Previews of the voices are available in the Text to speech guide -
+\item{voice}{string, the voice to use when generating the audio. Supported voices are alloy, echo, fable, onyx, nova,
+and shimmer. Previews of the voices are available in the Text to speech guide -
 https://platform.openai.com/docs/guides/text-to-speech/voice-options}
 
-\item{response_format}{string, the format to audio in. Supported formats are
-mp3 (default), opus, aac, and flac}
+\item{response_format}{string, the format to audio in. Supported formats are mp3 (default), opus, aac, and flac}
 
-\item{speed}{double, the speed of the generated audio. Select a value from
-0.25 to 4.0, 1.0 is the default.}
+\item{speed}{double, the speed of the generated audio. Select a value from 0.25 to 4.0, 1.0 is the default.}
 
 \item{api_key}{string, OpenAI API key
 (see https://platform.openai.com/account/api-keys)}

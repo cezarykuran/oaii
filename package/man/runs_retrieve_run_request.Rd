@@ -4,17 +4,12 @@
 \alias{runs_retrieve_run_request}
 \title{API runs: retrieve run}
 \usage{
-runs_retrieve_run_request(thread_id, run_id, step_id, api_key = api_get_key())
-
-runs_retrieve_run_request(thread_id, run_id, step_id, api_key = api_get_key())
+runs_retrieve_run_request(thread_id, run_id, api_key = api_get_key())
 }
 \arguments{
-\item{thread_id}{string, the ID of the thread (https://platform.openai.com/docs/api-reference/threads) to which the
-run and run step belongs}
+\item{thread_id}{string, The ID of the thread (https://platform.openai.com/docs/api-reference/threads) that was run}
 
-\item{run_id}{string, the ID of the run to which the run step belongs}
-
-\item{step_id}{string, the ID of the run step to retrieve}
+\item{run_id}{string, the ID of the run to retrieve}
 
 \item{api_key}{string, OpenAI API key
 (see https://platform.openai.com/account/api-keys)}
@@ -28,9 +23,5 @@ and `message_long` (built on response content)
 \description{
 Retrieves a thread. To get more details, visit
 https://platform.openai.com/docs/api-reference/threads/getThread
-https://platform.openai.com/docs/assistants
-
-Retrieves a run step. To get more details, visit
-https://platform.openai.com/docs/api-reference/runs/getRunStep
 https://platform.openai.com/docs/assistants
 }

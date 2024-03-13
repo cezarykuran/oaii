@@ -13,6 +13,6 @@ images_merge_sets(...)
 List of image set(s)
 }
 \description{
-Merge given image set/sets into single images sets object (list with image
-sets). Have a look at \link{images_fech_set}.
+Merge given image set/sets into single images sets object (list with image sets). Have a look at 
+\link{images_fech_set}.
 }

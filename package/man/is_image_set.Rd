@@ -13,6 +13,5 @@ is_image_set(x)
 TRUE/FALSE
 }
 \description{
-Test if x is a image set - a list consisting of three elements: data, prompt
-and size
+Test if x is a image set - a list consisting of three elements: data, prompt and size
 }

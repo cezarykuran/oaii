@@ -38,12 +38,10 @@ assistants_create_assistant_request <- function(
         checkmate::testString(description, min.chars = 1, null.ok = TRUE),
     "`instructions` must be a NULL or non-empty string" =
         checkmate::testString(instructions, min.chars = 1, null.ok = TRUE),
-    "`tools` must be a NULL or non-empty list" =
-        checkmate::testList(tools, min.len = 1, null.ok = TRUE),
+    "`tools` must be a NULL or non-empty list" = checkmate::testList(tools, min.len = 1, null.ok = TRUE),
     "`file_ids` must be a NULL or non-empty character vector" =
         checkmate::testCharacter(file_ids, min.len = 1, min.chars = 1, null.ok = TRUE),
-    "`metadata` must be a NULL or list" =
-        checkmate::testList(metadata, min.len = 1, null.ok = TRUE)
+    "`metadata` must be a NULL or list" = checkmate::testList(metadata, min.len = 1, null.ok = TRUE)
   )
 
   request(
@@ -166,7 +164,7 @@ assistants_list_asistants_request <- function(
     after = NULL,
     before = NULL,
     api_key = api_get_key()
-) {
+  ) {
   
   # asserts
   stopifnot(
@@ -181,7 +179,7 @@ assistants_list_asistants_request <- function(
     paste0("https://api.openai.com/v1/assistants/", assistant_id,"/files"),
     api_key,
     method = "GET",
-    body = list(
+    query = list(
       limit = limit,
       order = order,
       after = after,
@@ -229,8 +227,8 @@ assistants_retrieve_assistant_file_request <- function(
     assistant_id,
     file_id,
     api_key = api_get_key()
-) {
-  
+  ) {
+
   # asserts
   stopifnot(
     "`assistant_id` must be a non-empty string" = checkmate::testString(assistant_id, min.chars = 1),
@@ -276,8 +274,8 @@ assistants_modify_assistant_request <- function(
     file_ids = NULL,
     metadata = NULL,
     api_key = api_get_key()
-) {
-  
+  ) {
+
   # asserts
   stopifnot(
     "`assistant_id` must be a non-empty string" = checkmate::testString(assistant_id, min.chars = 1),
@@ -287,12 +285,10 @@ assistants_modify_assistant_request <- function(
         checkmate::testString(description, min.chars = 1, null.ok = TRUE),
     "`instructions` must be a NULL or non-empty string" =
         checkmate::testString(instructions, min.chars = 1, null.ok = TRUE),
-    "`tools` must be a NULL or non-empty list" =
-        checkmate::testList(tools, min.len = 1, null.ok = TRUE),
+    "`tools` must be a NULL or non-empty list" = checkmate::testList(tools, min.len = 1, null.ok = TRUE),
     "`file_ids` must be a NULL or non-empty character vector" =
         checkmate::testCharacter(file_ids, min.len = 1, min.chars = 1, null.ok = TRUE),
-    "`metadata` must be a NULL or list" =
-        checkmate::testList(metadata, min.len = 1, null.ok = TRUE)
+    "`metadata` must be a NULL or list" = checkmate::testList(metadata, min.len = 1, null.ok = TRUE)
   )
   
   request(
@@ -322,8 +318,8 @@ assistants_modify_assistant_request <- function(
 assistants_delete_assistant_request <- function(
     assistant_id,
     api_key = api_get_key()
-) {
-  
+  ) {
+
   # asserts
   stopifnot(
     "`assistant_id` must be a non-empty string" = checkmate::testString(assistant_id, min.chars = 1)
@@ -349,8 +345,8 @@ assistants_delete_assistant_file_request <- function(
     assistant_id,
     file_id,
     api_key = api_get_key()
-) {
-  
+  ) {
+
   # asserts
   stopifnot(
     "`assistant_id` must be a non-empty string" = checkmate::testString(assistant_id, min.chars = 1),

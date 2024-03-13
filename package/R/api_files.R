@@ -89,16 +89,6 @@ files_fetch_list <- function(res_content) {
   files
 }
 
-#' print S3 method for oaii_files_df class
-#'
-#' @inherit base::print description params return
-#' @export
-#'
-print.oaii_files_df <- function(x, ...) {
-  x <- df_col_dt_format(x, "created_at", on_missing_col = "skip")
-  NextMethod()
-}
-
 #' API files: retrieve file request
 #'
 #' Returns information about a specific file. To get more details, visit: 

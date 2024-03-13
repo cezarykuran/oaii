@@ -11,7 +11,7 @@ api_set_key(api_key)
 (see https://platform.openai.com/account/api-keys)}
 }
 \value{
-api_key
+API key string (`api_key`)
 }
 \description{
 Store the OpenAI API key as environment variable
@@ -23,5 +23,5 @@ api_set_key("my-secret-api-key-string")
 
 }
 \seealso{
-[api_get_key()]
+\link{api_get_key}
 }

@@ -88,7 +88,8 @@ probability mass are considered. We generally recommend altering this or tempera
 Use this to provide a list of functions the model may generate JSON inputs for. Example value:
 \preformatted{
 list(
-  # string (required), the type of the tool. Currently, only function is supported
+  # string (required), the type of the tool. Currently, only
+  # 'function' is supported
   type = "function",
   
   # list (required)
@@ -97,11 +98,13 @@ list(
     description = "some description",
 
     # string (required), the name of the function to be called.
-    # Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64
+    # Must be a-z, A-Z, 0-9, or contain underscores and dashes,
+    # with a maximum length of 64
     name = "functionname",
     
-    #list (optional), the parameters the functions accepts, described as a JSON Schema object.
-    # Omitting parameters defines a function with an empty parameter list.
+    # list (optional), the parameters the functions accepts,
+    # described as a JSON Schema object. Omitting parameters
+    # defines a function with an empty parameter list.
     parameters = list()
   )
 )
@@ -113,8 +116,8 @@ message or calling a function. Specifying a particular function via list
 `list(type = "function", function": list(name: "my_function"))` forces the model to call that function. `none` is the
 default when no functions are present, `auto` is the default if functions are present.}
 
-\item{user}{NULL/string, a unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
-https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids}
+\item{user}{NULL/string, a unique identifier representing your end-user, which can help OpenAI to monitor and detect
+abuse. See https://platform.openai.com/docs/guides/safety-best-practices/end-user-ids}
 
 \item{api_key}{string, OpenAI API key
 (see https://platform.openai.com/account/api-keys)}

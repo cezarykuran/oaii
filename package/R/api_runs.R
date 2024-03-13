@@ -16,6 +16,7 @@
 #' run. This is useful for modifying the behavior on a per-run basis without overriding other instructions.
 #' @param tools NULL/named list, override the tools the assistant can use for this run. This is useful for modifying the
 #' behavior on a per-run basis. Example:
+#' \preformatted{
 #' # code interpreter tool
 #' list(
 #'   type = "code_interpreter"
@@ -28,19 +29,23 @@
 #' list(
 #'   type = "retrieval",
 #'   function = list(
-#'     # string (optional), a description of what the function does, used by the model to choose when and how to call
+#'     # string (optional), a description of what the function
+#'     # does, used by the model to choose when and how to call
 #'     # the function.
 #'     description = 
-#'     # string (required), the name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and
-#'     # dashes, with a maximum length of 64.
+#'     # string (required), the name of the function to be called.
+#'     # Must be a-z, A-Z, 0-9, or contain underscores and dashes,
+#'     # with a maximum length of 64.
 #'     name =
-#'     # list (optional), the parameters the functions accepts. See the guide
-#'     # (https://platform.openai.com/docs/guides/text-generation/function-calling) for examples. Omitting parameters
-#'     # defines a function with an empty parameter list.
+#'     # list (optional), the parameters the functions accepts.
+#'     # See the guide
+#'     # (https://platform.openai.com/docs/guides/text-generation/function-calling)
+#'     # for examples. Omitting parameters defines a function
+#'     # with an empty parameter list.
 #'     parameters = list (
 #'     )
 #'  )
-#' )
+#' )}
 #' @param metadata NULL/list, set of 16 key-value pairs that can be attached to an object. This can be useful for
 #' storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long
 #' and values can be a maximum of 512 characters long.
@@ -64,7 +69,7 @@ runs_create_run_request <- function(
     metadata = NULL,
     api_key = api_get_key()
   ) {
-  
+
   # asserts
   stopifnot(
     "`thread_id` must be a non-empty string" = checkmate::testString(thread_id, min.chars = 1),
@@ -74,10 +79,8 @@ runs_create_run_request <- function(
         checkmate::testString(instructions, min.chars = 1, null.ok = TRUE),
     "`additional_instructions` must be a NULL or non-empty string" =
         checkmate::testString(additional_instructions, min.chars = 1, null.ok = TRUE),
-    "`tools` must be a NULL or non-empty list" =
-        checkmate::testList(tools, min.len = 1, null.ok = TRUE),
-    "`metadata` must be a NULL or non-empty list" =
-        checkmate::testList(metadata, min.len = 1, null.ok = TRUE)
+    "`tools` must be a NULL or non-empty list" = checkmate::testList(tools, min.len = 1, null.ok = TRUE),
+    "`metadata` must be a NULL or non-empty list" = checkmate::testList(metadata, min.len = 1, null.ok = TRUE)
   )
 
   request(
@@ -101,33 +104,41 @@ runs_create_run_request <- function(
 #' https://platform.openai.com/docs/assistants
 #' @inherit request params return
 #' @param assistant_id string, the ID of the assistant to use to execute this run
-#' @param thread NULL/list, 
+#' @param thread NULL/list,
+#' \preformatted{
 #' list(
 #'   # messages "array" (list of list(s))
 #'   messages = list(
 #'     list(
-#'     # string (required), the role of the entity that is creating the message. Currently only user is supported.
+#'     # string (required), the role of the entity that is creating
+#'     # the message. Currently only user is supported.
 #'     role = 
 #'     # string (required), the content of the message.
 #'     content = 
-#'     # character vector (optional), a list of File IDs that the message should use. There can be a maximum of 10 files
-#'     # attached to a message. Useful for tools like retrieval and code_interpreter that can access and use files.
+#'     # character vector (optional), a list of File IDs that
+#'     # the message should use. There can be a maximum of 10
+#'     # files attached to a message. Useful for tools like retrieval
+#'     # and code_interpreter that can access and use files.
 #'     file_ids = 
-#'     # named list (optional), set of 16 key-value pairs that can be attached to an object. This can be useful for
-#'     storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long
-#'     and values can be a maximum of 512 characters long.
+#'     # named list (optional), set of 16 key-value pairs that
+#'     # can be attached to an object. This can be useful for
+#'     # storing additional information about the object in a
+#'     # structured format. Keys can be a maximum of 64 characters
+#'     # long and values can be a maximum of 512 characters long.
 #'     metadata = list (
 #'       meta1 = "value1"
 #'     )
 #'   )
 #'  ),
-#'  # named list (optional), set of 16 key-value pairs that can be attached to an object. This can be useful for
-#'  storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long
-#'  and values can be a maximum of 512 characters long.
+#'  # named list (optional), set of 16 key-value pairs that
+#'  # can be attached to an object. This can be useful for
+#'  # storing additional information about the object in a structured
+#'  # format. Keys can be a maximum of 64 characters long
+#'  # and values can be a maximum of 512 characters long.
 #'  metadata = list(
 #'    metaX = "value y"
 #'  )
-#' )
+#' )}
 #' @param model NULL/string, the ID of the model (https://platform.openai.com/docs/api-reference/models) to be used to
 #' execute this run. If a value is provided here, it will override the model associated with the assistant. If not, the
 #' model associated with the assistant will be used.
@@ -136,6 +147,7 @@ runs_create_run_request <- function(
 #' modifying the behavior on a per-run basis.
 #' @param tools NULL/named list, override the tools the assistant can use for this run. This is useful for modifying the
 #' behavior on a per-run basis. Example:
+#' \preformatted{
 #' # code interpreter tool
 #' list(
 #'   type = "code_interpreter"
@@ -160,7 +172,7 @@ runs_create_run_request <- function(
 #'     parameters = list (
 #'     )
 #'  )
-#' )
+#' )}
 #' @param metadata NULL/list, set of 16 key-value pairs that can be attached to an object. This can be useful for
 #' storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long
 #' and values can be a maximum of 512 characters long.
@@ -179,17 +191,14 @@ runs_create_thread_and_run_request <- function(
   # asserts
   stopifnot(
     "`assistant_id` must be a non-empty string" = checkmate::testString(assistant_id, min.chars = 1),
-    "`thread` must be a non-empty list" =
-        checkmate::testList(metadata, min.len = 1),
+    "`thread` must be a non-empty list" = checkmate::testList(metadata, min.len = 1),
     "`model` must be a NULL or non-empty string" = checkmate::testString(model, min.chars = 1, null.ok = TRUE),
-    "`instructions` must be a NULL or non-empty string" =
+    "`instructions` must be a NULL or non-empty string" = 
         checkmate::testString(instructions, min.chars = 1, null.ok = TRUE),
-    "`tools` must be a NULL or non-empty list" =
-        checkmate::testList(tools, min.len = 1, null.ok = TRUE),
-    "`metadata` must be a NULL or non-empty list" =
-        checkmate::testList(metadata, min.len = 1, null.ok = TRUE)
+    "`tools` must be a NULL or non-empty list" = checkmate::testList(tools, min.len = 1, null.ok = TRUE),
+    "`metadata` must be a NULL or non-empty list" = checkmate::testList(metadata, min.len = 1, null.ok = TRUE)
   )
-  
+
   request(
     paste0("https://api.openai.com/v1/threads/runs"),
     api_key,
@@ -242,7 +251,7 @@ runs_list_runs_request <- function(
   )
 
   request(
-    paste0("https://api.openai.com/v1/threads/", thread_id,"/runs"),
+    paste0("https://api.openai.com/v1/threads/", thread_id, "/runs"),
     api_key,
     method = "GET",
     query = list(
@@ -348,7 +357,7 @@ runs_retrieve_run_request <- function(
 #' @param step_id string, the ID of the run step to retrieve
 #' @export
 #' 
-runs_retrieve_run_request <- function(
+runs_retrieve_run_step_request <- function(
     thread_id,
     run_id,
     step_id,
@@ -417,13 +426,15 @@ runs_modify_run_request <- function(
 #' run belongs
 #' @param run_id string, the ID of the run that requires the tool output submission
 #' @param tool_outputs list, a list of tools for which the outputs are being submitted.
+#' \preformatted{
 #' list(
-#'   # string (optional), the ID of the tool call in the required_action object within the run object the output is
-#'   # being submitted for.
+#'   # string (optional), the ID of the tool call in the required_action
+#'   # object within the run object the output is being submitted for.
 #'   tool_call_id = 
-#'   # string (optional), the output of the tool call to be submitted to continue the run
+#'   # string (optional), the output of the tool call to be
+#'   # submitted to continue the run
 #'   output = 
-#' )
+#' )}
 #' @export
 #' 
 runs_submit_tool_outputs_request <- function(

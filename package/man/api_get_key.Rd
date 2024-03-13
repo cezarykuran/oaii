@@ -13,5 +13,5 @@ API key string
 Get the OpenAI API key from environment variable
 }
 \seealso{
-[api_set_key()]
+\link{api_set_key}
 }

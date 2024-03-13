@@ -33,6 +33,7 @@ run. This is useful for modifying the behavior on a per-run basis without overri
 
 \item{tools}{NULL/named list, override the tools the assistant can use for this run. This is useful for modifying the
 behavior on a per-run basis. Example:
+\preformatted{
 # code interpreter tool
 list(
   type = "code_interpreter"
@@ -45,19 +46,23 @@ list(
 list(
   type = "retrieval",
   function = list(
-    # string (optional), a description of what the function does, used by the model to choose when and how to call
+    # string (optional), a description of what the function
+    # does, used by the model to choose when and how to call
     # the function.
     description = 
-    # string (required), the name of the function to be called. Must be a-z, A-Z, 0-9, or contain underscores and
-    # dashes, with a maximum length of 64.
+    # string (required), the name of the function to be called.
+    # Must be a-z, A-Z, 0-9, or contain underscores and dashes,
+    # with a maximum length of 64.
     name =
-    # list (optional), the parameters the functions accepts. See the guide
-    # (https://platform.openai.com/docs/guides/text-generation/function-calling) for examples. Omitting parameters
-    # defines a function with an empty parameter list.
+    # list (optional), the parameters the functions accepts.
+    # See the guide
+    # (https://platform.openai.com/docs/guides/text-generation/function-calling)
+    # for examples. Omitting parameters defines a function
+    # with an empty parameter list.
     parameters = list (
     )
  )
-)}
+)}}
 
 \item{metadata}{NULL/list, set of 16 key-value pairs that can be attached to an object. This can be useful for
 storing additional information about the object in a structured format. Keys can be a maximum of 64 characters long

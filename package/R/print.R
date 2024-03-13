@@ -116,6 +116,16 @@ print.oaii_models_df <- function(x, ...) {
   NextMethod()
 }
 
+#' print S3 method for oaii_files_df class
+#'
+#' @inherit base::print description params return
+#' @export
+#'
+print.oaii_files_df <- function(x, ...) {
+  x <- df_col_dt_format(x, "created_at", on_missing_col = "skip")
+  NextMethod()
+}
+
 #' print S3 method for oaii_fine_tuning_jobs_df class
 #'
 #' @inherit base::print description params return

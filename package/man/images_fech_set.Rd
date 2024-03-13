@@ -7,16 +7,14 @@
 images_fech_set(res_content, prompt = NULL, size = NULL)
 }
 \arguments{
-\item{res_content}{response object returned by
-\link{images_generator_request} or \link{images_edit_request}}
+\item{res_content}{response object returned by \link{images_generator_request} or \link{images_edit_request}}
 
 \item{prompt}{NULL/string additional info put into the image set object}
 
 \item{size}{NULL/string additional info put into the image set object}
 }
 \value{
-Image set as a list consisting of three elements: `data`, `prompt`
-and `size`
+Image set as a list consisting of three elements: `data`, `prompt` and `size`
 }
 \description{
 To get more details, visit https://platform.openai.com/docs/api-reference/images/create

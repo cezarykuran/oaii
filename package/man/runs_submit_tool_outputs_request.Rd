@@ -18,13 +18,15 @@ run belongs}
 \item{run_id}{string, the ID of the run that requires the tool output submission}
 
 \item{tool_outputs}{list, a list of tools for which the outputs are being submitted.
+\preformatted{
 list(
-  # string (optional), the ID of the tool call in the required_action object within the run object the output is
-  # being submitted for.
+  # string (optional), the ID of the tool call in the required_action
+  # object within the run object the output is being submitted for.
   tool_call_id = 
-  # string (optional), the output of the tool call to be submitted to continue the run
+  # string (optional), the output of the tool call to be
+  # submitted to continue the run
   output = 
-)}
+)}}
 
 \item{api_key}{string, OpenAI API key
 (see https://platform.openai.com/account/api-keys)}

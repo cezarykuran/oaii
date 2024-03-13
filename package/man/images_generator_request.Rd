@@ -24,8 +24,8 @@ and 4000 characters for dall-e-3.}
 
 \item{n}{NULL/int, the number of images to generate. Must be between 1 and 10. For dall-e-3, only n=1 is supported.}
 
-\item{quality}{NULL/string, the quality of the image that will be generated. `hd` creates images with finer details and
-greater consistency across the image. This param is only supported for dall-e-3. Defaults to `standard`.}
+\item{quality}{NULL/string, the quality of the image that will be generated. `hd` creates images with finer details
+and greater consistency across the image. This param is only supported for dall-e-3. Defaults to `standard`.}
 
 \item{response_format}{NULL/string, the format in which the generated images are returned. Must be one of "url" or
 "b64_json".}
