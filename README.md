@@ -7,24 +7,13 @@
 
 # OpenAI API R implementation
 
-This is an R library aimed at streamlining communication with the OpenAI API.
+The "oaii" package is a well-designed R library, crafted specifically to interface seamlessly with the OpenAI API. This package unlocks a broad spectrum of capabilities for R users, including text generation, language translation, and question-answering functionalities. By leveraging the robust capabilities of the API, the "oaii" package offers a comprehensive toolkit for users, enabling them to harness the full power of state-of-the-art AI models in their R-based applications.
 
-**The oaii package offers the following features:**
+**Implemented endpoint helpers:**
 
-- A comprehensive set of helper functions for seamless communication with API.
-- Useful tools for efficient data manipulation and transformation.
+- stable: audio, chat, completions, embeddings, files, fine tunes, images, models, moderations
+- beta: assistants, threads, messages, runs
 
-**Endpoint helpers implemented so far:**
-
-- audio
-- chat
-- completions
-- embeddings
-- files
-- fine tunes
-- images
-- models
-- moderations
 
 ## Package instalation
 
@@ -36,7 +25,9 @@ or
 
 **develop**  
 `remotes::install_github("https://github.com/cezarykuran/oaii.git", subdir = "package", ref = "develop")`  
-`devtools::install_github("https://github.com/cezarykuran/oaii.git", subdir = "package", ref = "develop")`  
+`devtools::install_github("https://github.com/cezarykuran/oaii.git", subdir = "package", ref = "develop")`
+
+You will need to provide your OpenAI API key to interact with the API.
 
 ## Demo applications
 
@@ -45,6 +36,10 @@ The [oaiiDemoApps](https://github.com/cezarykuran/oaiiDemoApps) package contains
 
 - An interactive Shiny demo application, which can be accessed at https://r.cezarykuran.it/shiny/oaii/ (feel free to explore its functionality!).
 - Several demonstration terminal applications written as R scripts. These applications serve as practical examples, demonstrating how to effectively leverage the package's functions for API communication.
+
+## Contributions
+
+Contributions to the package are welcome. If you encounter any issues or have suggestions for improving the package, feel free to open an issue or submit a pull request.
 
 ## Other
 
